@@ -79,13 +79,18 @@ select
         and abierto_en <= date '{{ var("fecha_hasta") }}' - interval 30 day
                                           as cohorte_madura,
 
+    -- En segundos, no en minutos: date_diff cuenta cruces de frontera, asi
+    -- que con 'minute' cualquier latencia por debajo del minuto vale 0. Medido
+    -- el 2026-08-27, eso ponia la mediana de merge en 0,00 h tanto para bots
+    -- como para humanos y borraba la respuesta a la pregunta 2; con segundos
+    -- son 5 s y 101 s. Ver metrics.md.
     case when abierto_en is not null and primer_review_en is not null
               and primer_review_en >= abierto_en
-         then date_diff('minute', abierto_en, primer_review_en) / 60.0
+         then date_diff('second', abierto_en, primer_review_en) / 3600.0
     end                                   as horas_hasta_primer_review,
 
     case when abierto_en is not null and mergeado_en is not null
               and mergeado_en >= abierto_en
-         then date_diff('minute', abierto_en, mergeado_en) / 60.0
+         then date_diff('second', abierto_en, mergeado_en) / 3600.0
     end                                   as horas_hasta_merge
 from agregado

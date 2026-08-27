@@ -27,4 +27,11 @@ select
     max(e.fecha)                        as ultima_actividad
 from {{ ref('stg_eventos') }} e
 left join lenguaje l on l.repo = e.repo
+-- Se excluyen los eventos sin repo. No es un fallo de extraccion: el objeto
+-- "repo" viene vacio en el JSON de origen, verificado el 2026-08-27 abriendo
+-- 2025-12-01-18.json.gz. Son forks hacia repositorios privados, donde GitHub
+-- no publica el repo de origen: 12.863 eventos entre 2025-12-01 y 2026-08-14,
+-- todos ForkEvent en el dia comprobado. Sin nombre de repo no son una fila de
+-- esta dimension. Ver metrics.md.
+where e.repo is not null
 group by e.repo, e.repo_owner, l.lenguaje
