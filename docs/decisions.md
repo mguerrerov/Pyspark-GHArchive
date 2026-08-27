@@ -492,3 +492,71 @@ Sustituye a D11.
   proyecto que presume de no tener capas de más.
 - **Coste**: si más adelante hacen falta tres o cuatro utilidades más, lo
   sensato será instalar el paquete y borrar esta macro.
+
+## D32 — El estado de silver lo dice el disco, no el registro
+
+- **Qué**: `silver_registro.jsonl` se reconstruyó desde las particiones
+  existentes, contando filas con DuckDB sobre los footers de Parquet.
+- **Alternativas**: fiarse del registro y reprocesar los 342 días que decía
+  pendientes; o anotarlo solo en la bitácora sin tocar el registro.
+- **Por qué**: el registro es un diario de lo que un proceso llegó a anotar, y
+  se cortó cinco veces. Las 361 particiones estaban escritas y completas
+  mientras el registro solo tenía 26 líneas: la reejecución iba a rehacer un
+  año de datos ya hechos. La segunda alternativa deja la trampa armada.
+- **Coste**: los días reconstruidos no tienen `segundos` medidos, y sin ese
+  campo no se puede reconstruir a posteriori el coste del backfill de silver.
+
+## D33 — `temp_directory` fuera de `settings` en el perfil de dbt
+
+- **Qué**: se quitó `temp_directory` del bloque `settings` de `profiles.yml` y
+  se dejó el valor por defecto de DuckDB (`<ruta_de_la_bd>.tmp`, que cae en
+  `D:/gharchive-data/gold/`, el mismo disco del lago).
+- **Alternativas**: bajar a `threads: 1` para que no se abran conexiones
+  mientras otro modelo spillea; o mantener el ajuste y lanzar
+  `fct_actividad_contribuyente` aislado del resto.
+- **Por qué**: dbt-duckdb aplica `settings` con un `SET` en **cada conexión
+  nueva**, y DuckDB responde `Cannot switch temporary directory after the
+  current one has been used` en cuanto el directorio ya está en uso. Con 8
+  threads los modelos que arrancan tarde fallan en el `BEGIN`, sin llegar a su
+  SQL: es una carrera, no un fallo de esos modelos. Serializar a un thread
+  esconde la carrera y multiplica el reloj de un `run` que ya es largo.
+- **Coste**: el temporal deja de ser una ruta elegida y pasa a depender de
+  dónde viva el `.duckdb`. Si algún día la base se mueve a un disco pequeño,
+  el spill (54,70 GiB medidos en el intento de la sesión 3) se va con ella sin
+  que nada lo avise.
+
+## D34 — `memory_limit` de DuckDB a 24 GB y el temporal se queda en el disco del lago
+
+- **Qué**: se sube `memory_limit` de 12 GB a 24 GB en `profiles.yml` y se
+  mantiene el temporal en `D:/gharchive-data/gold/gh_archive.duckdb.tmp`.
+- **Alternativas**: mover el temporal a otro disco (rechazada por Marcos); o
+  dejar los 12 GB y serializar con `--threads 1` sin tocar la memoria.
+- **Por qué**: con 12 GB y 8 threads, los cinco marts agregando 1.300 millones
+  de filas a la vez generaron **594 GiB** de temporal creciendo a 1,71 GiB/min,
+  y dejaron el disco del lago en 93 GiB libres: una hora escasa de margen. Más
+  memoria es menos derrame, y como el lago y la base viven en `D:`, el derrame
+  amenazaba a los datos, no solo al `run`. Los 12 GB protegían de una
+  concurrencia con Spark que aquí no se da.
+- **Coste**: si alguien lanza Spark y `dbt` a la vez, ahora se pelean por la
+  RAM y lo probable es que muera Spark. El temporal sigue sin vigilancia en el
+  mismo volumen que los datos: nada avisa antes de llenarlo.
+
+## D35 — `silver_todo.py` verifica y anota por dia, no por lote
+
+- **Qué**: la verificación tras escribir un lote pasa a contar filas partición
+  a partición (`contar_por_dia`) y el registro recibe **una línea por día**,
+  con `segundos_lote` y `dias_del_lote` en vez de un `segundos` que no era
+  atribuible a ningún día.
+- **Alternativas**: marcar el script como no reutilizable en Fase 5 y escribir
+  otro para el incremental; o anotar una sola línea por lote con la fecha en
+  formato rango.
+- **Por qué**: con `--dias-por-lote` el código leía
+  `event_date=2025-08-15..2025-08-21`, una carpeta que no existe porque las
+  particiones son diarias. Cada lote habría escrito bien los datos y muerto en
+  el `except` como FALLO sin anotar nada. Y aunque no hubiera fallado, anotar
+  la fecha como rango rompe la reanudación, que compara contra días sueltos:
+  el script daría por pendiente todo lo ya hecho en cada reejecución. La
+  segunda alternativa deja ese fallo en pie.
+- **Coste**: el camino del lote sigue **sin ejecutarse de verdad**. La prueba
+  hecha solo cubre la reanudación (0 pendientes, sin arrancar Spark). Se
+  validará con el primer día real de la Fase 5.

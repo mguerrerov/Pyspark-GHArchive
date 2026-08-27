@@ -589,3 +589,352 @@ Impacto de deduplicar globalmente por lote:
 
 Silver coincidía **exactamente** con los ids únicos del lote: el job hacía lo
 que se le pidió, y lo que se le pedía estaba mal.
+
+## Silver completo — 2026-08-17
+
+Medido con DuckDB sobre `silver/**/*.parquet` (`group by event_date`), no
+estimado ni tomado del registro de ejecución.
+
+| | Valor |
+|---|---:|
+| Días con datos | 361 (2025-08-13 → 2026-08-15) |
+| Días del rango sin bronze, saltados | 7 |
+| Particiones vacías o sin Parquet | 0 |
+| Días descuadrados entre `eventos` y `pr_eventos` | 0 |
+| Filas en `silver/eventos` | 1.315.800.688 |
+| Filas en `silver/pr_eventos` | 99.400.474 |
+
+Tamaño en disco de las tres capas, misma fecha:
+
+| Capa | GiB | Sobre bronze |
+|---|---:|---:|
+| `bronze/` | 150,53 | 1,000× |
+| `silver/eventos` | 36,05 | 0,239× |
+| `silver/pr_eventos` | 3,31 | 0,022× |
+
+El recuento de silver supera en 4.124.292 filas los 1.311.676.396 eventos que
+la sesión 2 anotó para bronze, pero **las dos cifras no son comparables**: la de
+bronze cubre 359 días y esta 361. No se ha medido el recuento de bronze sobre
+los mismos 361 días, así que la conciliación bronze↔silver de D26 sigue siendo
+la única prueba de que no falta ni sobra nada, y hay que ejecutarla.
+
+## Derrame a disco del `dbt run` completo — 2026-08-25
+
+Run lanzado a las 11:12 con `threads: 8` y `memory_limit: "12GB"`, con los cinco
+marts corriendo a la vez sobre `stg_eventos` (vista sobre los 1.315.800.688
+eventos de silver). Cortado a mano a las ~18:05, sin haber terminado ningun
+mart, tras 6 h 53 min.
+
+| | Valor |
+|---|---:|
+| Temporal acumulado al cortar | 594 GiB |
+| Ritmo de crecimiento medido | 1,71 GiB/min |
+| Libre en `D:` al cortar | 93 GiB |
+| Margen restante hasta llenar el disco | ~54 min |
+
+El ritmo se midio en una ventana de 60 s: el temporal crecio 1.712.128 KiB y el
+espacio libre de `D:` bajo exactamente esos mismos 1.712.128 KiB, lo que
+descarta que `du` estuviera contando ficheros dispersos.
+
+Dos observaciones del mismo run:
+
+- `dim_fecha` tardo **10,72 s**. En el intento del 2026-08-24, con el temporal
+  en disputa entre conexiones, el mismo modelo tardo **2.925 s**: 273x mas.
+- Al matar el proceso, DuckDB **no** limpio su temporal. Los 594 GiB siguieron
+  ocupados hasta borrarlos a mano.
+
+Pendiente de medir: el pico de temporal de un solo mart con `--threads 1` y
+`memory_limit: "24GB"` (D34), y cual de los cinco aporta la mayor parte.
+
+## `dbt run` completo sobre el ano entero — 2026-08-25/26
+
+Run con `--threads 1`, `memory_limit: "24GB"` (D34) y `--exclude dim_fecha`.
+Arrancado a las 19:05 del 25, terminado a las 09:14 del 26.
+**`PASS=7 WARN=0 ERROR=0`, 50.940,96 s (14 h 09 min).**
+
+Duracion y pico de temporal por modelo. El pico se midio muestreando el
+directorio de spill cada 2 min; el temporal se libera entero al terminar cada
+modelo, cosa que con 8 threads no pasaba.
+
+| Modelo | Fuente | Duracion | Pico temporal |
+|---|---|---:|---:|
+| `dim_actor` | `stg_eventos` (1.315 M) | 2 h 00 min | 106,8 GiB |
+| `fct_actividad_contribuyente` | `stg_eventos` (1.315 M) | 7 h 11 min | 301,8 GiB |
+| `dim_repo` | `stg_eventos` (1.315 M) | 4 h 20 min | 179,5 GiB |
+| `fct_pr_ciclo` | `stg_pr_eventos` (99,4 M) | 29 min 34 s | 22,3 GiB |
+| `fct_pr_evento` | `stg_pr_eventos` (99,4 M) | 8 min 07 s | 0 GiB |
+| `dim_fecha` | (excluido; medido antes) | 10,72 s | — |
+
+Lo que manda es **la fuente, no el tipo de modelo**: los tres que escanean los
+1.315 millones de eventos van de 2 a 7 horas, y los dos que solo tocan los 99,4
+millones de `pr_eventos` bajan a menos de media hora. `dim_repo` es una
+dimension y cuesta 4 h 20 min porque saca los repos distintos del escaneo
+completo.
+
+Comparado con el intento de 8 threads y 12 GB: pico de 301,8 GiB en el peor
+modelo frente a 594 GiB acumulados y creciendo, y el disco nunca bajo de
+384,9 GiB libres.
+
+### Recuentos de gold tras el run
+
+| Tabla | Filas |
+|---|---:|
+| `dim_fecha` | 368 |
+| `dim_actor` | 29.523.325 |
+| `dim_repo` | 90.149.859 |
+| `fct_pr_evento` | 99.400.474 |
+| `fct_pr_ciclo` | 52.370.476 |
+| `fct_actividad_contribuyente` | 171.440.783 |
+
+`fct_pr_evento` coincide **exactamente** con las 99.400.474 filas de
+`silver/pr_eventos`. Rango de fechas `2025-08-13 → 2026-08-15` en `dim_fecha` y
+en `fct_pr_evento`.
+
+## Reconciliacion bronze <-> silver (D26, por fin ejecutada) — 2026-08-26
+
+Contando filas por particion en las dos capas con `reconciliar.py` (solo
+lectura). Detalle por dia en `docs/reconciliacion.json`.
+
+| | Valor |
+|---|---:|
+| Filas en `bronze` | 1.319.395.759 |
+| Filas en `silver/eventos` | 1.315.800.688 |
+| **Filas que faltan en silver** | **3.595.071 (0,27 %)** |
+| **Dias descuadrados** | **286 de 361** |
+
+Reparto por mes, que muestra que el fallo es **episodico y no sistematico**:
+
+| Mes | Dias desc. | Faltan | % del mes | Peor dia |
+|---|---:|---:|---:|---|
+| 2025-08 | 1 | 9 | 0,00 % | 2025-08-13 (9) |
+| 2025-09 | 7 | 18 | 0,00 % | 2025-09-04 (5) |
+| 2025-10 | 18 | 3.533 | 0,01 % | 2025-10-22 (1.498) |
+| 2025-11 | 30 | 1.579.739 | 1,49 % | 2025-11-18 (99.409) |
+| 2025-12 | 24 | 786 | 0,00 % | 2025-12-05 (218) |
+| 2026-01 | 30 | 654.584 | 0,62 % | 2026-01-24 (37.875) |
+| 2026-02 | 28 | 774.412 | 0,79 % | 2026-02-03 (72.479) |
+| 2026-03 | 19 | 22.857 | 0,03 % | 2026-03-02 (14.570) |
+| 2026-04 | 30 | 451.767 | 0,41 % | 2026-04-12 (32.189) |
+| 2026-05 | 31 | 53.966 | 0,05 % | 2026-05-03 (16.162) |
+| 2026-06 | 23 | 40.116 | 0,05 % | 2026-06-07 (22.126) |
+| 2026-07 | 30 | 6.713 | 0,01 % | 2026-07-04 (1.917) |
+| 2026-08 | 15 | 6.571 | 0,01 % | 2026-08-07 (5.609) |
+
+Verificado en un dia concreto que la perdida no viene de la transformacion:
+el 2026-01-10 bronze tiene 3.524.899 filas y **3.524.899 ids distintos**, o sea
+que el `dropDuplicates(["evento_id","event_date"])` no descarta nada, y aun asi
+silver tiene 3.505.279 (19.620 menos). Un evento concreto (`5726077108`,
+`rajesh7291/crud_2`) esta en bronze y en `silver/pr_eventos`, y **no esta** en
+`silver/eventos`.
+
+### Por que las verificaciones anteriores no lo vieron
+
+La sesion 3 dio silver por completo contando **particiones** (361, ninguna
+vacia) y D32 reconstruyo el registro desde el disco con ese mismo criterio.
+Ninguna de las dos compara **filas** contra bronze, asi que una particion corta
+pasa las dos. Es el motivo por el que D26 estaba pendiente y por el que
+`metrics.md` decia que la comparacion de la sesion 3 "no vale".
+
+### Consecuencia en gold
+
+Los 4 tests de dbt que fallan el 2026-08-26 son sintoma de esto:
+
+| Test | Fallos |
+|---|---:|
+| `not_null_dim_repo_repo` | 1 fila (agrega 12.863 eventos con `repo` nulo, 2025-12-01 -> 2026-08-14) |
+| `relationships_fct_pr_ciclo_repo -> dim_repo` | 638 |
+| `relationships_fct_pr_evento_repo -> dim_repo` | 651 |
+| `relationships_fct_pr_evento_actor -> dim_actor` | 241 |
+
+Las dimensiones salen de `stg_eventos` y los hechos de PR de
+`stg_pr_eventos`. Como la perdida afecta a `eventos` y no a `pr_eventos`, hay
+claves en los hechos que no existen en su dimension. Los huerfanos visibles
+(638) son solo los que cayeron en repos sin ningun otro evento: el conjunto real
+de eventos ausentes es de 3,6 millones.
+
+El `repo` nulo es un asunto **distinto y sin diagnosticar**: 12.863 eventos con
+`repo_name` nulo en bronze desde el 2025-12-01. Pendiente de mirar en los datos
+crudos.
+
+## Cobertura horaria de bronze (Fase 2) — 2026-08-26
+
+Medida con `cobertura_bronze.py` sobre `created_at`. Detalle en
+`docs/cobertura_bronze.json`.
+
+| | Valor |
+|---|---:|
+| Dias en bronze | 361 |
+| Pares (dia, hora) | 8.664 = 361 x 24 |
+| **Dias sin las 24 horas** | **0** |
+| Horas presentes pero anormalmente cortas | 27 |
+
+**Bronze esta completo en cobertura.** Por tanto las 3.595.071 filas que
+faltan en silver no vienen de la ingesta: se pierden en el paso bronze ->
+silver, y se recuperan reprocesando, sin volver a descargar.
+
+Las 27 horas cortas (menos de un tercio de la mediana de filas de su dia) se
+agrupan en tardes concretas y con recuperacion en la hora siguiente, el patron
+de una caida de la fuente:
+
+| Tramo | Horas afectadas |
+|---|---|
+| 2025-09-08 | 17:00 -> 23:00 |
+| 2025-10-08 | 17:00 -> 23:00 |
+| 2025-11-02 | 08:00 |
+| 2026-06-02 a 2026-06-05 | franjas de tarde y madrugada |
+
+Son incidencias de GH Archive, no del pipeline, y **no explican el descuadre**:
+de los 30 dias descuadrados de noviembre solo el 2025-11-02 aparece aqui. Es
+una limitacion de la fuente que la serie temporal del dashboard debe declarar.
+
+## El `repo` nulo: verificado en el JSON crudo — 2026-08-26
+
+`dim_repo` tiene una fila con `repo` nulo que agrega **12.863 eventos** de
+9.872 actores distintos, del 2025-12-01 al 2026-08-14. Para saber si era un
+fallo de extraccion se volvio a descargar el fichero horario
+`2025-12-01-18.json.gz` (31.888.060 B) y se abrio.
+
+| | Valor |
+|---|---:|
+| Eventos en ese fichero | 150.483 |
+| Eventos sin `repo.name` | **1** |
+| Coincide con lo que bronze marco nulo | si |
+
+El evento `5019583753` (`ForkEvent`, actor `ChristineG29`) trae literalmente:
+
+    "repo": {},
+
+**El objeto viene vacio en el origen.** `bronze.py:64` extrae `$.repo.name`,
+que es la ruta correcta: el campo no existe, no es que se lea mal. En ese mismo
+evento el `payload.forkee` tiene `"private": true`, lo que sugiere que GitHub
+omite la identidad del repo cuando el fork apunta a un repositorio privado. Eso
+explicaria que **todos** los nulos del 2025-12-01 sean `ForkEvent` (9 de 9).
+
+Comprobado en **un** evento: que los 12.863 sean todos forks a privado es
+coherente pero **no esta medido**. Lo que si esta establecido es que el dato no
+viene en la fuente y no hay nada que corregir en la ingesta.
+
+## Reproceso de silver y reconciliacion corregida — 2026-08-26
+
+`silver_todo.py --desde 2025-08-13 --hasta 2026-08-15 --rehacer
+--dias-por-lote 1`: **361 dias, 0 fallos, 244,4 min (4 h 04 min)**, ~38 s/dia
+en el tramo de formato completo y ~25 s/dia en el reducido.
+
+| | Antes | Despues |
+|---|---:|---:|
+| Filas en `silver/eventos` | 1.315.800.688 | **1.319.383.395** |
+| Descuadre contra filas de bronze | 3.595.071 | 12.364 |
+| Dias descuadrados | 286 | 194 |
+
+### Los 12.364 restantes NO son perdida
+
+Son duplicados legitimos de bronze que silver elimina por diseno (D9). Medido
+dia a dia, la coincidencia es exacta:
+
+| Dia | Filas bronze | Ids distintos | Duplicados | "Faltan" en silver |
+|---|---:|---:|---:|---:|
+| 2025-08-13 | 3.794.323 | 3.794.314 | 9 | 9 |
+| 2025-10-15 | 3.465.925 | 3.465.793 | 132 | 132 |
+| 2025-10-20 | 3.502.555 | 3.502.281 | 274 | 274 |
+
+Que estos numeros salieran **identicos** antes y despues de rehacer el dia
+desde cero fue la pista: un corte no se reproduce al digito, una
+deduplicacion si.
+
+**El criterio de reconciliacion estaba mal, no los datos.** Comparaba filas de
+bronze contra filas de silver; el invariante correcto es **ids distintos de
+bronze** contra filas de silver. `reconciliar.py` queda corregido, porque si no
+la Fase 5 heredaria una comprobacion que da falsos positivos para siempre.
+
+### Que fallaba de verdad, entonces
+
+Las 3.582.707 filas recuperadas si eran perdida real, de escrituras de silver
+que se cortaron (la sesion 3 documenta cinco cortes). No las detecto nadie
+porque las verificaciones existentes contaban particiones, no filas.
+
+### Reconciliacion definitiva (criterio corregido) — 2026-08-26
+
+| | Valor |
+|---|---:|
+| Ids distintos en `bronze` | 1.319.383.395 |
+| Filas en `silver/eventos` | 1.319.383.395 |
+| **Dias descuadrados** | **0 de 361** |
+
+Primera vez en el proyecto que silver queda verificado contra bronze fila a
+fila. Sustituye a todas las cifras de volumen anteriores: el recuento bueno de
+silver es **1.319.383.395**, no los 1.315.800.688 de la sesion 3.
+
+## Run y test definitivos sobre silver completo — 2026-08-27
+
+`dbt run --threads 1`: **PASS=8 ERROR=0, 52.942 s (14 h 42 min)**.
+`dbt test --threads 1`: **PASS=39 ERROR=1, 1.296 s (21 min 36 s)**.
+
+Tiempos por modelo, contra el run del 2026-08-26 sobre el silver incompleto:
+
+| Modelo | Run 1 | Run 2 |
+|---|---:|---:|
+| `dim_actor` | 2 h 00 min | 2 h 24 min |
+| `fct_actividad_contribuyente` | 7 h 11 min | 7 h 17 min |
+| `dim_repo` | 4 h 20 min | 4 h 19 min |
+| `fct_pr_ciclo` | 29 min 34 s | 31 min 27 s |
+| `fct_pr_evento` | 8 min 07 s | 8 min 54 s |
+| `dim_fecha` | 10,72 s | 72,96 s |
+
+Cuatro de seis repiten tiempo casi exacto. `dim_actor` se desvia 24 min sin que
+el 0,27 % de filas nuevas lo explique: quedan **dos medidas distintas**, no se
+promedian.
+
+Recuentos, contra el run anterior:
+
+| Tabla | Run 1 | Run 2 |
+|---|---:|---:|
+| `dim_actor` | 29.523.325 | 29.545.318 |
+| `dim_repo` | 90.149.859 | 90.233.267 |
+| `fct_actividad_contribuyente` | 171.440.783 | 171.739.758 |
+| `fct_pr_ciclo` | 52.370.476 | 52.370.476 |
+| `fct_pr_evento` | 99.400.474 | 99.400.474 |
+
+Las dos de PR no cambian, coherente con que la perdida estaba en `eventos` y no
+en `pr_eventos`.
+
+### Los tests: prediccion cumplida
+
+Se predijo antes de ejecutar que desapareceran los tres fallos de relaciones y
+seguira el del `repo` nulo. Ocurrio exactamente eso: **de 4 errores a 1**. Los
+huerfanos eran consecuencia de los eventos que faltaban en silver, no un fallo
+del modelo dimensional. El error que queda es `not_null_dim_repo_repo`, 1 fila,
+los forks a repositorios privados.
+
+## Fallo de precision en la pregunta 2 — 2026-08-27
+
+`fct_pr_ciclo.sql:84,89` calcula las latencias con
+`date_diff('minute', ...) / 60.0`. En DuckDB `date_diff` cuenta cruces de
+frontera, asi que **todo lo que ocurre en menos de un minuto se aplasta a 0**.
+
+Efecto medido sobre `cohorte_madura`:
+
+| | Mediana review | Mediana merge | PRs con merge = 0 exacto |
+|---|---:|---:|---:|
+| bot/agente | 0,07 h | **0,00 h** | 1.204.562 (esquema completo) |
+| humano | 0,27 h | **0,03 h** | 1.216.297 (esquema reducido) |
+
+Verificado en un PR concreto: `EnkiBoss/Sesame-TK-F` #2741096008 abre a las
+00:22:07 y mergea a las 00:22:41 del 2025-08-13. Son **34 segundos** reales y
+la columna guarda 0.
+
+Recalculado con precision de segundos (septiembre 2025):
+
+| | PRs | Mediana merge | p75 | Bajo 1 min |
+|---|---:|---:|---:|---:|
+| bot/agente | 514.419 | **5 s** | 0,66 h | 63 % |
+| humano | 956.446 | **101 s** | 0,81 h | 45 % |
+
+**El truncado no era solo impreciso: borraba la respuesta a la pregunta 2.** La
+diferencia entre bot y humano es de un factor 20 y la columna actual la reduce
+a cero en ambos.
+
+Aviso sobre esas cifras: estan **sesgadas a la baja** porque la consulta filtra
+eventos de septiembre, y los PRs abiertos en septiembre y mergeados despues
+quedan fuera. Es la misma censura que diagnostico la sesion 2. Las cifras
+publicables salen de `cohorte_madura` sobre el año entero, y requieren
+arreglar el modelo antes.
