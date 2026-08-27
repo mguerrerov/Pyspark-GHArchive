@@ -560,3 +560,46 @@ Sustituye a D11.
 - **Coste**: el camino del lote sigue **sin ejecutarse de verdad**. La prueba
   hecha solo cubre la reanudación (0 pendientes, sin arrancar Spark). Se
   validará con el primer día real de la Fase 5.
+
+## D36 — Ventana recortada al 2026-03-14 para las tablas de PR
+
+- **Qué**: `fct_pr_evento` y `fct_pr_ciclo` cortan en `fecha_pr_hasta`
+  (2026-03-14). `fct_actividad_contribuyente` y las dimensiones mantienen el
+  año completo. `cohorte_madura` pasa a medirse contra la fecha nueva.
+- **Alternativas**: cortar todo el proyecto en marzo; publicar el año entero
+  declarando la degradación con una banda en las gráficas; o no cortar.
+- **Por qué**: desde el 2026-03-15 el feed de GH Archive deja de traer eventos
+  que no sean `PushEvent`. La cuota de PR pasa del 12-14 % estable a no volver
+  al 10 %, y en agosto es del 0,13 %. Está en bronze, o sea en el JSON crudo:
+  es la fuente, no el pipeline. Publicar esa caída del 98 % en las preguntas 1
+  y 2 mostraría un desplome de actividad que no ocurrió. Cortar todo el
+  proyecto tira cinco meses de datos de contribuyentes que sí son buenos,
+  porque los pushes siguen llegando. Declararlo con una banda es más fiel al
+  dato, pero el criterio de exito del proyecto pide que un desconocido entienda
+  el dashboard en diez segundos, y una gráfica que se desploma no se explica en
+  diez segundos.
+- **Coste**: las preguntas 1 y 2 pierden cinco meses y la ventana deja de
+  llegar hasta hoy, lo que hay que explicar en el dashboard y en el README. El
+  proyecto queda con dos ventanas distintas segun la pregunta, que es una
+  asimetria que hay que documentar o confunde. Y la Fase 5, el cron diario,
+  deja de tener sentido para las preguntas 1 y 2: cada dia nuevo cae en el
+  tramo degradado.
+
+## D37 — La pregunta 3 también se corta, y se corta en el exportador
+
+- **Qué**: las consultas de P3 y la de `dim_fecha` en `exportar_gold.py` cortan
+  en la misma ventana que D36. `fct_actividad_contribuyente` conserva el año
+  entero en gold.
+- **Alternativas**: dejar P3 con el año completo (lo que D36 hacía); o filtrar
+  dentro del modelo y reconstruirlo.
+- **Por qué**: D36 supuso que P3 aguantaba porque los pushes siguen llegando.
+  Medido después, no aguanta: de marzo a julio se pierde el **25 % de actores
+  distintos** mientras los eventos suben, que es la firma de que desaparece
+  quien no hace push. Una curva de retención por cohortes mide justamente si
+  alguien vuelve, así que ese 25 % se leería como fuga de contribuyentes. Se
+  corta en el exportador y no en el modelo porque reconstruir ese mart son
+  **7 h 17 min** para tirar filas que quizá interesen más adelante.
+- **Coste**: gold y el dashboard dejan de tener la misma ventana, y eso solo se
+  ve leyendo el exportador. Si alguien consulta el `.duckdb` directamente verá
+  meses que el dashboard no muestra. Queda anotado aquí y en el comentario del
+  fichero, pero es una trampa para el yo futuro.

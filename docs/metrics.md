@@ -938,3 +938,130 @@ eventos de septiembre, y los PRs abiertos en septiembre y mergeados despues
 quedan fuera. Es la misma censura que diagnostico la sesion 2. Las cifras
 publicables salen de `cohorte_madura` sobre el año entero, y requieren
 arreglar el modelo antes.
+
+## Pregunta 2 resuelta: latencias definitivas — 2026-08-27
+
+`dbt test`: **PASS=40 ERROR=0** por primera vez en el proyecto, sobre el año
+completo y con silver verificado. Reconstruccion previa de `dim_repo` y
+`fct_pr_ciclo`: 16.708 s (4 h 38 min).
+
+Sobre `cohorte_madura`, con la precision ya en segundos:
+
+| | PRs | Con review | Mediana 1er review | Con merge | Mediana merge | p90 merge |
+|---|---:|---:|---:|---:|---:|---:|
+| bot/agente | 10.233.154 | 425.284 | 3,7 min | 1.928.164 | **0,1 min** (6 s) | 23,62 h |
+| humano | 18.307.480 | 2.335.689 | 15,8 min | 4.079.564 | **1,9 min** (114 s) | 23,03 h |
+
+Coinciden con la medida independiente de septiembre (5 s y 101 s), calculada
+con otra consulta y otro recorte.
+
+**Los bots mergean unas 19 veces mas rapido y reciben el primer review 4 veces
+antes.**
+
+Dos limitaciones que el dashboard debe declarar:
+
+1. La mediana de primer review sale de **el 12,8 % de los PRs humanos y el
+   4,2 % de los de bot**: el resto no tiene review observado. Presentarla como
+   "el PR medio recibe review en 16 min" seria enganoso.
+2. El **p90 es casi identico** (23,62 h contra 23,03 h) aunque las medianas
+   difieran por 19. La diferencia esta en la cabeza de la distribucion, no en
+   la cola: hay un bloque grande de merges automaticos instantaneos, no una
+   ventaja uniforme de los bots.
+
+## Degradacion de la fuente: el feed pasa a ser casi solo PushEvent — 2026-08-27
+
+Detectado al revisar la serie mensual de `fct_pr_evento`: los eventos de PR
+caen de 12.871.161 en enero a 274.713 en agosto, un **98 %**, mientras los
+eventos totales por dia se mantienen en ~3,5 millones.
+
+Verificado en bronze, o sea **antes** de cualquier transformacion nuestra:
+
+| Dia | Total | PullRequestEvent | Review |
+|---|---:|---:|---:|
+| 2026-01-15 | 3.419.124 | 307.745 | 68.018 |
+| 2026-05-15 | 3.234.432 | 94.307 | 19.461 |
+| 2026-08-10 | 3.363.821 | **5.217** | 1.012 |
+
+No cae solo PR: cae todo menos `PushEvent`.
+
+| Tipo | 2026-01-15 | 2026-08-10 |
+|---|---:|---:|
+| PushEvent | 2.262.494 (66 %) | **3.235.521 (96 %)** |
+| PullRequestEvent | 307.745 | 5.217 |
+| IssueCommentEvent | 118.803 | 2.187 |
+| IssuesEvent | 87.473 | 1.541 |
+
+Serie mensual completa en `docs/degradacion_fuente.json`:
+
+| Mes | % PushEvent | % PR |
+|---|---:|---:|
+| 2025-09 a 2026-03 | 59-71 % | 12-14 % (estable) |
+| 2026-04 | 72,5 % | 6,49 % |
+| 2026-05 | 74,3 % | 5,70 % |
+| 2026-06 | 84,1 % | 1,55 % |
+| 2026-07 | 84,6 % | 1,32 % |
+| 2026-08 | 95,6 % | 0,13 % |
+
+**Fecha de corte: 2026-03-15**, primer dia a partir del cual la cuota de PR no
+vuelve a alcanzar el 10 %. El deterioro es gradual desde mediados de marzo, no
+un escalon.
+
+Nota sobre el criterio: el primer umbral que se probo (cuota de push >= 80 %
+sostenida) daba el 2026-05-25, **dos meses tarde**. Como las preguntas 1 y 2
+dependen de los PRs, el detector correcto es la cuota de PR, no la de push.
+
+Es un problema **de la fuente, no del pipeline**: se ve en bronze, que es el
+JSON crudo. Fuentes externas describen el mismo fenomeno en el feed de GH
+Archive, aunque lo situan "desde mediados de 2025"; la medicion propia sobre
+los 361 dias descargados dice que la cuota de PR aguanta estable hasta marzo de
+2026, y manda la medicion.
+
+### Consecuencia
+
+La ventana publicable para las preguntas 1 y 2 es **2025-08-13 -> 2026-03-14**,
+214 dias de los 361. Decision de donde cortar el historico: pendiente.
+
+## Agregados exportados y latencias por clase de autor — 2026-08-27
+
+`exportar_gold.py` sobre la ventana recortada (D36, D37): **15,11 MB en 8
+ficheros**, el mayor `p3_repos_saldo` con 1.063.030 filas y 15,09 MB. Tope de
+seguridad del script: 40 MB por fichero.
+
+`dim_fecha` exporta **214 filas**, los dias de 2025-08-13 a 2026-03-14.
+
+### Pregunta 1: cuota de actividad no humana
+
+| Mes | Eventos de PR | % no humano | % agente_ia |
+|---|---:|---:|---:|
+| 2025-08 | 7.166.623 | 32,9 % | 5,81 % |
+| 2025-10 | 9.159.667 | 41,1 % | 5,19 % |
+| 2025-12 | 12.585.823 | 45,6 % | 4,63 % |
+| 2026-02 | 11.753.686 | 44,1 % | 6,80 % |
+| 2026-03 | 4.933.982 | 44,2 % | 7,57 % |
+
+(Marzo esta incompleto: la ventana corta el dia 14.)
+
+### Pregunta 2: la media de los bots escondia lo importante
+
+Mediana hasta merge, sobre `cohorte_madura`, **por clase**:
+
+| Clase | PRs | Mediana hasta merge |
+|---|---:|---:|
+| `bot_ci` | 2.886.772 | **0,1 min** |
+| `humano` | 12.912.276 | 1,9 min |
+| `bot_otro` | 692.266 | 9,5 min |
+| `agente_ia` | 19.986 | 10,6 min |
+| `bot_dependencias` | 4.205.740 | **191,9 min** (3,2 h) |
+
+Agrupar todo lo no humano en "bot/agente" daba 0,1 min y la conclusion "los
+bots mergean 19 veces mas rapido que los humanos". **Es falso como
+generalizacion**: los bots de dependencias son los mas lentos de todos, cien
+veces mas lentos que un humano, y solo los de CI son instantaneos. El promedio
+salia rapido porque `bot_ci` pesa mucho.
+
+### Unidades
+
+`p2_latencias_mensuales` pasa a exportar las medianas en **minutos**. En horas
+con dos decimales, `bot_ci` mostraba `0.00`, que en un grafico se lee como
+"sin dato" en vez de como "instantaneo". El p90 se queda en horas porque ahi la
+escala es de dias.
