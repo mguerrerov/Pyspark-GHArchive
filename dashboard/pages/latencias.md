@@ -20,8 +20,8 @@ filtro, la media sale sesgada a la baja.
 select
     autor_clase,
     sum(prs)                    as prs,
-    round(avg(mediana_h_review), 2) as h_review,
-    round(avg(mediana_h_merge), 2)  as h_merge
+    round(avg(mediana_min_review), 1) as min_review,
+    round(avg(mediana_min_merge), 1)  as min_merge
 from gharchive.p2_latencias_mensuales
 where cohorte_madura
 group by 1 order by 2 desc
@@ -30,14 +30,14 @@ group by 1 order by 2 desc
 <DataTable data={mediana_global}>
     <Column id=autor_clase title="Clase de autor"/>
     <Column id=prs title="PRs" fmt=num0/>
-    <Column id=h_review title="Mediana h. hasta 1er review" fmt=num2/>
-    <Column id=h_merge title="Mediana h. hasta merge" fmt=num2/>
+    <Column id=min_review title="Mediana min. hasta 1er review" fmt=num1/>
+    <Column id=min_merge title="Mediana min. hasta merge" fmt=num1/>
 </DataTable>
 
 ## Evolución de la latencia hasta el primer review
 
 ```sql evolucion
-select mes_apertura, autor_clase, mediana_h_review, mediana_h_merge
+select mes_apertura, autor_clase, mediana_min_review, mediana_min_merge
 from gharchive.p2_latencias_mensuales
 where cohorte_madura
 order by mes_apertura
@@ -46,9 +46,9 @@ order by mes_apertura
 <LineChart
     data={evolucion}
     x=mes_apertura
-    y=mediana_h_review
+    y=mediana_min_review
     series=autor_clase
-    yAxisTitle="horas (mediana)"
+    yAxisTitle="minutos (mediana)"
 />
 
 ## Evolución de la latencia hasta el merge
@@ -56,9 +56,9 @@ order by mes_apertura
 <LineChart
     data={evolucion}
     x=mes_apertura
-    y=mediana_h_merge
+    y=mediana_min_merge
     series=autor_clase
-    yAxisTitle="horas (mediana)"
+    yAxisTitle="minutos (mediana)"
 />
 
 ## Cuántos PRs quedan fuera por cohorte inmadura

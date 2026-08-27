@@ -19,7 +19,11 @@
 {{ config(materialized='table') }}
 
 with eventos as (
+    -- Ventana recortada: ver D36. Despues del 2026-03-14 la fuente deja de
+    -- publicar eventos de PR, y un PR abierto cerca de ese limite tendria su
+    -- ciclo cortado por la degradacion y no por el comportamiento real.
     select * from {{ ref('stg_pr_eventos') }}
+    where fecha <= date '{{ var("fecha_pr_hasta") }}'
 ),
 
 agregado as (
@@ -76,7 +80,7 @@ select
     -- de la ventana: por debajo de eso, los PRs lentos aun no han podido
     -- mergearse y la media se sesga a la baja.
     abierto_en is not null
-        and abierto_en <= date '{{ var("fecha_hasta") }}' - interval 30 day
+        and abierto_en <= date '{{ var("fecha_pr_hasta") }}' - interval 30 day
                                           as cohorte_madura,
 
     -- En segundos, no en minutos: date_diff cuenta cruces de frontera, asi

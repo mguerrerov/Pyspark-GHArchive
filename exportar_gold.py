@@ -23,6 +23,18 @@ DESTINO = Path(__file__).resolve().parent / "dashboard" / "sources" / "gharchive
 # elegido y no debe acabar en el repo por accidente.
 MAX_MB_POR_FICHERO = 40
 
+# Fin de la ventana publicable. A partir del 2026-03-15 el feed de GH Archive
+# deja de traer eventos que no sean PushEvent (D36). Para las preguntas 1 y 2
+# el corte ya esta hecho en los propios modelos; la pregunta 3 se corta aqui,
+# porque su mart conserva el ano entero a proposito y no compensa reconstruirlo
+# 7 h para tirar filas. Medido: de marzo a julio se pierde el 25% de actores
+# distintos mientras los eventos suben, la firma de que desaparece quien no
+# hace push. Una cohorte de retencion sobre eso mostraria una fuga que no
+# ocurrio. El corte va escrito en cada consulta de P3 como literal
+# (2026-03-01, ultimo mes completo bueno), no como constante interpolada: las
+# consultas son cadenas planas y un .format() rompería cualquiera que llevase
+# llaves. Ver D37.
+
 
 CONSULTAS = {
     # ---------------------------------------------------------------- P1
@@ -74,9 +86,14 @@ CONSULTAS = {
             count(*)                                as prs,
             count(horas_hasta_primer_review)        as con_review,
             count(horas_hasta_merge)                as con_merge,
-            round(median(horas_hasta_primer_review), 2) as mediana_h_review,
-            round(median(horas_hasta_merge), 2)         as mediana_h_merge,
-            round(quantile_cont(horas_hasta_merge, 0.9), 2) as p90_h_merge
+            -- En minutos, no en horas: las medianas de merge estan por
+            -- debajo de los dos minutos y en horas con dos decimales salen
+            -- como 0.00, que en el grafico se lee como "sin dato" en vez de
+            -- como "instantaneo". El p90 si va en horas porque ahi la escala
+            -- es de dias.
+            round(median(horas_hasta_primer_review) * 60, 1) as mediana_min_review,
+            round(median(horas_hasta_merge) * 60, 1)         as mediana_min_merge,
+            round(quantile_cont(horas_hasta_merge, 0.9), 2)  as p90_h_merge
         from fct_pr_ciclo
         where apertura_observada
           and autor_clase is not null
@@ -103,6 +120,7 @@ CONSULTAS = {
             count(distinct repo)                     as repos
         from fct_actividad_contribuyente
         where not es_bot
+          and mes <= date '2026-03-01'
         group by 1, 2
         order by 1, 2
     """,
@@ -113,6 +131,7 @@ CONSULTAS = {
                    count(distinct actor)                              as activos
             from fct_actividad_contribuyente
             where not es_bot
+              and mes <= date '2026-03-01'
             group by 1, 2
         )
         select repo, mes, nuevos, activos
@@ -125,6 +144,7 @@ CONSULTAS = {
     "dim_fecha": """
         select fecha, anio, mes, formato_fuente, es_hueco_conocido, tiene_datos
         from dim_fecha
+        where fecha <= date '2026-03-14'
         order by fecha
     """,
 }

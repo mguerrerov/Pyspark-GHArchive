@@ -29,3 +29,7 @@ select
     e.pr_lineas_del,
     e.review_estado
 from {{ ref('stg_pr_eventos') }} e
+-- La serie termina el 2026-03-14: despues, la fuente deja de publicar
+-- eventos de PR y la caida del 98% que se veria en el grafico seria un
+-- artefacto, no actividad real. Ver D36.
+where e.fecha <= date '{{ var("fecha_pr_hasta") }}'

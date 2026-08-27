@@ -15,6 +15,15 @@ vars:
   fecha_desde: "2025-08-13"
   fecha_hasta: "2026-08-15"
 
+  # Fin de la ventana para las tablas de PR (preguntas 1 y 2). A partir del
+  # 2026-03-15 el feed de GH Archive deja de traer eventos que no sean
+  # PushEvent: la cuota de PR pasa del 12-14% estable a no volver al 10%, y en
+  # agosto es del 0,13%. Es un defecto de la fuente, visible ya en bronze, no
+  # del pipeline. Las series de PR se cortan aqui; la pregunta 3 mantiene
+  # `fecha_hasta` porque se apoya en actividad de contribuyentes, que sigue
+  # llegando. Ver D36 y metrics.md.
+  fecha_pr_hasta: "2026-03-14"
+
 models:
   gharchive:
     staging:
