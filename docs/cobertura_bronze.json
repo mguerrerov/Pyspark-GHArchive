@@ -1,0 +1,167 @@
+{
+  "dias_incompletos": [],
+  "horas_cortas": [
+    {
+      "fecha": "2025-09-08",
+      "hora": 17,
+      "filas": 37196,
+      "mediana_dia": 154890
+    },
+    {
+      "fecha": "2025-09-08",
+      "hora": 18,
+      "filas": 988,
+      "mediana_dia": 154890
+    },
+    {
+      "fecha": "2025-09-08",
+      "hora": 19,
+      "filas": 1089,
+      "mediana_dia": 154890
+    },
+    {
+      "fecha": "2025-09-08",
+      "hora": 20,
+      "filas": 1551,
+      "mediana_dia": 154890
+    },
+    {
+      "fecha": "2025-09-08",
+      "hora": 21,
+      "filas": 526,
+      "mediana_dia": 154890
+    },
+    {
+      "fecha": "2025-09-08",
+      "hora": 22,
+      "filas": 680,
+      "mediana_dia": 154890
+    },
+    {
+      "fecha": "2025-09-08",
+      "hora": 23,
+      "filas": 9979,
+      "mediana_dia": 154890
+    },
+    {
+      "fecha": "2025-10-08",
+      "hora": 17,
+      "filas": 986,
+      "mediana_dia": 162054
+    },
+    {
+      "fecha": "2025-10-08",
+      "hora": 18,
+      "filas": 592,
+      "mediana_dia": 162054
+    },
+    {
+      "fecha": "2025-10-08",
+      "hora": 19,
+      "filas": 854,
+      "mediana_dia": 162054
+    },
+    {
+      "fecha": "2025-10-08",
+      "hora": 20,
+      "filas": 682,
+      "mediana_dia": 162054
+    },
+    {
+      "fecha": "2025-10-08",
+      "hora": 21,
+      "filas": 585,
+      "mediana_dia": 162054
+    },
+    {
+      "fecha": "2025-10-08",
+      "hora": 22,
+      "filas": 592,
+      "mediana_dia": 162054
+    },
+    {
+      "fecha": "2025-10-08",
+      "hora": 23,
+      "filas": 788,
+      "mediana_dia": 162054
+    },
+    {
+      "fecha": "2025-11-02",
+      "hora": 8,
+      "filas": 12954,
+      "mediana_dia": 144114
+    },
+    {
+      "fecha": "2026-06-02",
+      "hora": 16,
+      "filas": 581,
+      "mediana_dia": 154018
+    },
+    {
+      "fecha": "2026-06-02",
+      "hora": 17,
+      "filas": 34174,
+      "mediana_dia": 154018
+    },
+    {
+      "fecha": "2026-06-03",
+      "hora": 16,
+      "filas": 578,
+      "mediana_dia": 152808
+    },
+    {
+      "fecha": "2026-06-03",
+      "hora": 17,
+      "filas": 26653,
+      "mediana_dia": 152808
+    },
+    {
+      "fecha": "2026-06-04",
+      "hora": 0,
+      "filas": 963,
+      "mediana_dia": 153788
+    },
+    {
+      "fecha": "2026-06-04",
+      "hora": 16,
+      "filas": 587,
+      "mediana_dia": 153788
+    },
+    {
+      "fecha": "2026-06-04",
+      "hora": 17,
+      "filas": 37107,
+      "mediana_dia": 153788
+    },
+    {
+      "fecha": "2026-06-05",
+      "hora": 0,
+      "filas": 1001,
+      "mediana_dia": 158220
+    },
+    {
+      "fecha": "2026-06-05",
+      "hora": 8,
+      "filas": 570,
+      "mediana_dia": 158220
+    },
+    {
+      "fecha": "2026-06-05",
+      "hora": 9,
+      "filas": 50525,
+      "mediana_dia": 158220
+    },
+    {
+      "fecha": "2026-07-16",
+      "hora": 22,
+      "filas": 47473,
+      "mediana_dia": 164284
+    },
+    {
+      "fecha": "2026-07-16",
+      "hora": 23,
+      "filas": 48472,
+      "mediana_dia": 164284
+    }
+  ]
+}
