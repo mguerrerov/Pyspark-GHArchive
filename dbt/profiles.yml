@@ -13,9 +13,18 @@ gharchive:
         - httpfs
         - parquet
       settings:
-        # DuckDB por defecto usa hasta el 80% de la RAM; con 32 GB y Spark
-        # pudiendo correr a la vez, se limita para no competir.
-        memory_limit: "12GB"
-        # Sin esto, una agregacion sobre 1.300 millones de filas muere en vez
-        # de tirar a disco.
-        temp_directory: "{{ env_var('GHA_DATA_DIR', 'D:/gharchive-data') }}/duckdb-tmp"
+        # DuckDB por defecto usa hasta el 80% de la RAM. Con 32 GB, se sube a
+        # 24GB para que las agregaciones sobre 1.300 millones de filas derramen
+        # lo menos posible: con 12GB el `run` genero 594 GiB de temporal y
+        # estuvo a una hora de llenar el disco del lago. El limite anterior
+        # cubria el caso de Spark corriendo a la vez; si eso vuelve a pasar,
+        # hay que bajarlo. Ver D34.
+        memory_limit: "24GB"
+      # temp_directory NO va en `settings`: dbt-duckdb aplica ese bloque con un
+      # SET en cada conexion nueva, y DuckDB rechaza el SET en cuanto el
+      # directorio ya se esta usando ("Cannot switch temporary directory after
+      # the current one has been used"). Con 8 threads, los modelos que abren
+      # conexion despues de que otro haya empezado a spillear fallan en el
+      # BEGIN. Se deja el valor por defecto de DuckDB, que para una base en
+      # fichero es <ruta>.tmp -> D:/gharchive-data/gold/gh_archive.duckdb.tmp,
+      # el mismo disco del lago que se buscaba. Ver D33.
