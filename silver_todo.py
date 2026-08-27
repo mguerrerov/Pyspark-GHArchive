@@ -35,6 +35,22 @@ def dias(desde: date, hasta: date):
         d += timedelta(days=1)
 
 
+def contar_por_dia(spark, directorio, dias):
+    """Cuenta filas por particion diaria releyendo lo escrito.
+
+    Devuelve {dia: filas}, omitiendo los dias que no tienen particion en
+    disco. Lee solo las carpetas del lote y no el directorio entero, que a
+    estas alturas son cientos de dias.
+    """
+    rutas = [str(directorio / f"event_date={d}") for d in dias
+             if (directorio / f"event_date={d}").exists()]
+    if not rutas:
+        return {}
+    filas = (spark.read.option("basePath", str(directorio)).parquet(*rutas)
+             .groupBy("event_date").count().collect())
+    return {str(r["event_date"]): r["count"] for r in filas}
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--desde", required=True)
@@ -101,21 +117,40 @@ def main() -> int:
             (construir_pr_eventos(b).write.mode("overwrite")
                 .partitionBy("event_date").parquet(str(d_pr)))
 
-            # Se cuenta releyendo la particion: confirma que lo escrito es
-            # legible, no solo que el write no lanzo excepcion.
-            n_ev = spark.read.parquet(str(d_ev / f"event_date={fecha}")).count()
-            n_pr = spark.read.parquet(str(d_pr / f"event_date={fecha}")).count()
+            # Se cuenta releyendo las particiones: confirma que lo escrito
+            # es legible, no solo que el write no lanzo excepcion. Se cuenta
+            # por dia, no por lote: las particiones son diarias y
+            # "2025-08-15..2025-08-21" no es ninguna carpeta.
+            por_dia_ev = contar_por_dia(spark, d_ev, lote)
+            por_dia_pr = contar_por_dia(spark, d_pr, lote)
 
-            m = {"fecha": fecha, "eventos": n_ev, "pr_eventos": n_pr,
-                 "segundos": round(time.monotonic() - t0, 1)}
+            sin_particion = [f for f in lote if f not in por_dia_ev]
+            if sin_particion:
+                raise RuntimeError("sin particion en silver/eventos: "
+                                   + ", ".join(sin_particion))
+
+            segundos = round(time.monotonic() - t0, 1)
+            # Una linea por dia, no por lote: el registro se consulta por dia
+            # y asi sigue valiendo aunque el lote cambie de tamano. Los
+            # segundos son los del lote entero y van marcados como tales.
             with registro.open("a", encoding="utf-8") as f:
-                f.write(json.dumps(m) + "\n")
+                for dia in lote:
+                    f.write(json.dumps({
+                        "fecha": dia,
+                        "eventos": por_dia_ev[dia],
+                        "pr_eventos": por_dia_pr.get(dia, 0),
+                        "segundos_lote": segundos,
+                        "dias_del_lote": len(lote),
+                    }) + "\n")
             ok += 1
+
+            n_ev = sum(por_dia_ev.values())
+            n_pr = sum(por_dia_pr.values())
 
             ritmo = (time.monotonic() - inicio) / ok
             faltan = (len(lotes) - i) * ritmo
             print(f"[{i}/{len(lotes)}] {fecha}: "
-                  f"eventos={n_ev:,} pr={n_pr:,} {m['segundos']}s "
+                  f"eventos={n_ev:,} pr={n_pr:,} {segundos}s "
                   f"| faltan ~{faltan/60:.0f} min", flush=True)
 
         except Exception as exc:
