@@ -104,6 +104,11 @@ models:
       antes de promediar. Un PR abierto antes de la ventana no tiene apertura
       observable, y uno abierto al final puede no haberse mergeado todavía;
       incluirlos sesga la media a la baja.
+
+      TRAMO CIEGO: entre el 2025-10-09 y el 2025-12-01 la fuente no publica la
+      señal de merge de ninguna forma (D38). Filtrar además por
+      `merge_observable` antes de calcular cualquier latencia HASTA EL MERGE.
+      Las de primer review no lo necesitan.
     tests:
       - combinacion_unica:
           combination_of_columns: [repo, pr_id]
@@ -120,10 +125,20 @@ models:
         tests: [not_null]
       - name: cohorte_madura
         tests: [not_null]
+      - name: merge_observable
+        description: |
+          Falso si el PR se abrió dentro del tramo sin señal de merge de D38.
+          Sus únicos merges observados son los que ocurrieron tan tarde que el
+          evento cayó ya en diciembre, así que las latencias de merge que lo
+          incluyan salen disparadas.
+        tests: [not_null]
       - name: horas_hasta_primer_review
         description: Nulo si no se observó apertura o no hubo review.
       - name: horas_hasta_merge
-        description: Nulo si no se observó apertura o el PR no se mergeó.
+        description: |
+          Nulo si no se observó apertura o el PR no se mergeó. Dentro del tramo
+          ciego de D38 es nulo casi siempre porque el dato no existe en el
+          origen, no porque el PR siguiera abierto: usar `merge_observable`.
 
   - name: fct_actividad_contribuyente
     description: |

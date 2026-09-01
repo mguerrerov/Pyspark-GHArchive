@@ -603,3 +603,42 @@ Sustituye a D11.
   ve leyendo el exportador. Si alguien consulta el `.duckdb` directamente verá
   meses que el dashboard no muestra. Queda anotado aquí y en el comentario del
   fichero, pero es una trampa para el yo futuro.
+
+## D38 — Hay un tercer formato, y un tramo sin senal de merge
+
+- **Que**: la fuente tiene tres vocabularios para el merge, no dos. Hasta el
+  **2025-10-08** llega como accion `closed` con `pull_request.merged`; desde el
+  **2025-12-02** llega como accion propia `merged`; entre el **2025-10-09 y el
+  2025-12-01** no llega de ninguna forma. Se marca ese tramo con las vars
+  `merge_ciego_desde` / `merge_ciego_hasta` y la columna `merge_observable` de
+  `fct_pr_ciclo`, y las latencias de merge lo excluyen. Las de primer review
+  no lo excluyen.
+- **Alternativas**: no filtrar y ensenar el hueco en el grafico; o recortar la
+  pregunta 2 al 2025-12-02 en adelante, perdiendo los meses del formato rico.
+- **Por que**: sin el filtro, los unicos PRs del tramo con merge observado son
+  los que se mergearon tan tarde que el evento cayo ya en diciembre. Medido:
+  la mediana de merge de noviembre sale en **34.475 min sobre 13.370 PRs**,
+  frente a ~2 min en los meses sanos, y eso arrastraba la tabla resumen del
+  dashboard a ~4.900 min. Recortar la ventana entera costaba agosto, septiembre
+  y octubre, que son justo los meses con el payload completo.
+- **Coste**: un PR abierto antes del 2025-10-09 y mergeado dentro del tramo
+  pierde su merge y cuenta como no mergeado, asi que la cobertura de las
+  cohortes de septiembre y octubre sale hundida. No es corregible con estos
+  datos; queda avisado en la pagina del dashboard. Ademas D12 hablaba de dos
+  esquemas y se queda corta: el detector por presencia de campos acertaba sin
+  que nadie lo hubiera documentado.
+
+## D39 — La tabla resumen publica la mediana del periodo, no la media de medianas
+
+- **Que**: `p2_latencias_globales`, un agregado nuevo sin `date_trunc`, calcula
+  la mediana sobre las filas de PR. La tabla resumen de `latencias.md` lo usa
+  en lugar de `avg(mediana_min_review)` sobre el agregado mensual.
+- **Alternativas**: ponderar la media mensual por volumen de PRs; o renombrar
+  la columna a "media de medianas mensuales" y dejar el calculo.
+- **Por que**: la columna decia "Mediana" y no lo era. Con meses de volumen muy
+  desigual (septiembre dobla a agosto) la media de medianas no es la mediana de
+  nada, y ademas daba a un mes roto el mismo peso que a uno sano, que es como
+  el tramo ciego de D38 llegaba al numero publicado.
+- **Coste**: los numeros cambian mucho — el merge de un humano pasa de 4.926 a
+  1,9 min — asi que cualquier captura o texto anterior queda desfasado. Y son
+  dos agregados de P2 que hay que mantener en paralelo.

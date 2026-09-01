@@ -92,13 +92,48 @@ CONSULTAS = {
             -- como "instantaneo". El p90 si va en horas porque ahi la escala
             -- es de dias.
             round(median(horas_hasta_primer_review) * 60, 1) as mediana_min_review,
-            round(median(horas_hasta_merge) * 60, 1)         as mediana_min_merge,
-            round(quantile_cont(horas_hasta_merge, 0.9), 2)  as p90_h_merge
+            -- Las de merge solo sobre PRs con merge observable: entre el
+            -- 2025-10-09 y el 2025-12-01 la fuente no publica la senal de
+            -- merge y los pocos supervivientes son los mas lentos (D38).
+            -- Las de review no se filtran: los reviews si llegan.
+            round(median(case when merge_observable then horas_hasta_merge end) * 60, 1)
+                                                             as mediana_min_merge,
+            round(quantile_cont(case when merge_observable then horas_hasta_merge end, 0.9), 2)
+                                                             as p90_h_merge,
+            count(case when merge_observable then horas_hasta_merge end) as con_merge_observable
         from fct_pr_ciclo
         where apertura_observada
           and autor_clase is not null
         group by 1, 2, 3
         order by 1, 2
+    """,
+    # Mediana del PERIODO COMPLETO, no la media de las medianas mensuales.
+    # La tabla resumen del dashboard hacia avg(mediana_min_review) sobre el
+    # agregado mensual: con meses de volumen muy desigual (septiembre dobla a
+    # agosto) esa media no es la mediana del periodo y estaba etiquetada como
+    # si lo fuera. Este agregado la calcula sobre las filas de PR, que es la
+    # unica forma de obtenerla. Mismo grano de corte que el mensual:
+    # cohorte_madura sale como columna y filtra la pagina.
+    "p2_latencias_globales": """
+        select
+            autor_clase,
+            cohorte_madura,
+            count(*)                                as prs,
+            count(horas_hasta_primer_review)        as con_review,
+            count(horas_hasta_merge)                as con_merge,
+            round(median(horas_hasta_primer_review) * 60, 1) as mediana_min_review,
+            -- Ver la nota del agregado mensual: el merge excluye el tramo
+            -- ciego de D38, el review no.
+            round(median(case when merge_observable then horas_hasta_merge end) * 60, 1)
+                                                             as mediana_min_merge,
+            round(quantile_cont(case when merge_observable then horas_hasta_merge end, 0.9), 2)
+                                                             as p90_h_merge,
+            count(case when merge_observable then horas_hasta_merge end) as con_merge_observable
+        from fct_pr_ciclo
+        where apertura_observada
+          and autor_clase is not null
+        group by 1, 2
+        order by 3 desc
     """,
     "p2_censura": """
         select

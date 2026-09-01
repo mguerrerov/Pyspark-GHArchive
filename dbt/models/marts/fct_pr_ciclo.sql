@@ -96,5 +96,25 @@ select
     case when abierto_en is not null and mergeado_en is not null
               and mergeado_en >= abierto_en
          then date_diff('second', abierto_en, mergeado_en) / 3600.0
-    end                                   as horas_hasta_merge
+    end                                   as horas_hasta_merge,
+
+    -- Entre el 2025-10-09 y el 2025-12-01 la fuente no publica la senal de
+    -- merge de ninguna forma (ver D38 y las vars del proyecto). Un PR abierto
+    -- dentro de ese tramo solo puede tener merge observado si se mergeo tan
+    -- tarde que el evento cayo ya en diciembre, asi que los pocos que
+    -- sobreviven son los mas lentos y su mediana sale disparada: medido, la
+    -- de noviembre son 34.475 min sobre 13.370 PRs, frente a ~2 min en los
+    -- meses sanos. Se marcan para que las latencias de MERGE los excluyan.
+    -- Las de primer review no: los eventos de review si siguen llegando en
+    -- ese tramo y esas latencias son validas.
+    --
+    -- Lo que esta bandera NO arregla: un PR abierto antes del 2025-10-09 y
+    -- mergeado dentro del tramo ciego pierde su merge y cuenta como no
+    -- mergeado, lo que sesga a la BAJA la cobertura de las cohortes de
+    -- septiembre y octubre. No es corregible con los datos que hay; queda
+    -- avisado en la pagina del dashboard.
+    abierto_en is not null
+        and not (abierto_en >= date '{{ var("merge_ciego_desde") }}'
+                 and abierto_en <= date '{{ var("merge_ciego_hasta") }}')
+                                          as merge_observable
 from agregado

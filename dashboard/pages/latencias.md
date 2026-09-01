@@ -16,23 +16,54 @@ filtro, la media sale sesgada a la baja.
 
 </Alert>
 
+<Alert status=warning>
+
+**Entre el 9 de octubre y el 1 de diciembre de 2025 la fuente no publica si un
+PR se mergeó.** Hasta el 8 de octubre el merge llega como acción `closed` con el
+campo `merged` del pull request; desde el 2 de diciembre llega como una acción
+propia, `merged`. En medio no llega de ninguna de las dos formas: el pull
+request del payload viene recortado y la acción todavía no existe. Comprobado
+en el JSON original, no deducido: en todo noviembre hay **cero** merges
+observados, frente a unos 2,2 millones al mes en los meses vecinos.
+
+Las latencias **hasta el merge** excluyen los PRs abiertos en ese tramo. Sin
+ese filtro, los únicos supervivientes son los que se mergearon tan tarde que el
+evento cayó ya en diciembre, y su mediana sale en 34.475 minutos en vez de los
+2 minutos de un mes sano. Las latencias **hasta el primer review** sí incluyen
+el tramo: los eventos de review siguen llegando con normalidad.
+
+Queda un sesgo que no se puede corregir con estos datos: un PR abierto antes
+del 9 de octubre y mergeado dentro del tramo pierde su merge y cuenta aquí como
+no mergeado. Eso hunde la cobertura de las cohortes de septiembre y octubre en
+el último gráfico de la página.
+
+</Alert>
+
 ```sql mediana_global
+-- Mediana del periodo completo, calculada sobre las filas de PR. Antes esta
+-- tabla hacia la media de las medianas mensuales, que con meses de volumen muy
+-- desigual no es la mediana de nada.
 select
     autor_clase,
-    sum(prs)                    as prs,
-    round(avg(mediana_min_review), 1) as min_review,
-    round(avg(mediana_min_merge), 1)  as min_merge
-from gharchive.p2_latencias_mensuales
+    prs,
+    con_merge_observable,
+    mediana_min_review as min_review,
+    mediana_min_merge  as min_merge
+from gharchive.p2_latencias_globales
 where cohorte_madura
-group by 1 order by 2 desc
+order by prs desc
 ```
 
 <DataTable data={mediana_global}>
     <Column id=autor_clase title="Clase de autor"/>
-    <Column id=prs title="PRs" fmt=num0/>
+    <Column id=prs title="PRs abiertos" fmt=num0/>
+    <Column id=con_merge_observable title="Con merge medible" fmt=num0/>
     <Column id=min_review title="Mediana min. hasta 1er review" fmt=num1/>
     <Column id=min_merge title="Mediana min. hasta merge" fmt=num1/>
 </DataTable>
+
+Son medianas del periodo entero, no medias de medianas mensuales. La columna de
+merge se calcula solo sobre los PRs con merge medible, que es la que va al lado.
 
 ## Evolución de la latencia hasta el primer review
 

@@ -24,6 +24,17 @@ vars:
   # llegando. Ver D36 y metrics.md.
   fecha_pr_hasta: "2026-03-14"
 
+  # Tramo sin senal de merge en la fuente. Medido en el JSON crudo de bronze:
+  # hasta el 2025-10-08 un merge llega como accion `closed` con el campo
+  # `pull_request.merged`; desde el 2025-12-02 llega como accion propia
+  # `merged`. Entre medias no llega de ninguna de las dos formas: el
+  # `pull_request` del payload viene recortado a base/head/id/number/url, sin
+  # `merged` ni `merged_at`, y la accion `merged` todavia no existe. Resultado
+  # medido: 0 merges observados en todo noviembre de 2025 frente a ~2,2 M al
+  # mes en los meses vecinos. No es un fallo de extraccion. Ver D38.
+  merge_ciego_desde: "2025-10-09"
+  merge_ciego_hasta: "2025-12-01"
+
 models:
   gharchive:
     staging:

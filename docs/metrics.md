@@ -1065,3 +1065,82 @@ salia rapido porque `bot_ci` pesa mucho.
 con dos decimales, `bot_ci` mostraba `0.00`, que en un grafico se lee como
 "sin dato" en vez de como "instantaneo". El p90 se queda en horas porque ahi la
 escala es de dias.
+
+## Tercer formato de la fuente y tramo sin merge — 2026-09-01
+
+Medido sobre `fct_pr_evento` y verificado despues en el JSON original de bronze,
+como exige la regla 1.
+
+### Eventos con `es_merge` verdadero, por mes y accion
+
+| Mes | Accion | Eventos |
+|---|---|---:|
+| 2025-08 | `closed` | 1.725.639 |
+| 2025-09 | `closed` | 2.855.866 |
+| 2025-10 | `closed` | 802.979 |
+| 2025-11 | — | **0** |
+| 2025-12 | `merged` | 2.172.657 |
+| 2026-01 | `merged` | 2.231.268 |
+| 2026-02 | `merged` | 2.044.854 |
+| 2026-03 | `merged` | 892.284 |
+
+Noviembre de 2025 no tiene **ningun** merge observado, ni por una via ni por la
+otra, teniendo 9.880.549 eventos de PR y 3.147.859 aperturas.
+
+### Verificacion en el JSON crudo
+
+`bronze/event_date=2025-11-12`, 3.000 `PullRequestEvent`: el `payload` solo trae
+`action`, `number` y `pull_request`, y ese `pull_request` solo trae `base`,
+`head`, `id`, `number` y `url`. **Ni `merged` ni `merged_at`.** Ninguno de los
+3.000 eventos tiene el campo. Las acciones presentes son `opened`, `labeled`,
+`assigned`, `closed`, `unlabeled`, `reopened` y `unassigned`: `merged` no esta.
+
+No es un fallo de extraccion del pipeline: el dato no viene en el origen.
+
+### Primer dia de la accion `merged`, por biseccion sobre bronze
+
+| Dia | Eventos `merged` | Total `PullRequestEvent` |
+|---|---:|---:|
+| 2025-10-15 | 0 | 231.091 |
+| 2025-11-15 | 0 | 211.311 |
+| 2025-12-01 | 0 | 433.013 |
+| **2025-12-02** | **11.871** | 288.851 |
+| 2025-12-03 | 79.139 | 310.431 |
+| 2025-12-04 | 84.310 | 311.923 |
+| 2025-12-05 | 84.036 | 305.767 |
+
+El 2025-12-02 es parcial: arranca a media jornada. Desde el 03 es el volumen
+normal. Tramo ciego resultante: **2025-10-09 -> 2025-12-01**.
+
+### Efecto sobre la mediana publicada
+
+Medianas mensuales de merge sobre cohortes maduras, antes de excluir el tramo:
+
+| Mes | Clase | PRs | Con merge | Mediana min. merge |
+|---|---|---:|---:|---:|
+| 2025-10 | humano | 1.952.142 | 267.662 | 1,6 |
+| **2025-11** | humano | 2.060.751 | **13.370** | **34.475,2** |
+| 2025-12 | humano | 1.991.964 | 579.041 | 1,7 |
+| 2025-10 | bot_ci | 419.612 | 77.852 | 0,1 |
+| **2025-11** | bot_ci | 417.377 | **299** | **36.207,7** |
+| 2025-12 | bot_ci | 466.312 | 162.716 | 0,1 |
+
+Noviembre conserva el 0,6 % de los merges de un mes normal, y son los mas
+lentos. Con ese mes dentro, `avg(mediana_min_merge)` daba **4.926,6 min** para
+humanos.
+
+### Mediana real del periodo, ya con D38 y D39
+
+Sobre cohortes maduras, excluyendo el tramo ciego en la columna de merge:
+
+| Clase | PRs | Mediana min. review | Mediana min. merge | p90 h. merge |
+|---|---:|---:|---:|---:|
+| humano | 12.912.276 | 18,7 | 1,9 | 26,7 |
+| bot_dependencias | 4.205.740 | 2,7 | 194,6 | 154,9 |
+| bot_ci | 2.886.772 | 5,0 | 0,1 | 0,0 |
+| bot_otro | 692.266 | 17,8 | 10,2 | 44,0 |
+| agente_ia | 19.986 | 15,2 | 10,5 | 16,0 |
+
+Confirma con la metrica correcta lo que la sesion 4 ya habia visto: partir por
+clase invierte la conclusion. `bot_dependencias` tarda **100 veces mas** que un
+humano en mergear; solo `bot_ci` es instantaneo.
