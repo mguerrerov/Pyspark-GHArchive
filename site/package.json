@@ -1,0 +1,14 @@
+{
+  "name": "gharchive-sitio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio estatico del proyecto: overview y BI del pipeline. HTML a mano, Tailwind v4 compilado por CLI, ECharts desde CDN. Sin framework.",
+  "scripts": {
+    "build": "tailwindcss -i src/app.css -o assets/app.css --minify",
+    "watch": "tailwindcss -i src/app.css -o assets/app.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "tailwindcss": "^4.1.0"
+  }
+}

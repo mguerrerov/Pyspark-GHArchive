@@ -1,0 +1,100 @@
+/* Entrada de Tailwind v4: configuracion CSS-first. Se compila a
+   assets/app.css con @tailwindcss/cli (ver package.json). */
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "JetBrains Mono", monospace;
+
+  /* Paleta categorica del skill dataviz, en orden fijo. Cada clase de actor
+     tiene un hueco y no cambia aunque un grafico filtre series. */
+  --color-serie-1: #2a78d6;  /* humano */
+  --color-serie-2: #eb6834;  /* bot_dependencias */
+  --color-serie-3: #1baf7a;  /* bot_ci */
+  --color-serie-4: #eda100;  /* bot_otro */
+  --color-serie-5: #e87ba4;  /* agente_ia */
+
+  --color-tinta: #0b0b0b;
+  --color-tinta-2: #52514e;
+  --color-tinta-3: #8a8983;
+  --color-fondo: #fcfcfb;
+  --color-panel: #ffffff;
+  --color-borde: #e6e5e0;
+  --color-acento: #2a78d6;
+  --color-aviso: #b45309;
+}
+
+/* Tokens que cambian con el tema. Tailwind v4 usa prefers-color-scheme para
+   dark: sin toggle propio, asi que basta con la media query. */
+:root {
+  --tinta: var(--color-tinta);
+  --tinta-2: var(--color-tinta-2);
+  --tinta-3: var(--color-tinta-3);
+  --fondo: var(--color-fondo);
+  --panel: var(--color-panel);
+  --borde: var(--color-borde);
+  --rejilla: #ecebe6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tinta: #ffffff;
+    --tinta-2: #c3c2b7;
+    --tinta-3: #8f8e86;
+    --fondo: #121211;
+    --panel: #1a1a19;
+    --borde: #2c2c2a;
+    --rejilla: #262624;
+    --color-serie-1: #3987e5;
+    --color-serie-2: #d95926;
+    --color-serie-3: #199e70;
+    --color-serie-4: #c98500;
+    --color-serie-5: #d55181;
+  }
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    @apply antialiased;
+    background: var(--fondo);
+    color: var(--tinta);
+  }
+  h1, h2, h3 { @apply tracking-tight; }
+}
+
+@layer components {
+  .contenedor { @apply mx-auto max-w-6xl px-5 sm:px-8; }
+  .seccion { @apply py-14 sm:py-20; }
+  .titulo { @apply text-2xl sm:text-3xl font-semibold mb-3; }
+  .subtitulo { @apply text-base sm:text-lg max-w-3xl; color: var(--tinta-2); }
+  .prosa { @apply leading-relaxed max-w-3xl; color: var(--tinta-2); }
+  .prosa strong { color: var(--tinta); }
+  .prosa code, .tabla code { @apply font-mono text-[0.85em] px-1 rounded; background: var(--rejilla); }
+  .panel { @apply rounded-xl border p-5; background: var(--panel); border-color: var(--borde); }
+  .kpi-rejilla { @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3; }
+  .kpi { @apply rounded-lg border p-4; background: var(--panel); border-color: var(--borde); }
+  .kpi .valor { @apply text-2xl sm:text-3xl font-semibold tabular-nums leading-none; }
+  .kpi .unidad { @apply text-sm ml-1; color: var(--tinta-3); }
+  .kpi .etiqueta { @apply text-xs mt-2 leading-snug; color: var(--tinta-2); }
+  .kpi .detalle { @apply text-xs mt-1; color: var(--tinta-3); }
+  .grafico { @apply w-full h-72 sm:h-80; }
+  .fuente { @apply text-xs mt-2 font-mono; color: var(--tinta-3); }
+  .tabla { @apply w-full text-sm; }
+  .tabla th { @apply text-left font-medium pb-2 border-b; color: var(--tinta-2); border-color: var(--borde); }
+  .tabla td { @apply py-2 border-b align-top; border-color: var(--borde); }
+  .tabla td.num, .tabla th.num { @apply text-right tabular-nums; }
+  .aviso { @apply rounded-lg border-l-4 p-4 text-sm; border-color: var(--color-aviso); background: color-mix(in oklab, var(--color-aviso) 8%, var(--panel)); color: var(--tinta-2); }
+  .aviso strong { color: var(--tinta); }
+  .chip { @apply inline-block rounded-full px-2.5 py-0.5 text-xs font-medium; background: var(--rejilla); color: var(--tinta-2); }
+  .enlace { @apply underline underline-offset-4 decoration-1; color: var(--color-acento); }
+  .boton { @apply inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium border transition-colors; border-color: var(--borde); background: var(--panel); }
+  .boton:hover { border-color: var(--color-acento); }
+  .boton-primario { @apply text-white; background: var(--color-acento); border-color: var(--color-acento); }
+  .nav-enlace { @apply text-sm px-3 py-1.5 rounded-md; color: var(--tinta-2); }
+  .nav-enlace:hover, .nav-enlace[aria-current="page"] { color: var(--tinta); background: var(--rejilla); }
+  .capa { @apply rounded-lg border px-3 py-2 text-center; border-color: var(--borde); background: var(--panel); }
+  .capa .nombre { @apply text-xs font-medium; color: var(--tinta-2); }
+  .capa .cifra { @apply text-sm font-semibold tabular-nums; }
+  .flecha { @apply hidden md:block self-center text-lg; color: var(--tinta-3); }
+  .leyenda-punto { @apply inline-block w-2.5 h-2.5 rounded-full mr-1.5 align-middle; }
+}

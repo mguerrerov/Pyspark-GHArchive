@@ -28,6 +28,15 @@ node_modules/
 dashboard/.evidence/
 dashboard/build/
 
+# Sitio estatico: el CSS compilado por Tailwind y el ensamblado de Netlify
+# se generan en el build (construir_sitio.sh).
+site/assets/app.css
+dist/
+# Los JSON del sitio si van al repo: los genera exportar_sitio.py en local y
+# Netlify no tiene con que regenerarlos. La regla `data/` de arriba los
+# tapaba.
+!site/data/
+
 # Spark
 spark-warehouse/
 metastore_db/

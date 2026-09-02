@@ -1,0 +1,18 @@
+# Netlify construye el sitio entero con construir_sitio.sh y sirve dist/.
+# El mismo script vale en local; si funciona aqui, funciona alli.
+[build]
+  command = "bash construir_sitio.sh"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # Evidence pide memoria al construir; el runner de Netlify da 8 GB.
+  NODE_OPTIONS = "--max-old-space-size=4096"
+
+# Evidence es una SPA estatica con una pagina por ruta: /dashboard/bots/
+# existe como fichero, asi que no hace falta reescritura. Se deja el 404
+# propio de Evidence para su subarbol.
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"

@@ -703,3 +703,43 @@ Sustituye a D11.
 - **Coste**: el dashboard queda congelado en una ventana historica y hay que
   explicarlo en la portada y en el README, o parece abandonado. Y se acumula
   bronze de dias que no se publican, que hay que decidir si se conservan.
+
+## D43 — Sitio estatico aparte en Netlify, con el dashboard de Evidence debajo
+
+- **Que**: el artefacto publico pasa a ser un sitio estatico propio (`site/`:
+  HTML a mano, Tailwind v4, ECharts) con dos paginas, overview y BI del
+  pipeline, alojado en Netlify. Evidence se sirve en el mismo sitio bajo
+  `/dashboard`. GitHub Pages se retira; `pages.yml` desaparece.
+- **Alternativas**: anadir las dos paginas al propio proyecto Evidence y
+  desplegar ese a Netlify; o dos sitios de Netlify, uno por artefacto.
+- **Por que**: Evidence es bueno para paginas de datos y malo para una portada
+  con texto largo, jerarquia visual propia y un embudo de arquitectura. Un solo
+  sitio con Evidence en un subdirectorio da una URL, un despliegue y un build
+  (`construir_sitio.sh`, identico en local y en Netlify). Netlify porque
+  Marcos lo ha elegido y porque conectado al repo despliega en cada push sin
+  workflow que mantener.
+- **Coste**: dos `package.json` y dos builds en la misma cadena; si Evidence
+  falla, cae el sitio entero. El `basePath` de Evidence vuelve a cambiar (de
+  `/Pyspark-GHArchive` a `/dashboard`) y hay que recordar que vive en
+  `evidence.config.yaml`, no en el entorno. Y las conclusiones del overview las
+  ha redactado Claude por decision explicita de Marcos, en contra de lo que
+  decia el CLAUDE.md.
+
+## D44 — Los datos del sitio se generan en local y se commitean
+
+- **Que**: `exportar_sitio.py` lee los nueve Parquet ya publicados en
+  `dashboard/sources/gharchive/` y escribe `site/data/negocio.json` (48,7 KB).
+  `site/data/pipeline.json` se mantiene a mano desde `docs/metrics.md`, con la
+  linea de origen en cada cifra. Los dos van al repo.
+- **Alternativas**: leer los Parquet desde el navegador con DuckDB-WASM; o
+  que Netlify ejecute Python en el build.
+- **Por que**: el runner de Netlify no tiene el lago ni el `.duckdb`, y meter
+  Python en el build por 50 KB de JSON es anadir un fallo posible sin ganar
+  nada. Leer del mismo Parquet que Evidence garantiza que overview y dashboard
+  ensenan el mismo numero por construccion. El JSON de ingenieria va a mano
+  porque `metrics.md` es prosa: no hay de donde generarlo, y el campo `fuente`
+  por cifra hace que cualquiera pueda auditarlo.
+- **Coste**: `pipeline.json` se desincroniza si cambia una medicion y nadie lo
+  toca; es la misma trampa que D37. Y las cifras de retencion por cohorte
+  quedan calculadas fuera de gold (en el exportador), lo que es un calculo mas
+  que mantener.

@@ -21,7 +21,9 @@ contribuyente que se retenga o se pierda.
 ## Retención por cohorte
 
 ```sql retencion
-select cohorte_mes, mes_de_vida, actores
+-- La cohorte va como texto: con un DATE en `series` el LineChart salia
+-- vacio en produccion, con los ejes dibujados y ninguna linea.
+select strftime(cohorte_mes, '%Y-%m') as cohorte, mes_de_vida, actores
 from gharchive.p3_retencion_cohortes
 order by cohorte_mes, mes_de_vida
 ```
@@ -30,7 +32,7 @@ order by cohorte_mes, mes_de_vida
     data={retencion}
     x=mes_de_vida
     y=actores
-    series=cohorte_mes
+    series=cohorte
     xAxisTitle="meses desde la primera contribución"
     yAxisTitle="contribuyentes activos"
 />

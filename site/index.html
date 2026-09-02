@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bots, agentes y humanos en GitHub · un año de GH Archive</title>
+<meta name="description" content="Pipeline analítico sobre 1.319 millones de eventos públicos de GitHub: qué parte de los pull requests la generan bots y agentes de IA, cuánto tarda un PR en revisarse y mergearse, y qué proyectos retienen contribuyentes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/app.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+</head>
+<body>
+
+<header class="sticky top-0 z-40 border-b backdrop-blur" style="border-color: var(--borde); background: color-mix(in oklab, var(--fondo) 85%, transparent)">
+  <nav class="contenedor flex items-center justify-between h-14">
+    <a href="/" class="font-semibold text-sm tracking-tight">GH Archive · bots y humanos</a>
+    <div class="flex items-center gap-1">
+      <a href="/" class="nav-enlace" aria-current="page">Overview</a>
+      <a href="/metricas.html" class="nav-enlace">BI del pipeline</a>
+      <a href="/dashboard/" class="nav-enlace">Dashboard</a>
+      <a href="https://github.com/mguerrerov/Pyspark-GHArchive" class="nav-enlace" rel="noopener">GitHub</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+<!-- ============================================================ hero -->
+<section class="seccion pt-16 sm:pt-24">
+  <div class="contenedor">
+    <span class="chip">Proyecto de portfolio · datos de GH Archive · coste 0 €</span>
+    <h1 class="text-4xl sm:text-5xl font-semibold mt-4 max-w-3xl leading-[1.1]">¿Quién hace el trabajo en GitHub: la gente, los bots o los agentes de IA?</h1>
+    <p class="subtitulo mt-5">Un pipeline en PySpark, dbt y DuckDB sobre <strong id="hero-eventos">1.319 millones</strong> de eventos públicos de GitHub, para responder a tres preguntas con números medidos, no estimados. Todo corre en un ordenador de sobremesa y se publica sin gastar un euro.</p>
+    <div class="flex flex-wrap gap-3 mt-7">
+      <a href="#preguntas" class="boton boton-primario">Ver las respuestas</a>
+      <a href="/dashboard/" class="boton">Abrir el dashboard interactivo</a>
+      <a href="/metricas.html" class="boton">Métricas del pipeline</a>
+    </div>
+    <div class="kpi-rejilla mt-12" id="hero-kpis"></div>
+    <p class="fuente">Pasa el ratón por cualquier cifra del sitio para ver de qué fichero sale.</p>
+  </div>
+</section>
+
+<!-- ============================================================ problema -->
+<section class="seccion border-t" style="border-color: var(--borde)">
+  <div class="contenedor grid md:grid-cols-[1fr_1.4fr] gap-10">
+    <div>
+      <h2 class="titulo">El problema</h2>
+      <p class="prosa">GitHub publica cada hora, en <a class="enlace" href="https://www.gharchive.org/" rel="noopener">GH Archive</a>, todos sus eventos públicos: cada pull request que se abre, cada review, cada merge, cada push. Es un flujo enorme y gratuito en el que la actividad automática —CI, actualizadores de dependencias y, desde hace poco, agentes de IA que abren y revisan código— se mezcla con la humana sin ninguna etiqueta que las separe.</p>
+    </div>
+    <div class="prosa space-y-4">
+      <p>Quería saber tres cosas concretas, y sólo esas tres. Cualquier métrica que no sirviera a una de ellas se quedó fuera del proyecto:</p>
+      <ol class="list-decimal pl-5 space-y-2">
+        <li><strong>¿Qué parte de la actividad de pull requests la generan bots y agentes automáticos, y cómo ha evolucionado?</strong></li>
+        <li><strong>¿Cuánto tarda un PR en recibir su primer review y en mergearse? ¿Difiere entre PRs de bot y de humano?</strong></li>
+        <li><strong>¿Qué proyectos ganan o pierden contribuyentes activos?</strong> Retención por cohortes de contribuyente nuevo.</li>
+      </ol>
+      <p>Y quería hacerlo con una restricción dura: coste total cero, sin cloud de pago, con el backfill grande en mi máquina y el resultado publicado para que cualquiera lo abra en diez segundos sin clonar nada.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ como -->
+<section class="seccion border-t" style="border-color: var(--borde)">
+  <div class="contenedor">
+    <h2 class="titulo">Cómo se hizo</h2>
+    <p class="subtitulo">Arquitectura medallion clásica. Cada capa reduce el volumen y sube el nivel de significado; la cifra de cada caja está medida sobre los datos reales.</p>
+    <div class="grid md:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr_auto_1fr] gap-2 mt-8 items-stretch">
+      <div class="capa"><div class="nombre">GH Archive</div><div class="cifra">361 días · 8.664 ficheros .gz</div><div class="text-xs mt-1" style="color: var(--tinta-3)">httpx, 6 conexiones, reanudable</div></div>
+      <div class="flecha">→</div>
+      <div class="capa"><div class="nombre">Bronze</div><div class="cifra">1.319 M eventos · 149,4 GiB</div><div class="text-xs mt-1" style="color: var(--tinta-3)">Parquet zstd por fecha, sin transformar</div></div>
+      <div class="flecha">→</div>
+      <div class="capa"><div class="nombre">Silver</div><div class="cifra">1.319 M · 40,4 GiB</div><div class="text-xs mt-1" style="color: var(--tinta-3)">PySpark: tipado, deduplicado, clase de actor</div></div>
+      <div class="flecha">→</div>
+      <div class="capa"><div class="nombre">Gold</div><div class="cifra">3 hechos + 3 dimensiones</div><div class="text-xs mt-1" style="color: var(--tinta-3)">dbt-duckdb, 40 tests en verde</div></div>
+      <div class="flecha">→</div>
+      <div class="capa"><div class="nombre">Publicado</div><div class="cifra">9 agregados · 0,09 MB</div><div class="text-xs mt-1" style="color: var(--tinta-3)">Evidence + este sitio</div></div>
+    </div>
+    <div class="grid sm:grid-cols-3 gap-4 mt-8 prosa text-sm">
+      <div class="panel"><strong>Bots y agentes.</strong> GitHub marca las cuentas de App con el sufijo <code>[bot]</code>; eso decide si un actor es automático. La clase concreta —CI, dependencias, agente de IA— sale de una lista de servicios conocidos mantenida a mano. Lo que no encaja queda en <code>bot_otro</code>, que es el 1,3 % de los eventos.</div>
+      <div class="panel"><strong>Latencias sin trampa.</strong> Se miden restando instantes de eventos reales, en segundos, sólo sobre PRs abiertos dentro de la ventana y con al menos 30 días de margen. Sin ese filtro la mediana sale sesgada a la baja.</div>
+      <div class="panel"><strong>Cada número está medido.</strong> Filas, GiB, segundos, tests: todo sale de <a class="enlace" href="https://github.com/mguerrerov/Pyspark-GHArchive/blob/main/docs/metrics.md" rel="noopener">docs/metrics.md</a>, y cada decisión no trivial de <a class="enlace" href="https://github.com/mguerrerov/Pyspark-GHArchive/blob/main/docs/decisions.md" rel="noopener">docs/decisions.md</a>. Este sitio guarda la referencia de cada cifra.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ preguntas -->
+<section id="preguntas" class="seccion border-t" style="border-color: var(--borde)">
+  <div class="contenedor">
+    <h2 class="titulo">Las tres respuestas</h2>
+    <p class="subtitulo">Ventana publicable: del <span id="ventana-desde">13 de agosto de 2025</span> al <span id="ventana-hasta">14 de marzo de 2026</span>. Por qué se corta ahí, más abajo.</p>
+
+    <!-- P1 -->
+    <article class="mt-14 grid lg:grid-cols-[1fr_1.2fr] gap-8 items-start">
+      <div>
+        <span class="chip">Pregunta 1</span>
+        <h3 class="text-xl sm:text-2xl font-semibold mt-3">Casi la mitad de la actividad de PRs ya no es humana</h3>
+        <div class="kpi-rejilla !grid-cols-2 !lg:grid-cols-2 mt-5" id="p1-kpis"></div>
+        <div class="prosa mt-5 space-y-3 text-[15px]">
+          <p>En agosto de 2025 el <strong>32,9 %</strong> de los eventos de pull request los generaba una cuenta automática. En marzo de 2026 era el <strong>44,2 %</strong>. La subida no es de los agentes de IA, que se mueven entre el 4,6 % y el 7,6 % con tendencia al alza, sino de la automatización clásica: los bots de CI y los actualizadores de dependencias.</p>
+          <p>Los agentes de IA son ya una categoría con nombre propio: <strong>coderabbitai</strong> lleva 2,6 millones de eventos de PR en la ventana, seguido de <strong>gemini-code-assist</strong>, <strong>chatgpt-codex-connector</strong> y <strong>cursor</strong>. Son pocos actores con muchísimo volumen.</p>
+        </div>
+        <a href="/dashboard/bots/" class="boton mt-5">Explorar por lenguaje y por agente →</a>
+      </div>
+      <div class="panel">
+        <h4 class="text-sm font-medium mb-2">Cuota mensual de eventos de PR no humanos</h4>
+        <div class="grafico" data-grafico="p1_cuota"></div>
+        <h4 class="text-sm font-medium mb-2 mt-6">Reparto por clase de actor</h4>
+        <div class="grafico" data-grafico="p1_clases"></div>
+        <p class="fuente">Fuente: p1_actividad_mensual.parquet · fct_pr_evento</p>
+      </div>
+    </article>
+
+    <!-- P2 -->
+    <article class="mt-20 grid lg:grid-cols-[1fr_1.2fr] gap-8 items-start">
+      <div>
+        <span class="chip">Pregunta 2</span>
+        <h3 class="text-xl sm:text-2xl font-semibold mt-3">«Los bots» no existen: cada clase tiene su ritmo</h3>
+        <div class="kpi-rejilla !grid-cols-2 !lg:grid-cols-2 mt-5" id="p2-kpis"></div>
+        <div class="prosa mt-5 space-y-3 text-[15px]">
+          <p>Un PR humano se mergea en una mediana de <strong>1,8 minutos</strong> desde que se abre. Parece rápido porque lo es: la mayoría de los PRs que se mergean son pequeños y los mergea quien los abrió. El primer review tarda más, <strong>18,7 minutos</strong>, y sólo lo recibe el 14,8 % de los PRs humanos.</p>
+          <p>Si se juntan todas las cuentas automáticas en un bloque, sale que «los bots mergean casi al instante». Es falso para tres de las cuatro clases. Un <strong>bot de CI</strong> mergea en 0,1 min porque él mismo cierra el ciclo; un <strong>bot de dependencias</strong> tarda <strong>184 minutos</strong>, cien veces más que un humano, porque su PR espera a que alguien lo apruebe. El promedio salía rápido sólo porque CI pesa mucho en el recuento.</p>
+        </div>
+        <a href="/dashboard/latencias/" class="boton mt-5">Ver la evolución mensual y la censura →</a>
+      </div>
+      <div class="panel">
+        <h4 class="text-sm font-medium mb-2">Mediana de minutos hasta el merge, por clase de autor <span class="chip ml-1">escala log</span></h4>
+        <div class="grafico !h-56" data-grafico="p2_merge"></div>
+        <h4 class="text-sm font-medium mb-2 mt-6">Mediana de minutos hasta el primer review, por mes de apertura</h4>
+        <div class="grafico" data-grafico="p2_review_mensual"></div>
+        <p class="fuente">Fuente: p2_latencias_globales.parquet, p2_latencias_mensuales.parquet · fct_pr_ciclo, cohortes maduras</p>
+      </div>
+    </article>
+
+    <!-- P3 -->
+    <article class="mt-20 grid lg:grid-cols-[1fr_1.2fr] gap-8 items-start">
+      <div>
+        <span class="chip">Pregunta 3</span>
+        <h3 class="text-xl sm:text-2xl font-semibold mt-3">Uno de cada seis contribuyentes nuevos vuelve al mes siguiente</h3>
+        <div class="kpi-rejilla !grid-cols-2 !lg:grid-cols-2 mt-5" id="p3-kpis"></div>
+        <div class="prosa mt-5 space-y-3 text-[15px]">
+          <p>Un contribuyente es «nuevo» en un repositorio el primer mes en que se le ve allí. Cada mes entran entre 4,5 y 5,7 millones de pares nuevos contribuyente-repositorio, sin contar bots. De ellos, entre el <strong>15 % y el 19 %</strong> vuelven al mismo repo el mes siguiente, y entre el <strong>5 % y el 7,5 %</strong> siguen activos a los tres meses. La curva es la misma para todas las cohortes: la mayor parte de la fuga ocurre en el primer mes.</p>
+          <p>Los proyectos que más contribuyentes activos suman en la ventana son casi todos del ecosistema de agentes de IA: <strong>openclaw/openclaw</strong>, <strong>anthropics/claude-code</strong>, <strong>anthropics/skills</strong>. Es donde está llegando la gente nueva.</p>
+        </div>
+        <a href="/dashboard/retencion/" class="boton mt-5">Ver las cohortes y el top de repos →</a>
+      </div>
+      <div class="panel">
+        <h4 class="text-sm font-medium mb-2">Retención por cohorte de contribuyente nuevo (% que sigue activo en el repo)</h4>
+        <div class="grafico" data-grafico="p3_cohortes"></div>
+        <h4 class="text-sm font-medium mb-2 mt-6">Repositorios con más contribuyentes activos acumulados</h4>
+        <div class="grafico" data-grafico="p3_repos"></div>
+        <p class="fuente">Fuente: p3_retencion_cohortes.parquet, p3_repos_saldo.parquet · fct_actividad_contribuyente, sin bots</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============================================================ conclusiones -->
+<section class="seccion border-t" style="border-color: var(--borde)">
+  <div class="contenedor grid md:grid-cols-[1fr_1.4fr] gap-10">
+    <div>
+      <h2 class="titulo">Conclusiones</h2>
+      <p class="prosa">Lo que yo saco de un año de datos, con las cifras al lado para que se pueda discutir.</p>
+    </div>
+    <div class="prosa space-y-4">
+      <p><strong>1. La automatización ya es casi la mitad del flujo de PRs, y la IA es una parte pequeña pero creciente de eso.</strong> Del 32,9 % al 44,2 % en siete meses. Los agentes de IA pasan del 5,8 % al 7,6 %. Quien mida «actividad de un proyecto» contando PRs sin separar clases está midiendo, en gran parte, cuántos bots tiene configurados.</p>
+      <p><strong>2. Preguntar si los bots son más rápidos que los humanos es la pregunta equivocada.</strong> La respuesta agregada (0,1 min frente a 1,8) es aritméticamente cierta y sustancialmente falsa: describe a los bots de CI y esconde a los de dependencias, que son los más lentos de todo GitHub porque dependen de una aprobación humana. La conclusión que sí aguanta es que <strong>la latencia la marca quién tiene que aprobar, no quién abre</strong>.</p>
+      <p><strong>3. La retención de contribuyentes nuevos es baja y muy estable.</strong> Una cohorte cualquiera pierde el 80-85 % en el primer mes y se estabiliza en torno al 5-7 % a los tres. Es la forma de una curva de cualquier producto con adquisición masiva; la novedad es dónde entra la gente: los repositorios que más contribuyentes nuevos captan son herramientas de agentes de IA.</p>
+      <p><strong>4. La parte más valiosa del proyecto no está en los gráficos, sino en lo que casi se publicó mal.</strong> Silver estuvo incompleto desde el principio sin que ningún test lo viera; una función de fecha borraba justo la diferencia que buscaba la pregunta 2; la fuente cambió de formato dos veces y dejó dos meses sin señal de merge; y a partir de marzo de 2026 dejó de publicar casi todo lo que no fuera un push. Cada una de esas cosas está medida, documentada y recogida en la página de <a class="enlace" href="/metricas.html">métricas del pipeline</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ limitaciones -->
+<section class="seccion border-t" style="border-color: var(--borde)">
+  <div class="contenedor">
+    <h2 class="titulo">Lo que estos datos no pueden decir</h2>
+    <p class="subtitulo">Cuatro límites de la fuente, detectados midiendo y no leyendo documentación. Todos están tratados en el modelo, no ignorados.</p>
+    <div class="grid md:grid-cols-2 gap-4 mt-8">
+      <div class="aviso"><strong>La ventana termina el 14 de marzo de 2026, y no por falta de datos.</strong> Desde el día siguiente GH Archive deja de traer eventos que no sean <code>PushEvent</code>: la cuota de eventos de PR cae del 12 % estable al 0,13 % en agosto. Se siguen descargando y procesando, pero no se publican. Con ese reparto las tres preguntas no se pueden responder.</div>
+      <div class="aviso"><strong>La fuente cambió de formato el 9 de octubre de 2025.</strong> Desde entonces el payload llega recortado: sin lenguaje del repositorio, sin instantes de apertura y merge, sin detalle de commits. Las latencias se calculan restando eventos, que funciona en los dos formatos; el desglose por lenguaje sólo existe hasta esa fecha.</div>
+      <div class="aviso"><strong>Del 9 de octubre al 1 de diciembre de 2025 no llega la señal de merge.</strong> Hay tres vocabularios de merge, no dos, y entre medias no hay ninguno: noviembre tiene cero merges frente a 2,2 millones en los meses vecinos. Las latencias hasta el merge excluyen los PRs abiertos en ese tramo; sin ese filtro la mediana salía en 34.475 minutos.</div>
+      <div class="aviso"><strong>«Nuevo» sólo lo es respecto a la ventana.</strong> Quien lleva años en un repositorio aparece como nuevo si su primera actividad dentro de la ventana cae en agosto de 2025. Esa cohorte retiene casi el doble que las demás por ese motivo y va marcada en el gráfico como inflada.</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="border-t py-10" style="border-color: var(--borde)">
+  <div class="contenedor flex flex-wrap items-center justify-between gap-4 text-sm" style="color: var(--tinta-2)">
+    <p>Marcos Guerrero · <a class="enlace" href="https://github.com/mguerrerov/Pyspark-GHArchive" rel="noopener">código y documentación en GitHub</a></p>
+    <p>Datos: <a class="enlace" href="https://www.gharchive.org/" rel="noopener">GH Archive</a> · Stack: httpx, PySpark, Parquet, dbt-duckdb, Evidence, Tailwind, ECharts · Netlify</p>
+  </div>
+</footer>
+
+<script>
+// Rellena los KPIs de esta pagina con los datos ya cargados por site.js.
+window.pintarPagina = (n, p, u) => {
+  const { pintarKpis, fmt } = u;
+  const v = n.ventana;
+  document.getElementById('hero-eventos').textContent = fmt.entero(p.volumen.kpis[0].valor / 1e6) + ' millones';
+  document.getElementById('ventana-desde').textContent = '13 de agosto de 2025';
+  document.getElementById('ventana-hasta').textContent = '14 de marzo de 2026';
+  pintarKpis(document.getElementById('hero-kpis'), [
+    { valor: p.volumen.kpis[0].valor, unidad: 'eventos', etiqueta: 'Eventos públicos procesados', detalle: '361 días, 24 horas cada uno', fuente: p.volumen.kpis[0].fuente },
+    { valor: n.p1.total.eventos, unidad: 'eventos de PR', etiqueta: 'Eventos de pull request analizados', detalle: `${v.desde} → ${v.hasta}`, fuente: n.p1.fuente },
+    { valor: v.dias, unidad: 'días', etiqueta: 'Días publicables', detalle: `de ${p.volumen.kpis[2].valor} procesados`, fuente: v.fuente },
+    { valor: p.calidad.kpis[0].valor, de: p.calidad.kpis[0].de, etiqueta: 'Tests de dbt en verde', detalle: 'y 0 días descuadrados entre capas', fuente: p.calidad.kpis[0].fuente },
+    { valor: 0, unidad: '€', etiqueta: 'Coste total', detalle: 'sobremesa + GitHub + Netlify', fuente: 'CLAUDE.md' },
+  ]);
+  const primero = n.p1.cuota_mensual[0], ultimo = n.p1.cuota_mensual[n.p1.cuota_mensual.length - 1];
+  pintarKpis(document.getElementById('p1-kpis'), [
+    { valor: ultimo.pct_no_humano, unidad: '%', etiqueta: `de los eventos de PR no son humanos (${fmt.mes(ultimo.mes)})`, detalle: `${fmt.pct(primero.pct_no_humano)} en ${fmt.mes(primero.mes)}`, fuente: n.p1.fuente },
+    { valor: ultimo.pct_agente_ia, unidad: '%', etiqueta: `los generan agentes de IA (${fmt.mes(ultimo.mes)})`, detalle: `${fmt.pct(primero.pct_agente_ia, 2)} en ${fmt.mes(primero.mes)}`, fuente: n.p1.fuente },
+  ]);
+  const h = n.p2.por_clase.find(r => r.autor_clase === 'humano'), dep = n.p2.por_clase.find(r => r.autor_clase === 'bot_dependencias');
+  pintarKpis(document.getElementById('p2-kpis'), [
+    { valor: h.mediana_min_merge, unidad: 'min', etiqueta: 'mediana hasta el merge, PR humano', detalle: `${fmt.entero(h.con_merge_observable)} PRs con merge medible`, fuente: n.p2.fuente },
+    { valor: dep.mediana_min_merge, unidad: 'min', etiqueta: 'mediana hasta el merge, bot de dependencias', detalle: `${fmt.dec(dep.mediana_min_merge / h.mediana_min_merge, 0)}× un humano`, fuente: n.p2.fuente },
+  ]);
+  const limpias = n.p3.retencion.filter(r => r.pct_mes_1 != null).slice(1);
+  const m1 = limpias.map(r => r.pct_mes_1), m3 = limpias.map(r => r.pct_mes_3).filter(x => x != null);
+  pintarKpis(document.getElementById('p3-kpis'), [
+    { valor: `${fmt.dec(Math.min(...m1), 0)}–${fmt.dec(Math.max(...m1), 0)}`, unidad: '%', etiqueta: 'de los contribuyentes nuevos vuelven al mes siguiente', detalle: 'cohortes de sep 25 a feb 26', fuente: n.p3.fuente },
+    { valor: `${fmt.dec(Math.min(...m3), 1)}–${fmt.dec(Math.max(...m3), 1)}`, unidad: '%', etiqueta: 'siguen activos a los tres meses', detalle: 'cohortes de sep 25 a dic 25', fuente: n.p3.fuente },
+  ]);
+};
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>

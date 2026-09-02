@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Métricas del pipeline · GH Archive</title>
+<meta name="description" content="Volumen, disco, tiempos, calidad, fuente e incidentes del pipeline sobre GH Archive. Cada cifra medida y trazable a docs/metrics.md.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/app.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+</head>
+<body>
+
+<header class="sticky top-0 z-40 border-b backdrop-blur" style="border-color: var(--borde); background: color-mix(in oklab, var(--fondo) 85%, transparent)">
+  <nav class="contenedor flex items-center justify-between h-14">
+    <a href="/" class="font-semibold text-sm tracking-tight">GH Archive · bots y humanos</a>
+    <div class="flex items-center gap-1">
+      <a href="/" class="nav-enlace">Overview</a>
+      <a href="/metricas.html" class="nav-enlace" aria-current="page">BI del pipeline</a>
+      <a href="/dashboard/" class="nav-enlace">Dashboard</a>
+      <a href="https://github.com/mguerrerov/Pyspark-GHArchive" class="nav-enlace" rel="noopener">GitHub</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+<section class="seccion pt-14 sm:pt-20">
+  <div class="contenedor">
+    <span class="chip">Business intelligence del propio pipeline</span>
+    <h1 class="text-3xl sm:text-4xl font-semibold mt-4 max-w-3xl leading-tight">Todo lo que se procesó, cuánto ocupó, cuánto tardó y qué salió mal</h1>
+    <p class="subtitulo mt-4">Ninguna cifra de esta página es una estimación. Cada una está en <a class="enlace" href="https://github.com/mguerrerov/Pyspark-GHArchive/blob/main/docs/metrics.md" rel="noopener">docs/metrics.md</a> con su fecha, y el número de línea aparece al pasar el ratón por encima. Cuando una medición fue superada por otra mejor, aquí sólo está la vigente.</p>
+    <nav class="flex flex-wrap gap-2 mt-6 text-sm">
+      <a href="#volumen" class="boton">Volumen</a><a href="#disco" class="boton">Disco</a><a href="#tiempos" class="boton">Tiempos</a><a href="#calidad" class="boton">Calidad</a><a href="#fuente" class="boton">Fuente</a><a href="#incidentes" class="boton">Incidentes</a><a href="#ficha" class="boton">Ficha técnica</a>
+    </nav>
+  </div>
+</section>
+
+<!-- ============================================================ volumen -->
+<section id="volumen" class="seccion border-t" style="border-color: var(--borde)">
+  <div class="contenedor">
+    <h2 class="titulo">Volumen</h2>
+    <p class="subtitulo">361 días completos de GH Archive, del 13 de agosto de 2025 al 15 de agosto de 2026, con las 24 horas de cada día verificadas en bronze. Se publican 214: el resto cae en el tramo en que la fuente se degradó.</p>
+    <div class="kpi-rejilla mt-6" id="volumen-kpis"></div>
+    <div class="grid lg:grid-cols-2 gap-4 mt-6">
+      <div class="panel">
+        <h3 class="text-sm font-medium mb-2">Filas por capa y tabla <span class="chip ml-1">escala log</span></h3>
+        <div class="grafico !h-96" data-grafico="embudo"></div>
+        <p class="fuente">Bronze y silver tienen las mismas filas porque bronze sólo trae 12.364 duplicados (0,0009 %). Gold es otra cosa: fct_actividad_contribuyente tiene grano actor × repo × mes.</p>
+      </div>
+      <div class="panel">
+        <h3 class="text-sm font-medium mb-2">Silver por lote trimestral: duración</h3>
+        <div class="grafico" data-grafico="lotes_silver"></div>
+        <p class="fuente">El primer lote es el más lento con menos filas: es el tramo con el payload completo, tres veces más ancho. El último es el más rápido con más filas: tramo degradado, casi todo PushEvent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ disco -->
+<section id="disco" class="seccion border-t" style="border-color: var(--borde)">
+  <div class="contenedor">
+    <h2 class="titulo">Disco</h2>
+    <p class="subtitulo">El presupuesto era un disco de 250 GB del autor. La fuente son unos 734 GiB al año comprimidos; bronze los deja en 149,4 GiB gracias a zstd y a escribir sólo las columnas que las preguntas necesitan.</p>
+    <div class="kpi-rejilla mt-6" id="disco-kpis"></div>
+    <div class="grid lg:grid-cols-2 gap-4 mt-6">
+      <div class="panel">
+        <h3 class="text-sm font-medium mb-2">Tamaño por capa <span class="chip ml-1">escala log</span></h3>
+        <div class="grafico" data-grafico="disco"></div>
+        <p class="fuente">De 734 GiB de fuente a 0,09 MB publicados: siete órdenes de magnitud. Silver/eventos es el 23,9 % de bronze; silver/pr_eventos, el 2,2 %.</p>
+      </div>
+      <div class="panel">
+        <h3 class="text-sm font-medium mb-2">Cómo se eligió la compresión de bronze (un día, 2,012 GiB en .gz)</h3>
+        <div class="grafico" data-grafico="compresion"></div>
+        <p class="fuente">Snappy con todas las columnas ocupaba 1,79× más que el .gz de origen. zstd más proyección de columnas lo deja en 0,536× y además es 4 veces más rápido de escribir.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ tiempos -->
+<section id="tiempos" class="seccion border-t" style="border-color: var(--borde)">
+  <div class="contenedor">
+    <h2 class="titulo">Tiempos</h2>
+    <p class="subtitulo">Todo en un Ryzen 7 5800X con 32 GB de RAM. Spark en modo local para silver; DuckDB a un solo hilo para gold, que fue la única forma de que el temporal no se comiera el disco.</p>
+    <div class="kpi-rejilla mt-6" id="tiempos-kpis"></div>
+    <div class="grid lg:grid-cols-2 gap-4 mt-6">
+      <div class="panel">
+        <h3 class="text-sm font-medium mb-2">dbt run: duración por modelo (run definitivo, 1 hilo, 24 GB)</h3>
+        <div class="grafico !h-80" data-grafico="dbt_modelos"></div>
+        <p class="fuente">Los tres modelos que leen stg_eventos (1.315 M filas) se llevan el 95 % del tiempo. El peor, fct_actividad_contribuyente, alcanzó un pico de 301,8 GiB de temporal.</p>
+      </div>
+      <div class="panel">
+        <h3 class="text-sm font-medium mb-3">Lo que más costó, en orden</h3>
+        <div id="tiempos-tabla"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ calidad -->
+<section id="calidad" class="seccion border-t" style="border-color: var(--borde)">
+  <div class="contenedor">
+    <h2 class="titulo">Calidad</h2>
+    <p class="subtitulo">Los tests que existían decían que todo estaba bien mientras a silver le faltaban 3,6 millones de filas. La reconciliación bronze-silver por día, ids distintos contra filas, es la que lo detectó, y hoy da cero.</p>
+    <div class="kpi-rejilla mt-6" id="calidad-kpis"></div>
+    <div class="grid lg:grid-cols-2 gap-4 mt-6">
+      <div class="panel">
+        <h3 class="text-sm font-medium mb-3">La reconciliación, paso a paso</h3>
+        <div id="reconciliacion-tabla"></div>
+        <p class="fuente">El segundo paso dejó 12.364 filas de menos que no eran pérdida: son los duplicados que silver elimina por diseño. Comparar filas con filas daba un falso positivo permanente.</p>
+      </div>
+      <div class="panel">
+        <h3 class="text-sm font-medium mb-3">Tests de dbt, de 4 errores a 0</h3>
+        <div id="tests-tabla"></div>
+        <p class="fuente">El último error era un repo nulo: 12.863 eventos con <code>"repo": {}</code> en el JSON de origen, forks a repositorios privados. Se excluyen de dim_repo con el motivo documentado.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ fuente -->
+<section id="fuente" class="seccion border-t" style="border-color: var(--borde)">
+  <div class="contenedor">
+    <h2 class="titulo">La fuente cambió tres veces bajo los pies</h2>
+    <p class="subtitulo">GH Archive es un servicio gratuito mantenido por una persona. En un año cambió de formato, dejó de publicar la señal de merge durante dos meses y, desde marzo de 2026, dejó de publicar casi todo lo que no fuera un push. Nada de esto está documentado: se detectó midiendo.</p>
+    <div class="kpi-rejilla mt-6" id="fuente-kpis"></div>
+    <div class="grid lg:grid-cols-2 gap-4 mt-6">
+      <div class="panel lg:col-span-2">
+        <h3 class="text-sm font-medium mb-2">Cuota diaria de PushEvent y PullRequestEvent sobre el total de eventos</h3>
+        <div class="grafico" data-grafico="degradacion"></div>
+        <p class="fuente">El corte se puso sobre la cuota de PR, no sobre la de push: las preguntas 1 y 2 viven de los PRs. Un umbral de push ≥ 80 % habría dado 2026-05-25, dos meses tarde. Fuente: docs/degradacion_fuente.json.</p>
+      </div>
+      <div class="panel">
+        <h3 class="text-sm font-medium mb-2">Merges observados por mes</h3>
+        <div class="grafico" data-grafico="merges"></div>
+        <p class="fuente">Noviembre de 2025 tiene cero merges con 9,9 millones de eventos de PR. Hasta el 8 de octubre el merge llega como <code>closed</code> + <code>merged</code>; desde el 2 de diciembre como acción <code>merged</code>; entre medias, no llega.</p>
+      </div>
+      <div class="panel">
+        <h3 class="text-sm font-medium mb-2">Diez años de bots: % de eventos de cuentas [bot], una hora de agosto de cada año</h3>
+        <div class="grafico" data-grafico="historico_bots"></div>
+        <p class="fuente">De la exploración inicial. 2026 se deja fuera: con el payload recortado el 10,2 % que sale no es comparable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ incidentes -->
+<section id="incidentes" class="seccion border-t" style="border-color: var(--borde)">
+  <div class="contenedor">
+    <h2 class="titulo">Incidentes</h2>
+    <p class="subtitulo">Lo que salió mal, medido, y cómo se arregló. Todos comparten la misma causa de fondo: decidir sobre una afirmación plausible sin haberla medido.</p>
+    <div class="panel mt-6 overflow-x-auto" id="incidentes-tabla"></div>
+  </div>
+</section>
+
+<!-- ============================================================ ficha -->
+<section id="ficha" class="seccion border-t" style="border-color: var(--borde)">
+  <div class="contenedor">
+    <h2 class="titulo">Ficha técnica</h2>
+    <div class="grid md:grid-cols-2 gap-4 mt-6">
+      <div class="panel"><h3 class="text-sm font-medium mb-3">Máquina</h3><div id="ficha-maquina"></div></div>
+      <div class="panel"><h3 class="text-sm font-medium mb-3">Software</h3><div id="ficha-software"></div></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="border-t py-10" style="border-color: var(--borde)">
+  <div class="contenedor flex flex-wrap items-center justify-between gap-4 text-sm" style="color: var(--tinta-2)">
+    <p>Marcos Guerrero · <a class="enlace" href="https://github.com/mguerrerov/Pyspark-GHArchive" rel="noopener">código y documentación en GitHub</a></p>
+    <p>Fuente de cada cifra: <a class="enlace" href="https://github.com/mguerrerov/Pyspark-GHArchive/blob/main/docs/metrics.md" rel="noopener">docs/metrics.md</a> · <a class="enlace" href="https://github.com/mguerrerov/Pyspark-GHArchive/blob/main/docs/decisions.md" rel="noopener">docs/decisions.md</a></p>
+  </div>
+</footer>
+
+<script>
+window.pintarPagina = (n, p, u) => {
+  const { pintarKpis, tabla, fmt } = u;
+  const $ = (id) => document.getElementById(id);
+  pintarKpis($('volumen-kpis'), p.volumen.kpis);
+  pintarKpis($('disco-kpis'), p.disco.kpis);
+  pintarKpis($('tiempos-kpis'), p.tiempos.kpis);
+  pintarKpis($('calidad-kpis'), p.calidad.kpis);
+  pintarKpis($('fuente-kpis'), p.fuente.kpis);
+
+  const seg = (s) => s >= 3600 ? `${Math.floor(s / 3600)} h ${String(Math.round((s % 3600) / 60)).padStart(2, '0')} min` : s >= 60 ? `${Math.floor(s / 60)} min ${String(Math.round(s % 60)).padStart(2, '0')} s` : `${fmt.dec(s, 1)} s`;
+  const tiempos = [
+    { que: 'dbt run, 8 modelos (gold entero)', s: p.tiempos.kpis[2].valor, f: p.tiempos.kpis[2].fuente },
+    { que: 'Reproceso completo de silver, 361 días', s: p.tiempos.kpis[1].valor * 60, f: p.tiempos.kpis[1].fuente },
+    { que: 'Backfill del tramo B: descarga + bronze, 305 días', s: p.tiempos.kpis[0].valor * 3600, f: p.tiempos.kpis[0].fuente },
+    { que: 'dbt test, 40 tests', s: p.tiempos.kpis[3].valor, f: p.tiempos.kpis[3].fuente },
+    { que: 'Descargar un día (24 ficheros, 6 conexiones)', s: p.tiempos.kpis[4].valor, f: p.tiempos.kpis[4].fuente },
+    { que: 'Silver de un día con payload completo', s: p.tiempos.silver_por_dia.completo_s, f: p.tiempos.silver_por_dia.fuente },
+  ];
+  tabla($('tiempos-tabla'), [
+    { titulo: 'Paso', campo: 'que', titleDe: 'f' },
+    { titulo: 'Duración', num: true, render: r => seg(r.s) },
+  ], tiempos);
+
+  tabla($('reconciliacion-tabla'), [
+    { titulo: 'Paso', campo: 'paso', titleDe: 'fuente' },
+    { titulo: 'Filas de menos', num: true, render: r => fmt.entero(r.filas_de_menos) },
+    { titulo: 'Días descuadrados', num: true, render: r => `${r.dias_descuadrados} / 361` },
+  ], p.calidad.reconciliacion);
+  tabla($('tests-tabla'), [
+    { titulo: 'Momento', campo: 'momento', titleDe: 'fuente' },
+    { titulo: 'Errores', num: true, campo: 'errores' },
+  ], p.calidad.tests_dbt_historia);
+
+  tabla($('incidentes-tabla'), [
+    { titulo: 'Fecha', campo: 'fecha', titleDe: 'fuente' },
+    { titulo: 'Qué pasó', render: r => `<strong>${r.titulo}</strong><br><span style="color: var(--tinta-3)">${r.efecto}</span>` },
+    { titulo: 'Cifra', campo: 'cifra' },
+    { titulo: 'Arreglo', campo: 'arreglo' },
+  ], p.incidentes);
+
+  tabla($('ficha-maquina'), [{ titulo: '', campo: 'clave', titleDe: 'fuente' }, { titulo: '', campo: 'valor' }], p.ficha.maquina);
+  tabla($('ficha-software'), [{ titulo: '', campo: 'clave', titleDe: 'fuente' }, { titulo: '', campo: 'valor' }], p.ficha.software);
+};
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>

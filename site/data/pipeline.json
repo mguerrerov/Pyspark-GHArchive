@@ -1,0 +1,655 @@
+{
+ "_nota": "Metricas de ingenieria del pipeline. Cada cifra sale literalmente de docs/metrics.md (campo fuente = linea) o de docs/decisions.md. No hay ninguna estimada. Se mantiene a mano: si cambia una medicion, cambia aqui y en metrics.md.",
+ "actualizado": "2026-09-02",
+ "volumen": {
+  "kpis": [
+   {
+    "id": "eventos_bronze",
+    "etiqueta": "Eventos en bronze",
+    "valor": 1319395759,
+    "unidad": "filas",
+    "fuente": "docs/metrics.md:700"
+   },
+   {
+    "id": "eventos_silver",
+    "etiqueta": "Eventos en silver (= ids distintos)",
+    "valor": 1319383395,
+    "unidad": "filas",
+    "fuente": "docs/metrics.md:860"
+   },
+   {
+    "id": "dias",
+    "etiqueta": "Dias procesados",
+    "valor": 361,
+    "unidad": "dias",
+    "fuente": "docs/metrics.md:766"
+   },
+   {
+    "id": "horas",
+    "etiqueta": "Pares (dia, hora) en bronze",
+    "valor": 8664,
+    "unidad": "horas",
+    "detalle": "361 x 24, ninguno falta",
+    "fuente": "docs/metrics.md:767"
+   },
+   {
+    "id": "dias_publicables",
+    "etiqueta": "Dias publicables",
+    "valor": 214,
+    "unidad": "dias",
+    "detalle": "2025-08-13 a 2026-03-14 (D36)",
+    "fuente": "docs/metrics.md:1027"
+   }
+  ],
+  "embudo": [
+   {
+    "capa": "bronze",
+    "tabla": "eventos",
+    "filas": 1319395759,
+    "fuente": "docs/metrics.md:700"
+   },
+   {
+    "capa": "silver",
+    "tabla": "eventos",
+    "filas": 1319383395,
+    "fuente": "docs/metrics.md:860"
+   },
+   {
+    "capa": "silver",
+    "tabla": "pr_eventos",
+    "filas": 99400474,
+    "fuente": "docs/metrics.md:507"
+   },
+   {
+    "capa": "gold",
+    "tabla": "fct_pr_evento",
+    "filas": 99400474,
+    "fuente": "docs/metrics.md:895"
+   },
+   {
+    "capa": "gold",
+    "tabla": "fct_pr_ciclo",
+    "filas": 52370476,
+    "fuente": "docs/metrics.md:894"
+   },
+   {
+    "capa": "gold",
+    "tabla": "fct_actividad_contribuyente",
+    "filas": 171739758,
+    "fuente": "docs/metrics.md:893"
+   },
+   {
+    "capa": "gold",
+    "tabla": "dim_repo",
+    "filas": 90233267,
+    "fuente": "docs/metrics.md:892"
+   },
+   {
+    "capa": "gold",
+    "tabla": "dim_actor",
+    "filas": 29545318,
+    "fuente": "docs/metrics.md:891"
+   },
+   {
+    "capa": "gold",
+    "tabla": "dim_fecha",
+    "filas": 368,
+    "fuente": "docs/metrics.md:682"
+   }
+  ],
+  "lotes_silver": [
+   {
+    "lote": "2025-08-13 a 2025-10-31",
+    "filas": 268441080,
+    "segundos": 3908.4,
+    "fuente": "docs/metrics.md:515"
+   },
+   {
+    "lote": "2025-11-01 a 2026-01-31",
+    "filas": 325204396,
+    "segundos": 2144.8,
+    "fuente": "docs/metrics.md:516"
+   },
+   {
+    "lote": "2026-02-01 a 2026-04-30",
+    "filas": 323560929,
+    "segundos": 2076.7,
+    "fuente": "docs/metrics.md:517"
+   },
+   {
+    "lote": "2026-05-01 a 2026-08-15",
+    "filas": 402189354,
+    "segundos": 778.8,
+    "fuente": "docs/metrics.md:518"
+   }
+  ]
+ },
+ "disco": {
+  "kpis": [
+   {
+    "id": "bronze_gib",
+    "etiqueta": "Bronze en disco",
+    "valor": 149.4,
+    "unidad": "GiB",
+    "fuente": "docs/metrics.md:528"
+   },
+   {
+    "id": "silver_gib",
+    "etiqueta": "Silver en disco",
+    "valor": 40.4,
+    "unidad": "GiB",
+    "fuente": "docs/metrics.md:529"
+   },
+   {
+    "id": "presupuesto",
+    "etiqueta": "Presupuesto de disco",
+    "valor": 232.8,
+    "unidad": "GiB",
+    "detalle": "250 GB del autor (D16)",
+    "fuente": "docs/metrics.md:269"
+   },
+   {
+    "id": "export_mb",
+    "etiqueta": "Agregados publicados",
+    "valor": 0.09,
+    "unidad": "MB",
+    "detalle": "9 ficheros Parquet",
+    "fuente": "docs/metrics.md:1183"
+   },
+   {
+    "id": "factor_export",
+    "etiqueta": "Reduccion del export (D41)",
+    "valor": 168,
+    "unidad": "x",
+    "detalle": "de 15,11 MB a 0,09 MB",
+    "fuente": "docs/metrics.md:1188"
+   }
+  ],
+  "capas": [
+   {
+    "capa": "Fuente (.gz, proyeccion anual medida)",
+    "gib": 734,
+    "ratio_vs_gz": 1.0,
+    "fuente": "docs/metrics.md:205"
+   },
+   {
+    "capa": "bronze (Parquet zstd, 4 tipos de evento)",
+    "gib": 150.53,
+    "ratio_vs_gz": null,
+    "fuente": "docs/metrics.md:611"
+   },
+   {
+    "capa": "silver/eventos",
+    "gib": 36.05,
+    "ratio_vs_bronze": 0.239,
+    "fuente": "docs/metrics.md:612"
+   },
+   {
+    "capa": "silver/pr_eventos",
+    "gib": 3.31,
+    "ratio_vs_bronze": 0.022,
+    "fuente": "docs/metrics.md:613"
+   }
+  ],
+  "compresion_bronze_un_dia": [
+   {
+    "variante": "snappy, todos los tipos",
+    "gib": 3.599,
+    "ratio_vs_gz": 1.788,
+    "segundos": 222.9,
+    "fuente": "docs/metrics.md:249"
+   },
+   {
+    "variante": "zstd, todos los tipos",
+    "gib": 1.723,
+    "ratio_vs_gz": 0.856,
+    "segundos": 135.0,
+    "fuente": "docs/metrics.md:250"
+   },
+   {
+    "variante": "zstd + proyeccion de columnas",
+    "gib": 1.078,
+    "ratio_vs_gz": 0.536,
+    "segundos": 53.3,
+    "fuente": "docs/metrics.md:251"
+   }
+  ],
+  "gz_un_dia_gib": {
+   "valor": 2.012,
+   "fecha": "2025-08-13",
+   "fuente": "docs/metrics.md:189"
+  },
+  "compresion_gz": {
+   "valor": 4.88,
+   "unidad": "x",
+   "detalle": "21,83 MiB comprimido / 106,50 MiB descomprimido, una hora",
+   "fuente": "docs/metrics.md:71"
+  }
+ },
+ "tiempos": {
+  "kpis": [
+   {
+    "id": "backfill_h",
+    "etiqueta": "Backfill del tramo B (descarga + bronze)",
+    "valor": 3.0,
+    "unidad": "h",
+    "detalle": "305 dias",
+    "fuente": "docs/metrics.md:470"
+   },
+   {
+    "id": "silver_min",
+    "etiqueta": "Reproceso completo de silver",
+    "valor": 244.4,
+    "unidad": "min",
+    "detalle": "361 dias, 0 fallos",
+    "fuente": "docs/metrics.md:820"
+   },
+   {
+    "id": "dbt_run_s",
+    "etiqueta": "dbt run (8 modelos)",
+    "valor": 52942,
+    "unidad": "s",
+    "detalle": "14 h 42 min, 1 thread, 24 GB",
+    "fuente": "docs/metrics.md:869"
+   },
+   {
+    "id": "dbt_test_s",
+    "etiqueta": "dbt test (40 tests)",
+    "valor": 1296,
+    "unidad": "s",
+    "detalle": "21 min 36 s",
+    "fuente": "docs/metrics.md:870"
+   },
+   {
+    "id": "descarga_dia_s",
+    "etiqueta": "Descargar un dia (24 ficheros)",
+    "valor": 23.2,
+    "unidad": "s",
+    "detalle": "88,70 MiB/s, 6 conexiones",
+    "fuente": "docs/metrics.md:231"
+   }
+  ],
+  "dbt_por_modelo": [
+   {
+    "modelo": "fct_actividad_contribuyente",
+    "segundos": 26220,
+    "etiqueta": "7 h 17 min",
+    "pico_temporal_gib": 301.8,
+    "fuente": "docs/metrics.md:877"
+   },
+   {
+    "modelo": "dim_repo",
+    "segundos": 15540,
+    "etiqueta": "4 h 19 min",
+    "pico_temporal_gib": 179.5,
+    "fuente": "docs/metrics.md:878"
+   },
+   {
+    "modelo": "dim_actor",
+    "segundos": 8640,
+    "etiqueta": "2 h 24 min",
+    "pico_temporal_gib": 106.8,
+    "fuente": "docs/metrics.md:876"
+   },
+   {
+    "modelo": "fct_pr_ciclo",
+    "segundos": 1887,
+    "etiqueta": "31 min 27 s",
+    "pico_temporal_gib": 22.3,
+    "fuente": "docs/metrics.md:879"
+   },
+   {
+    "modelo": "fct_pr_evento",
+    "segundos": 534,
+    "etiqueta": "8 min 54 s",
+    "pico_temporal_gib": 0,
+    "fuente": "docs/metrics.md:880"
+   },
+   {
+    "modelo": "dim_fecha",
+    "segundos": 72.96,
+    "etiqueta": "72,96 s",
+    "pico_temporal_gib": null,
+    "fuente": "docs/metrics.md:881"
+   }
+  ],
+  "silver_por_dia": {
+   "completo_s": 38,
+   "reducido_s": 25,
+   "fuente": "docs/metrics.md:821"
+  }
+ },
+ "calidad": {
+  "kpis": [
+   {
+    "id": "tests_dbt",
+    "etiqueta": "Tests de dbt en verde",
+    "valor": 40,
+    "de": 40,
+    "fuente": "docs/metrics.md:944"
+   },
+   {
+    "id": "tests_silver",
+    "etiqueta": "Comprobaciones de silver en verde",
+    "valor": 16,
+    "de": 16,
+    "fuente": "docs/metrics.md:384"
+   },
+   {
+    "id": "dias_descuadrados",
+    "etiqueta": "Dias descuadrados bronze/silver",
+    "valor": 0,
+    "de": 361,
+    "fuente": "docs/metrics.md:861"
+   },
+   {
+    "id": "filas_recuperadas",
+    "etiqueta": "Filas recuperadas al reprocesar silver",
+    "valor": 3582707,
+    "unidad": "filas",
+    "fuente": "docs/metrics.md:851"
+   },
+   {
+    "id": "duplicados",
+    "etiqueta": "Duplicados reales en bronze",
+    "valor": 12364,
+    "unidad": "filas",
+    "detalle": "0,0009 %",
+    "fuente": "docs/metrics.md:826"
+   }
+  ],
+  "reconciliacion": [
+   {
+    "paso": "Primera reconciliacion (filas contra filas)",
+    "filas_de_menos": 3595071,
+    "dias_descuadrados": 286,
+    "fuente": "docs/metrics.md:702"
+   },
+   {
+    "paso": "Tras reprocesar silver entero",
+    "filas_de_menos": 12364,
+    "dias_descuadrados": 194,
+    "fuente": "docs/metrics.md:826"
+   },
+   {
+    "paso": "Con el criterio correcto (ids distintos contra filas)",
+    "filas_de_menos": 0,
+    "dias_descuadrados": 0,
+    "fuente": "docs/metrics.md:861"
+   }
+  ],
+  "tests_dbt_historia": [
+   {
+    "momento": "2026-08-26, primer run completo",
+    "errores": 4,
+    "fuente": "docs/metrics.md:742-747",
+    "comprobado": "638"
+   },
+   {
+    "momento": "2026-08-27, tras reprocesar silver",
+    "errores": 1,
+    "fuente": "docs/metrics.md:903"
+   },
+   {
+    "momento": "2026-08-27, tras excluir el repo nulo",
+    "errores": 0,
+    "fuente": "docs/metrics.md:944"
+   }
+  ],
+  "repo_nulo": {
+   "eventos": 12863,
+   "actores": 9872,
+   "detalle": "\"repo\": {} en el JSON de origen; forks a repos privados",
+   "fuente": "docs/metrics.md:792"
+  }
+ },
+ "fuente": {
+  "kpis": [
+   {
+    "id": "corte",
+    "etiqueta": "Corte de degradacion",
+    "valor": "2026-03-15",
+    "detalle": "primer dia en que la cuota de PR no vuelve al 10 %",
+    "fuente": "docs/metrics.md:1010"
+   },
+   {
+    "id": "cambio_formato",
+    "etiqueta": "Cambio de formato del payload",
+    "valor": "2025-10-09",
+    "detalle": "desaparecen lenguaje, instantes del PR y commits",
+    "fuente": "docs/metrics.md:168"
+   },
+   {
+    "id": "hueco",
+    "etiqueta": "Dias colapsados de la fuente",
+    "valor": 6,
+    "unidad": "dias",
+    "detalle": "2025-10-09 a 10-14, 0,4 % del volumen",
+    "fuente": "docs/metrics.md:169-170",
+    "comprobado": "seis días"
+   },
+   {
+    "id": "tramo_ciego",
+    "etiqueta": "Tramo sin senal de merge",
+    "valor": "2025-10-09 a 2025-12-01",
+    "fuente": "docs/metrics.md:1122"
+   },
+   {
+    "id": "caida_pr",
+    "etiqueta": "Caida de eventos de PR, enero a agosto 2026",
+    "valor": 98,
+    "unidad": "%",
+    "detalle": "12.871.161 a 274.713",
+    "fuente": "docs/metrics.md:979"
+   }
+  ],
+  "formatos_merge": [
+   {
+    "tramo": "hasta 2025-10-08",
+    "como_llega": "accion closed + pull_request.merged",
+    "merges_mes_ejemplo": 2855866,
+    "mes_ejemplo": "2025-09",
+    "fuente": "docs/metrics.md:1088"
+   },
+   {
+    "tramo": "2025-10-09 a 2025-12-01",
+    "como_llega": "no llega",
+    "merges_mes_ejemplo": 0,
+    "mes_ejemplo": "2025-11",
+    "fuente": "docs/metrics.md:1090"
+   },
+   {
+    "tramo": "desde 2025-12-02",
+    "como_llega": "accion propia merged",
+    "merges_mes_ejemplo": 2172657,
+    "mes_ejemplo": "2025-12",
+    "fuente": "docs/metrics.md:1091"
+   }
+  ],
+  "merges_por_mes": [
+   {
+    "mes": "2025-08",
+    "merges": 1725639,
+    "fuente": "docs/metrics.md:1087"
+   },
+   {
+    "mes": "2025-09",
+    "merges": 2855866,
+    "fuente": "docs/metrics.md:1088"
+   },
+   {
+    "mes": "2025-10",
+    "merges": 802979,
+    "fuente": "docs/metrics.md:1089"
+   },
+   {
+    "mes": "2025-11",
+    "merges": 0,
+    "fuente": "docs/metrics.md:1090"
+   },
+   {
+    "mes": "2025-12",
+    "merges": 2172657,
+    "fuente": "docs/metrics.md:1091"
+   },
+   {
+    "mes": "2026-01",
+    "merges": 2231268,
+    "fuente": "docs/metrics.md:1092"
+   },
+   {
+    "mes": "2026-02",
+    "merges": 2044854,
+    "fuente": "docs/metrics.md:1093"
+   },
+   {
+    "mes": "2026-03",
+    "merges": 892284,
+    "fuente": "docs/metrics.md:1094"
+   }
+  ],
+  "historico_bots_pct": [
+   {
+    "anio": 2016,
+    "pct": 0.0
+   },
+   {
+    "anio": 2018,
+    "pct": 1.12
+   },
+   {
+    "anio": 2020,
+    "pct": 8.51
+   },
+   {
+    "anio": 2022,
+    "pct": 12.47
+   },
+   {
+    "anio": 2023,
+    "pct": 13.68
+   },
+   {
+    "anio": 2024,
+    "pct": 18.09
+   },
+   {
+    "anio": 2025,
+    "pct": 20.3
+   }
+  ],
+  "_nota_historico": "Una hora de agosto de cada anio, eventos de cuentas [bot]. docs/exploracion.md:63-70. El 10,20 % de 2026 no es comparable (formato recortado) y se deja fuera.",
+  "_nota_cuota": "La serie diaria de cuota de PR esta en negocio.json > degradacion, leida de docs/degradacion_fuente.json (361 dias)."
+ },
+ "incidentes": [
+  {
+   "fecha": "2026-08-17",
+   "titulo": "El shuffle de Spark lleno el disco de sistema",
+   "cifra": "610,80 GiB liberados; 581,67 en un solo blockmgr de un job muerto",
+   "efecto": "IOException al escribir silver; C: paso de 90,5 GB libres a 0,5 GB",
+   "arreglo": "spark.local.dir al disco del lago y limpieza del staging huerfano (D24, D25)",
+   "fuente": "docs/metrics.md:486-498"
+  },
+  {
+   "fecha": "2026-08-25",
+   "titulo": "El temporal de DuckDB crecia a 1,71 GiB/min",
+   "cifra": "594 GiB acumulados; 93 GiB libres, ~54 min de margen",
+   "efecto": "dbt run con 8 threads y 12 GB cortado tras 6 h 53 min sin terminar ningun mart",
+   "arreglo": "memory_limit a 24 GB y --threads 1: el pico del peor modelo bajo a 301,8 GiB (D34)",
+   "fuente": "docs/metrics.md:625-637"
+  },
+  {
+   "fecha": "2026-08-24",
+   "titulo": "dim_fecha tardo 273 veces mas",
+   "cifra": "2.925 s frente a 10,72 s",
+   "efecto": "un modelo trivial peleando por el mismo temporal que los grandes",
+   "arreglo": "serializar los modelos (D34)",
+   "fuente": "docs/metrics.md:641-642"
+  },
+  {
+   "fecha": "2026-08-26",
+   "titulo": "Silver estaba incompleto desde el principio",
+   "cifra": "3.595.071 filas de menos en 286 dias",
+   "efecto": "escrituras cortadas en bronze -> silver que ninguna verificacion anterior detectaba",
+   "arreglo": "reconciliacion bronze-silver por dia (D26) y reproceso completo: 3.582.707 filas recuperadas",
+   "fuente": "docs/metrics.md:702-703, 851"
+  },
+  {
+   "fecha": "2026-08-27",
+   "titulo": "date_diff('minute') anulaba la pregunta 2",
+   "cifra": "1.204.562 PRs con latencia de merge = 0",
+   "efecto": "toda latencia por debajo del minuto valia 0: la mediana salia 0,00 h para bots y humanos",
+   "arreglo": "medir en segundos",
+   "fuente": "docs/metrics.md:918-923"
+  },
+  {
+   "fecha": "2026-09-02",
+   "titulo": "El dashboard publicado se servia sin CSS ni JS",
+   "cifra": "3 despliegues en verde con el sitio roto",
+   "efecto": "EVIDENCE_BASE_PATH en el entorno no hace nada; el HTML pedia /_app/ en la raiz del dominio",
+   "arreglo": "deployment.basePath en evidence.config.yaml",
+   "fuente": "commit 8b83e5f"
+  }
+ ],
+ "ficha": {
+  "maquina": [
+   {
+    "clave": "CPU",
+    "valor": "AMD Ryzen 7 5800X, 8 nucleos / 16 hilos",
+    "fuente": "docs/metrics.md:15"
+   },
+   {
+    "clave": "RAM",
+    "valor": "31,9 GB",
+    "fuente": "docs/metrics.md:16"
+   },
+   {
+    "clave": "Disco del lago",
+    "valor": "D:, 1.378,2 GB libres al empezar",
+    "fuente": "docs/metrics.md:18"
+   },
+   {
+    "clave": "Coste",
+    "valor": "0 EUR",
+    "fuente": "CLAUDE.md"
+   }
+  ],
+  "software": [
+   {
+    "clave": "Python",
+    "valor": "3.10.6",
+    "fuente": "docs/metrics.md:25"
+   },
+   {
+    "clave": "JDK",
+    "valor": "Temurin 17.0.20+8",
+    "fuente": "docs/metrics.md:26"
+   },
+   {
+    "clave": "PySpark",
+    "valor": "3.5.3",
+    "fuente": "docs/metrics.md:27"
+   },
+   {
+    "clave": "dbt-core / dbt-duckdb",
+    "valor": "1.9.1",
+    "fuente": "docs/metrics.md:29"
+   },
+   {
+    "clave": "DuckDB",
+    "valor": "1.1.3",
+    "fuente": "docs/metrics.md:30"
+   },
+   {
+    "clave": "httpx",
+    "valor": "0.28.1",
+    "fuente": "docs/metrics.md:31"
+   },
+   {
+    "clave": "Evidence",
+    "valor": "40.1.8",
+    "fuente": "dashboard/package.json"
+   }
+  ]
+ }
+}

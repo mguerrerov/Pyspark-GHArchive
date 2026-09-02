@@ -1195,3 +1195,51 @@ encontrado.
 
 Tope de seguridad del script bajado de 40 MB a **5 MB** por fichero: con el
 mayor en 78 KB, el tope anterior no vigilaba nada.
+
+## Retencion por cohorte y datos del sitio estatico — 2026-09-02
+
+`exportar_sitio.py` lee los nueve Parquet de `dashboard/sources/gharchive/` y
+escribe `site/data/negocio.json` (**17,5 KB**). Las cifras de retencion no
+estaban escritas en ningun documento hasta ahora; salen de
+`p3_retencion_cohortes.parquet` (sin bots, ventana hasta 2026-03).
+
+| Cohorte | Nuevos en el repo | Vuelven al mes 1 | Vuelven al mes 3 |
+|---|---:|---:|---:|
+| 2025-08 (inflada) | 4.311.717 | 27,2 % | 13,2 % |
+| 2025-09 | 5.666.552 | 16,5 % | 7,5 % |
+| 2025-10 | 4.516.180 | 18,9 % | 6,5 % |
+| 2025-11 | 4.955.082 | 17,1 % | 5,2 % |
+| 2025-12 | 4.717.441 | 15,3 % | 5,3 % |
+| 2026-01 | 4.802.560 | 16,4 % | — |
+| 2026-02 | 4.832.477 | 18,2 % | — |
+| 2026-03 | 5.511.655 | — | — |
+
+"Nuevo" es nuevo **en ese repositorio** (grano actor × repo × mes). La cohorte
+de agosto no es comparable: todo el que ya contribuia antes de la ventana cae
+en ella como nuevo, y por eso retiene casi el doble. Sobre las cohortes
+limpias, entre el 15 y el 19 % de los contribuyentes nuevos de un repo vuelven
+al mes siguiente, y entre el 5 y el 7,5 % siguen a los tres meses.
+
+Otras cifras del mismo export, leidas de los Parquet publicados:
+
+- Eventos de PR en la ventana: **80.622.603**, de los que el **42,0 %** no son
+  de humanos (`p1_actividad_mensual`).
+- Agentes de IA con mas eventos de PR: `coderabbitai[bot]` 2.596.797 ·
+  `gemini-code-assist[bot]` 825.852 · `chatgpt-codex-connector[bot]` 494.806 ·
+  `cursor[bot]` 286.156 · `cubic-dev-ai[bot]` 117.706 ·
+  `devin-ai-integration[bot]` 79.478 · `claude[bot]` 64.130 (`p1_top_agentes`).
+- Repos con mas contribuyentes activos acumulados: `openclaw/openclaw` 91.248 ·
+  `anthropics/claude-code` 43.174 · `anthropics/skills` 37.426
+  (`p3_repos_saldo`, tras D41).
+
+## Sitio estatico y build de Netlify — 2026-09-02
+
+`construir_sitio.sh` en local (Evidence + Tailwind + ensamblado):
+
+- `dist/` completo: **111 MB**, de los que casi todo es el build de Evidence
+  bajo `dist/dashboard/` (DuckDB-WASM y los chunks de SvelteKit).
+- `site/data/`: `negocio.json` 48,7 KB + `pipeline.json` (a mano). Los dos
+  JSON son lo unico que el sitio estatico pide por red ademas de ECharts.
+- Tailwind v4.3.3 compila `assets/app.css` en **55 ms**.
+- `comprobar_sitio.py`: **89 entradas con fuente, 59 valores comprobados,
+  0 fallos** contra `docs/metrics.md`.

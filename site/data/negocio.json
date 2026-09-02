@@ -1,0 +1,2764 @@
+{
+ "generado": "2026-09-02",
+ "degradacion": {
+  "fuente": "docs/degradacion_fuente.json (degradacion.py sobre bronze)",
+  "corte_pr": "2026-03-15",
+  "mensual": [
+   {
+    "mes": "2025-08",
+    "eventos": 66473947,
+    "pct_push": 63.9,
+    "pct_pr": 10.78
+   },
+   {
+    "mes": "2025-09",
+    "eventos": 112675907,
+    "pct_push": 63.7,
+    "pct_pr": 10.89
+   },
+   {
+    "mes": "2025-10",
+    "eventos": 89287757,
+    "pct_push": 68.2,
+    "pct_pr": 10.26
+   },
+   {
+    "mes": "2025-11",
+    "eventos": 106354394,
+    "pct_push": 70.6,
+    "pct_pr": 9.29
+   },
+   {
+    "mes": "2025-12",
+    "eventos": 109518509,
+    "pct_push": 69.1,
+    "pct_pr": 11.49
+   },
+   {
+    "mes": "2026-01",
+    "eventos": 109326444,
+    "pct_push": 68.3,
+    "pct_pr": 11.77
+   },
+   {
+    "mes": "2026-02",
+    "eventos": 98326748,
+    "pct_push": 67.1,
+    "pct_pr": 11.95
+   },
+   {
+    "mes": "2026-03",
+    "eventos": 116247290,
+    "pct_push": 72.2,
+    "pct_pr": 7.66
+   },
+   {
+    "mes": "2026-04",
+    "eventos": 108985211,
+    "pct_push": 73.4,
+    "pct_pr": 7.11
+   },
+   {
+    "mes": "2026-05",
+    "eventos": 112261084,
+    "pct_push": 79.0,
+    "pct_pr": 4.27
+   },
+   {
+    "mes": "2026-06",
+    "eventos": 112238308,
+    "pct_push": 85.0,
+    "pct_pr": 1.36
+   },
+   {
+    "mes": "2026-07",
+    "eventos": 122830070,
+    "pct_push": 91.9,
+    "pct_pr": 0.37
+   },
+   {
+    "mes": "2026-08",
+    "eventos": 54857726,
+    "pct_push": 94.5,
+    "pct_pr": 0.5
+   }
+  ],
+  "diaria": [
+   {
+    "fecha": "2025-08-13",
+    "pct_pr": 12.21,
+    "pct_push": 60.7
+   },
+   {
+    "fecha": "2025-08-15",
+    "pct_pr": 10.92,
+    "pct_push": 63.5
+   },
+   {
+    "fecha": "2025-08-16",
+    "pct_pr": 8.34,
+    "pct_push": 68.7
+   },
+   {
+    "fecha": "2025-08-17",
+    "pct_pr": 8.22,
+    "pct_push": 68.1
+   },
+   {
+    "fecha": "2025-08-18",
+    "pct_pr": 12.77,
+    "pct_push": 59.5
+   },
+   {
+    "fecha": "2025-08-19",
+    "pct_pr": 12.26,
+    "pct_push": 61.2
+   },
+   {
+    "fecha": "2025-08-20",
+    "pct_pr": 11.88,
+    "pct_push": 62.1
+   },
+   {
+    "fecha": "2025-08-21",
+    "pct_pr": 13.69,
+    "pct_push": 59.5
+   },
+   {
+    "fecha": "2025-08-22",
+    "pct_pr": 12.4,
+    "pct_push": 61.3
+   },
+   {
+    "fecha": "2025-08-23",
+    "pct_pr": 7.5,
+    "pct_push": 71.5
+   },
+   {
+    "fecha": "2025-08-24",
+    "pct_pr": 7.43,
+    "pct_push": 71.3
+   },
+   {
+    "fecha": "2025-08-25",
+    "pct_pr": 12.51,
+    "pct_push": 60.0
+   },
+   {
+    "fecha": "2025-08-26",
+    "pct_pr": 12.45,
+    "pct_push": 59.8
+   },
+   {
+    "fecha": "2025-08-27",
+    "pct_pr": 11.74,
+    "pct_push": 61.5
+   },
+   {
+    "fecha": "2025-08-28",
+    "pct_pr": 11.66,
+    "pct_push": 62.3
+   },
+   {
+    "fecha": "2025-08-29",
+    "pct_pr": 10.96,
+    "pct_push": 63.5
+   },
+   {
+    "fecha": "2025-08-30",
+    "pct_pr": 7.89,
+    "pct_push": 68.7
+   },
+   {
+    "fecha": "2025-08-31",
+    "pct_pr": 8.28,
+    "pct_push": 68.3
+   },
+   {
+    "fecha": "2025-09-01",
+    "pct_pr": 13.12,
+    "pct_push": 59.2
+   },
+   {
+    "fecha": "2025-09-02",
+    "pct_pr": 13.21,
+    "pct_push": 58.6
+   },
+   {
+    "fecha": "2025-09-03",
+    "pct_pr": 12.07,
+    "pct_push": 61.1
+   },
+   {
+    "fecha": "2025-09-04",
+    "pct_pr": 11.87,
+    "pct_push": 62.3
+   },
+   {
+    "fecha": "2025-09-05",
+    "pct_pr": 10.51,
+    "pct_push": 66.2
+   },
+   {
+    "fecha": "2025-09-06",
+    "pct_pr": 8.15,
+    "pct_push": 68.2
+   },
+   {
+    "fecha": "2025-09-07",
+    "pct_pr": 8.05,
+    "pct_push": 68.2
+   },
+   {
+    "fecha": "2025-09-08",
+    "pct_pr": 13.5,
+    "pct_push": 57.1
+   },
+   {
+    "fecha": "2025-09-09",
+    "pct_pr": 12.1,
+    "pct_push": 61.0
+   },
+   {
+    "fecha": "2025-09-10",
+    "pct_pr": 13.18,
+    "pct_push": 59.4
+   },
+   {
+    "fecha": "2025-09-11",
+    "pct_pr": 11.99,
+    "pct_push": 61.7
+   },
+   {
+    "fecha": "2025-09-12",
+    "pct_pr": 11.38,
+    "pct_push": 63.1
+   },
+   {
+    "fecha": "2025-09-13",
+    "pct_pr": 8.64,
+    "pct_push": 67.9
+   },
+   {
+    "fecha": "2025-09-14",
+    "pct_pr": 8.08,
+    "pct_push": 69.4
+   },
+   {
+    "fecha": "2025-09-15",
+    "pct_pr": 11.5,
+    "pct_push": 63.8
+   },
+   {
+    "fecha": "2025-09-16",
+    "pct_pr": 11.77,
+    "pct_push": 62.3
+   },
+   {
+    "fecha": "2025-09-17",
+    "pct_pr": 11.74,
+    "pct_push": 62.1
+   },
+   {
+    "fecha": "2025-09-18",
+    "pct_pr": 11.53,
+    "pct_push": 62.6
+   },
+   {
+    "fecha": "2025-09-19",
+    "pct_pr": 11.15,
+    "pct_push": 63.1
+   },
+   {
+    "fecha": "2025-09-20",
+    "pct_pr": 7.89,
+    "pct_push": 68.5
+   },
+   {
+    "fecha": "2025-09-21",
+    "pct_pr": 7.69,
+    "pct_push": 69.0
+   },
+   {
+    "fecha": "2025-09-22",
+    "pct_pr": 12.82,
+    "pct_push": 59.0
+   },
+   {
+    "fecha": "2025-09-23",
+    "pct_pr": 11.73,
+    "pct_push": 61.8
+   },
+   {
+    "fecha": "2025-09-24",
+    "pct_pr": 11.55,
+    "pct_push": 62.7
+   },
+   {
+    "fecha": "2025-09-25",
+    "pct_pr": 11.29,
+    "pct_push": 63.4
+   },
+   {
+    "fecha": "2025-09-26",
+    "pct_pr": 11.39,
+    "pct_push": 63.4
+   },
+   {
+    "fecha": "2025-09-27",
+    "pct_pr": 8.37,
+    "pct_push": 67.9
+   },
+   {
+    "fecha": "2025-09-28",
+    "pct_pr": 7.67,
+    "pct_push": 70.3
+   },
+   {
+    "fecha": "2025-09-29",
+    "pct_pr": 11.25,
+    "pct_push": 63.1
+   },
+   {
+    "fecha": "2025-09-30",
+    "pct_pr": 11.39,
+    "pct_push": 63.9
+   },
+   {
+    "fecha": "2025-10-01",
+    "pct_pr": 12.65,
+    "pct_push": 62.9
+   },
+   {
+    "fecha": "2025-10-02",
+    "pct_pr": 11.44,
+    "pct_push": 64.3
+   },
+   {
+    "fecha": "2025-10-03",
+    "pct_pr": 11.23,
+    "pct_push": 64.1
+   },
+   {
+    "fecha": "2025-10-04",
+    "pct_pr": 8.45,
+    "pct_push": 69.1
+   },
+   {
+    "fecha": "2025-10-05",
+    "pct_pr": 8.19,
+    "pct_push": 69.5
+   },
+   {
+    "fecha": "2025-10-06",
+    "pct_pr": 13.03,
+    "pct_push": 60.1
+   },
+   {
+    "fecha": "2025-10-07",
+    "pct_pr": 12.08,
+    "pct_push": 62.4
+   },
+   {
+    "fecha": "2025-10-08",
+    "pct_pr": 12.1,
+    "pct_push": 62.0
+   },
+   {
+    "fecha": "2025-10-15",
+    "pct_pr": 10.51,
+    "pct_push": 68.0
+   },
+   {
+    "fecha": "2025-10-16",
+    "pct_pr": 10.12,
+    "pct_push": 68.6
+   },
+   {
+    "fecha": "2025-10-17",
+    "pct_pr": 10.56,
+    "pct_push": 68.8
+   },
+   {
+    "fecha": "2025-10-18",
+    "pct_pr": 7.04,
+    "pct_push": 75.3
+   },
+   {
+    "fecha": "2025-10-19",
+    "pct_pr": 6.74,
+    "pct_push": 76.0
+   },
+   {
+    "fecha": "2025-10-20",
+    "pct_pr": 15.79,
+    "pct_push": 61.1
+   },
+   {
+    "fecha": "2025-10-21",
+    "pct_pr": 11.42,
+    "pct_push": 67.4
+   },
+   {
+    "fecha": "2025-10-22",
+    "pct_pr": 10.95,
+    "pct_push": 67.7
+   },
+   {
+    "fecha": "2025-10-23",
+    "pct_pr": 10.33,
+    "pct_push": 68.6
+   },
+   {
+    "fecha": "2025-10-24",
+    "pct_pr": 10.53,
+    "pct_push": 69.0
+   },
+   {
+    "fecha": "2025-10-25",
+    "pct_pr": 7.36,
+    "pct_push": 73.8
+   },
+   {
+    "fecha": "2025-10-26",
+    "pct_pr": 7.38,
+    "pct_push": 73.7
+   },
+   {
+    "fecha": "2025-10-27",
+    "pct_pr": 8.83,
+    "pct_push": 72.7
+   },
+   {
+    "fecha": "2025-10-28",
+    "pct_pr": 8.14,
+    "pct_push": 74.0
+   },
+   {
+    "fecha": "2025-10-29",
+    "pct_pr": 10.61,
+    "pct_push": 68.6
+   },
+   {
+    "fecha": "2025-10-30",
+    "pct_pr": 10.44,
+    "pct_push": 68.7
+   },
+   {
+    "fecha": "2025-10-31",
+    "pct_pr": 10.22,
+    "pct_push": 69.0
+   },
+   {
+    "fecha": "2025-11-01",
+    "pct_pr": 10.16,
+    "pct_push": 70.6
+   },
+   {
+    "fecha": "2025-11-02",
+    "pct_pr": 7.03,
+    "pct_push": 74.8
+   },
+   {
+    "fecha": "2025-11-03",
+    "pct_pr": 12.2,
+    "pct_push": 66.0
+   },
+   {
+    "fecha": "2025-11-04",
+    "pct_pr": 10.2,
+    "pct_push": 68.8
+   },
+   {
+    "fecha": "2025-11-05",
+    "pct_pr": 9.68,
+    "pct_push": 67.9
+   },
+   {
+    "fecha": "2025-11-06",
+    "pct_pr": 10.27,
+    "pct_push": 68.5
+   },
+   {
+    "fecha": "2025-11-07",
+    "pct_pr": 10.06,
+    "pct_push": 68.6
+   },
+   {
+    "fecha": "2025-11-08",
+    "pct_pr": 7.16,
+    "pct_push": 74.3
+   },
+   {
+    "fecha": "2025-11-09",
+    "pct_pr": 6.89,
+    "pct_push": 75.1
+   },
+   {
+    "fecha": "2025-11-10",
+    "pct_pr": 11.29,
+    "pct_push": 67.9
+   },
+   {
+    "fecha": "2025-11-11",
+    "pct_pr": 7.32,
+    "pct_push": 75.3
+   },
+   {
+    "fecha": "2025-11-12",
+    "pct_pr": 10.11,
+    "pct_push": 69.3
+   },
+   {
+    "fecha": "2025-11-13",
+    "pct_pr": 9.97,
+    "pct_push": 68.1
+   },
+   {
+    "fecha": "2025-11-14",
+    "pct_pr": 9.85,
+    "pct_push": 67.6
+   },
+   {
+    "fecha": "2025-11-15",
+    "pct_pr": 8.44,
+    "pct_push": 72.3
+   },
+   {
+    "fecha": "2025-11-16",
+    "pct_pr": 8.7,
+    "pct_push": 71.3
+   },
+   {
+    "fecha": "2025-11-17",
+    "pct_pr": 11.24,
+    "pct_push": 66.9
+   },
+   {
+    "fecha": "2025-11-18",
+    "pct_pr": 11.76,
+    "pct_push": 65.9
+   },
+   {
+    "fecha": "2025-11-19",
+    "pct_pr": 6.37,
+    "pct_push": 76.2
+   },
+   {
+    "fecha": "2025-11-20",
+    "pct_pr": 9.84,
+    "pct_push": 69.9
+   },
+   {
+    "fecha": "2025-11-21",
+    "pct_pr": 11.21,
+    "pct_push": 67.2
+   },
+   {
+    "fecha": "2025-11-22",
+    "pct_pr": 7.16,
+    "pct_push": 74.1
+   },
+   {
+    "fecha": "2025-11-23",
+    "pct_pr": 6.92,
+    "pct_push": 74.1
+   },
+   {
+    "fecha": "2025-11-24",
+    "pct_pr": 11.95,
+    "pct_push": 66.2
+   },
+   {
+    "fecha": "2025-11-25",
+    "pct_pr": 9.24,
+    "pct_push": 69.9
+   },
+   {
+    "fecha": "2025-11-26",
+    "pct_pr": 9.35,
+    "pct_push": 70.3
+   },
+   {
+    "fecha": "2025-11-27",
+    "pct_pr": 12.04,
+    "pct_push": 67.6
+   },
+   {
+    "fecha": "2025-11-28",
+    "pct_pr": 8.75,
+    "pct_push": 71.8
+   },
+   {
+    "fecha": "2025-11-29",
+    "pct_pr": 6.74,
+    "pct_push": 75.4
+   },
+   {
+    "fecha": "2025-11-30",
+    "pct_pr": 6.73,
+    "pct_push": 75.6
+   },
+   {
+    "fecha": "2025-12-01",
+    "pct_pr": 13.5,
+    "pct_push": 62.2
+   },
+   {
+    "fecha": "2025-12-02",
+    "pct_pr": 11.41,
+    "pct_push": 67.5
+   },
+   {
+    "fecha": "2025-12-03",
+    "pct_pr": 12.3,
+    "pct_push": 68.3
+   },
+   {
+    "fecha": "2025-12-04",
+    "pct_pr": 12.68,
+    "pct_push": 67.1
+   },
+   {
+    "fecha": "2025-12-05",
+    "pct_pr": 12.42,
+    "pct_push": 68.0
+   },
+   {
+    "fecha": "2025-12-06",
+    "pct_pr": 10.03,
+    "pct_push": 71.8
+   },
+   {
+    "fecha": "2025-12-07",
+    "pct_pr": 9.13,
+    "pct_push": 72.7
+   },
+   {
+    "fecha": "2025-12-08",
+    "pct_pr": 13.44,
+    "pct_push": 65.7
+   },
+   {
+    "fecha": "2025-12-09",
+    "pct_pr": 11.67,
+    "pct_push": 68.0
+   },
+   {
+    "fecha": "2025-12-10",
+    "pct_pr": 11.98,
+    "pct_push": 67.9
+   },
+   {
+    "fecha": "2025-12-11",
+    "pct_pr": 12.16,
+    "pct_push": 66.9
+   },
+   {
+    "fecha": "2025-12-12",
+    "pct_pr": 13.52,
+    "pct_push": 66.0
+   },
+   {
+    "fecha": "2025-12-13",
+    "pct_pr": 9.88,
+    "pct_push": 72.4
+   },
+   {
+    "fecha": "2025-12-14",
+    "pct_pr": 9.17,
+    "pct_push": 73.1
+   },
+   {
+    "fecha": "2025-12-15",
+    "pct_pr": 14.53,
+    "pct_push": 64.8
+   },
+   {
+    "fecha": "2025-12-16",
+    "pct_pr": 12.72,
+    "pct_push": 67.2
+   },
+   {
+    "fecha": "2025-12-17",
+    "pct_pr": 12.86,
+    "pct_push": 67.4
+   },
+   {
+    "fecha": "2025-12-18",
+    "pct_pr": 12.14,
+    "pct_push": 67.9
+   },
+   {
+    "fecha": "2025-12-19",
+    "pct_pr": 13.1,
+    "pct_push": 67.0
+   },
+   {
+    "fecha": "2025-12-20",
+    "pct_pr": 9.44,
+    "pct_push": 72.8
+   },
+   {
+    "fecha": "2025-12-21",
+    "pct_pr": 8.87,
+    "pct_push": 74.0
+   },
+   {
+    "fecha": "2025-12-22",
+    "pct_pr": 14.1,
+    "pct_push": 65.4
+   },
+   {
+    "fecha": "2025-12-23",
+    "pct_pr": 11.5,
+    "pct_push": 69.3
+   },
+   {
+    "fecha": "2025-12-24",
+    "pct_pr": 10.18,
+    "pct_push": 71.5
+   },
+   {
+    "fecha": "2025-12-25",
+    "pct_pr": 8.95,
+    "pct_push": 73.7
+   },
+   {
+    "fecha": "2025-12-26",
+    "pct_pr": 9.2,
+    "pct_push": 73.0
+   },
+   {
+    "fecha": "2025-12-27",
+    "pct_pr": 8.29,
+    "pct_push": 74.2
+   },
+   {
+    "fecha": "2025-12-28",
+    "pct_pr": 8.54,
+    "pct_push": 73.2
+   },
+   {
+    "fecha": "2025-12-29",
+    "pct_pr": 12.49,
+    "pct_push": 67.4
+   },
+   {
+    "fecha": "2025-12-30",
+    "pct_pr": 11.01,
+    "pct_push": 69.1
+   },
+   {
+    "fecha": "2025-12-31",
+    "pct_pr": 14.39,
+    "pct_push": 66.4
+   },
+   {
+    "fecha": "2026-01-01",
+    "pct_pr": 13.91,
+    "pct_push": 66.9
+   },
+   {
+    "fecha": "2026-01-02",
+    "pct_pr": 10.35,
+    "pct_push": 71.4
+   },
+   {
+    "fecha": "2026-01-03",
+    "pct_pr": 9.09,
+    "pct_push": 73.6
+   },
+   {
+    "fecha": "2026-01-04",
+    "pct_pr": 9.07,
+    "pct_push": 72.9
+   },
+   {
+    "fecha": "2026-01-05",
+    "pct_pr": 12.86,
+    "pct_push": 67.1
+   },
+   {
+    "fecha": "2026-01-06",
+    "pct_pr": 12.33,
+    "pct_push": 67.7
+   },
+   {
+    "fecha": "2026-01-07",
+    "pct_pr": 12.27,
+    "pct_push": 67.8
+   },
+   {
+    "fecha": "2026-01-08",
+    "pct_pr": 13.1,
+    "pct_push": 66.7
+   },
+   {
+    "fecha": "2026-01-09",
+    "pct_pr": 12.99,
+    "pct_push": 67.2
+   },
+   {
+    "fecha": "2026-01-10",
+    "pct_pr": 9.82,
+    "pct_push": 72.2
+   },
+   {
+    "fecha": "2026-01-11",
+    "pct_pr": 9.24,
+    "pct_push": 72.6
+   },
+   {
+    "fecha": "2026-01-12",
+    "pct_pr": 13.52,
+    "pct_push": 65.5
+   },
+   {
+    "fecha": "2026-01-13",
+    "pct_pr": 12.46,
+    "pct_push": 66.3
+   },
+   {
+    "fecha": "2026-01-14",
+    "pct_pr": 12.2,
+    "pct_push": 67.0
+   },
+   {
+    "fecha": "2026-01-15",
+    "pct_pr": 12.84,
+    "pct_push": 66.2
+   },
+   {
+    "fecha": "2026-01-16",
+    "pct_pr": 12.07,
+    "pct_push": 68.0
+   },
+   {
+    "fecha": "2026-01-17",
+    "pct_pr": 12.13,
+    "pct_push": 68.7
+   },
+   {
+    "fecha": "2026-01-18",
+    "pct_pr": 9.54,
+    "pct_push": 72.4
+   },
+   {
+    "fecha": "2026-01-19",
+    "pct_pr": 12.45,
+    "pct_push": 67.3
+   },
+   {
+    "fecha": "2026-01-20",
+    "pct_pr": 11.49,
+    "pct_push": 67.2
+   },
+   {
+    "fecha": "2026-01-21",
+    "pct_pr": 12.45,
+    "pct_push": 67.2
+   },
+   {
+    "fecha": "2026-01-22",
+    "pct_pr": 13.18,
+    "pct_push": 66.0
+   },
+   {
+    "fecha": "2026-01-23",
+    "pct_pr": 12.79,
+    "pct_push": 66.9
+   },
+   {
+    "fecha": "2026-01-24",
+    "pct_pr": 14.87,
+    "pct_push": 64.9
+   },
+   {
+    "fecha": "2026-01-25",
+    "pct_pr": 9.49,
+    "pct_push": 72.1
+   },
+   {
+    "fecha": "2026-01-26",
+    "pct_pr": 12.57,
+    "pct_push": 66.0
+   },
+   {
+    "fecha": "2026-01-27",
+    "pct_pr": 11.52,
+    "pct_push": 67.7
+   },
+   {
+    "fecha": "2026-01-28",
+    "pct_pr": 11.36,
+    "pct_push": 68.2
+   },
+   {
+    "fecha": "2026-01-29",
+    "pct_pr": 11.42,
+    "pct_push": 67.2
+   },
+   {
+    "fecha": "2026-01-30",
+    "pct_pr": 11.47,
+    "pct_push": 66.5
+   },
+   {
+    "fecha": "2026-01-31",
+    "pct_pr": 9.99,
+    "pct_push": 69.5
+   },
+   {
+    "fecha": "2026-02-01",
+    "pct_pr": 11.96,
+    "pct_push": 68.8
+   },
+   {
+    "fecha": "2026-02-02",
+    "pct_pr": 11.73,
+    "pct_push": 67.4
+   },
+   {
+    "fecha": "2026-02-03",
+    "pct_pr": 12.3,
+    "pct_push": 67.1
+   },
+   {
+    "fecha": "2026-02-04",
+    "pct_pr": 14.5,
+    "pct_push": 64.7
+   },
+   {
+    "fecha": "2026-02-05",
+    "pct_pr": 14.64,
+    "pct_push": 64.2
+   },
+   {
+    "fecha": "2026-02-06",
+    "pct_pr": 12.64,
+    "pct_push": 66.5
+   },
+   {
+    "fecha": "2026-02-07",
+    "pct_pr": 11.66,
+    "pct_push": 68.2
+   },
+   {
+    "fecha": "2026-02-08",
+    "pct_pr": 10.54,
+    "pct_push": 70.0
+   },
+   {
+    "fecha": "2026-02-09",
+    "pct_pr": 13.76,
+    "pct_push": 64.5
+   },
+   {
+    "fecha": "2026-02-10",
+    "pct_pr": 13.72,
+    "pct_push": 63.7
+   },
+   {
+    "fecha": "2026-02-11",
+    "pct_pr": 12.18,
+    "pct_push": 66.3
+   },
+   {
+    "fecha": "2026-02-12",
+    "pct_pr": 11.52,
+    "pct_push": 67.2
+   },
+   {
+    "fecha": "2026-02-13",
+    "pct_pr": 10.62,
+    "pct_push": 66.1
+   },
+   {
+    "fecha": "2026-02-14",
+    "pct_pr": 11.8,
+    "pct_push": 67.5
+   },
+   {
+    "fecha": "2026-02-15",
+    "pct_pr": 10.67,
+    "pct_push": 68.8
+   },
+   {
+    "fecha": "2026-02-16",
+    "pct_pr": 12.53,
+    "pct_push": 66.4
+   },
+   {
+    "fecha": "2026-02-17",
+    "pct_pr": 11.67,
+    "pct_push": 67.9
+   },
+   {
+    "fecha": "2026-02-18",
+    "pct_pr": 12.2,
+    "pct_push": 66.8
+   },
+   {
+    "fecha": "2026-02-19",
+    "pct_pr": 11.13,
+    "pct_push": 67.8
+   },
+   {
+    "fecha": "2026-02-20",
+    "pct_pr": 12.1,
+    "pct_push": 67.0
+   },
+   {
+    "fecha": "2026-02-21",
+    "pct_pr": 11.31,
+    "pct_push": 67.6
+   },
+   {
+    "fecha": "2026-02-22",
+    "pct_pr": 11.22,
+    "pct_push": 68.7
+   },
+   {
+    "fecha": "2026-02-23",
+    "pct_pr": 11.73,
+    "pct_push": 67.1
+   },
+   {
+    "fecha": "2026-02-24",
+    "pct_pr": 11.19,
+    "pct_push": 67.8
+   },
+   {
+    "fecha": "2026-02-25",
+    "pct_pr": 11.1,
+    "pct_push": 67.5
+   },
+   {
+    "fecha": "2026-02-26",
+    "pct_pr": 11.0,
+    "pct_push": 67.9
+   },
+   {
+    "fecha": "2026-02-27",
+    "pct_pr": 10.87,
+    "pct_push": 68.5
+   },
+   {
+    "fecha": "2026-02-28",
+    "pct_pr": 12.73,
+    "pct_push": 66.6
+   },
+   {
+    "fecha": "2026-03-01",
+    "pct_pr": 13.0,
+    "pct_push": 66.5
+   },
+   {
+    "fecha": "2026-03-02",
+    "pct_pr": 10.96,
+    "pct_push": 68.0
+   },
+   {
+    "fecha": "2026-03-03",
+    "pct_pr": 10.21,
+    "pct_push": 69.5
+   },
+   {
+    "fecha": "2026-03-04",
+    "pct_pr": 10.52,
+    "pct_push": 69.3
+   },
+   {
+    "fecha": "2026-03-05",
+    "pct_pr": 9.36,
+    "pct_push": 69.9
+   },
+   {
+    "fecha": "2026-03-06",
+    "pct_pr": 9.64,
+    "pct_push": 70.5
+   },
+   {
+    "fecha": "2026-03-07",
+    "pct_pr": 10.65,
+    "pct_push": 69.5
+   },
+   {
+    "fecha": "2026-03-08",
+    "pct_pr": 9.67,
+    "pct_push": 70.9
+   },
+   {
+    "fecha": "2026-03-09",
+    "pct_pr": 8.35,
+    "pct_push": 72.0
+   },
+   {
+    "fecha": "2026-03-10",
+    "pct_pr": 7.77,
+    "pct_push": 73.0
+   },
+   {
+    "fecha": "2026-03-11",
+    "pct_pr": 7.63,
+    "pct_push": 73.0
+   },
+   {
+    "fecha": "2026-03-12",
+    "pct_pr": 7.83,
+    "pct_push": 72.9
+   },
+   {
+    "fecha": "2026-03-13",
+    "pct_pr": 7.58,
+    "pct_push": 74.4
+   },
+   {
+    "fecha": "2026-03-14",
+    "pct_pr": 10.37,
+    "pct_push": 70.3
+   },
+   {
+    "fecha": "2026-03-15",
+    "pct_pr": 8.81,
+    "pct_push": 72.5
+   },
+   {
+    "fecha": "2026-03-16",
+    "pct_pr": 6.75,
+    "pct_push": 74.7
+   },
+   {
+    "fecha": "2026-03-17",
+    "pct_pr": 6.8,
+    "pct_push": 74.6
+   },
+   {
+    "fecha": "2026-03-18",
+    "pct_pr": 6.47,
+    "pct_push": 75.3
+   },
+   {
+    "fecha": "2026-03-19",
+    "pct_pr": 6.44,
+    "pct_push": 75.0
+   },
+   {
+    "fecha": "2026-03-20",
+    "pct_pr": 7.3,
+    "pct_push": 74.3
+   },
+   {
+    "fecha": "2026-03-21",
+    "pct_pr": 8.66,
+    "pct_push": 71.0
+   },
+   {
+    "fecha": "2026-03-22",
+    "pct_pr": 7.31,
+    "pct_push": 70.8
+   },
+   {
+    "fecha": "2026-03-23",
+    "pct_pr": 5.26,
+    "pct_push": 73.7
+   },
+   {
+    "fecha": "2026-03-24",
+    "pct_pr": 5.49,
+    "pct_push": 75.7
+   },
+   {
+    "fecha": "2026-03-25",
+    "pct_pr": 5.22,
+    "pct_push": 75.1
+   },
+   {
+    "fecha": "2026-03-26",
+    "pct_pr": 5.0,
+    "pct_push": 74.9
+   },
+   {
+    "fecha": "2026-03-27",
+    "pct_pr": 4.59,
+    "pct_push": 72.6
+   },
+   {
+    "fecha": "2026-03-28",
+    "pct_pr": 5.22,
+    "pct_push": 68.5
+   },
+   {
+    "fecha": "2026-03-29",
+    "pct_pr": 6.47,
+    "pct_push": 70.5
+   },
+   {
+    "fecha": "2026-03-30",
+    "pct_pr": 4.81,
+    "pct_push": 74.5
+   },
+   {
+    "fecha": "2026-03-31",
+    "pct_pr": 4.3,
+    "pct_push": 75.6
+   },
+   {
+    "fecha": "2026-04-01",
+    "pct_pr": 6.49,
+    "pct_push": 72.5
+   },
+   {
+    "fecha": "2026-04-02",
+    "pct_pr": 8.17,
+    "pct_push": 70.5
+   },
+   {
+    "fecha": "2026-04-03",
+    "pct_pr": 8.65,
+    "pct_push": 69.4
+   },
+   {
+    "fecha": "2026-04-04",
+    "pct_pr": 8.11,
+    "pct_push": 70.0
+   },
+   {
+    "fecha": "2026-04-05",
+    "pct_pr": 8.56,
+    "pct_push": 70.2
+   },
+   {
+    "fecha": "2026-04-06",
+    "pct_pr": 9.57,
+    "pct_push": 68.9
+   },
+   {
+    "fecha": "2026-04-07",
+    "pct_pr": 8.22,
+    "pct_push": 71.1
+   },
+   {
+    "fecha": "2026-04-08",
+    "pct_pr": 8.4,
+    "pct_push": 71.0
+   },
+   {
+    "fecha": "2026-04-09",
+    "pct_pr": 8.06,
+    "pct_push": 71.4
+   },
+   {
+    "fecha": "2026-04-10",
+    "pct_pr": 8.92,
+    "pct_push": 70.9
+   },
+   {
+    "fecha": "2026-04-11",
+    "pct_pr": 9.06,
+    "pct_push": 68.3
+   },
+   {
+    "fecha": "2026-04-12",
+    "pct_pr": 9.33,
+    "pct_push": 67.0
+   },
+   {
+    "fecha": "2026-04-13",
+    "pct_pr": 6.59,
+    "pct_push": 71.5
+   },
+   {
+    "fecha": "2026-04-14",
+    "pct_pr": 6.19,
+    "pct_push": 75.5
+   },
+   {
+    "fecha": "2026-04-15",
+    "pct_pr": 5.95,
+    "pct_push": 75.9
+   },
+   {
+    "fecha": "2026-04-16",
+    "pct_pr": 5.66,
+    "pct_push": 76.6
+   },
+   {
+    "fecha": "2026-04-17",
+    "pct_pr": 6.36,
+    "pct_push": 75.9
+   },
+   {
+    "fecha": "2026-04-18",
+    "pct_pr": 8.64,
+    "pct_push": 72.8
+   },
+   {
+    "fecha": "2026-04-19",
+    "pct_pr": 8.3,
+    "pct_push": 73.5
+   },
+   {
+    "fecha": "2026-04-20",
+    "pct_pr": 6.32,
+    "pct_push": 75.4
+   },
+   {
+    "fecha": "2026-04-21",
+    "pct_pr": 5.35,
+    "pct_push": 77.8
+   },
+   {
+    "fecha": "2026-04-22",
+    "pct_pr": 5.39,
+    "pct_push": 78.0
+   },
+   {
+    "fecha": "2026-04-23",
+    "pct_pr": 5.32,
+    "pct_push": 78.3
+   },
+   {
+    "fecha": "2026-04-24",
+    "pct_pr": 5.43,
+    "pct_push": 77.7
+   },
+   {
+    "fecha": "2026-04-25",
+    "pct_pr": 8.66,
+    "pct_push": 73.1
+   },
+   {
+    "fecha": "2026-04-26",
+    "pct_pr": 8.45,
+    "pct_push": 73.3
+   },
+   {
+    "fecha": "2026-04-27",
+    "pct_pr": 5.63,
+    "pct_push": 76.2
+   },
+   {
+    "fecha": "2026-04-28",
+    "pct_pr": 3.86,
+    "pct_push": 77.4
+   },
+   {
+    "fecha": "2026-04-29",
+    "pct_pr": 3.87,
+    "pct_push": 75.9
+   },
+   {
+    "fecha": "2026-04-30",
+    "pct_pr": 4.77,
+    "pct_push": 75.9
+   },
+   {
+    "fecha": "2026-05-01",
+    "pct_pr": 5.7,
+    "pct_push": 74.3
+   },
+   {
+    "fecha": "2026-05-02",
+    "pct_pr": 7.2,
+    "pct_push": 73.7
+   },
+   {
+    "fecha": "2026-05-03",
+    "pct_pr": 7.14,
+    "pct_push": 72.6
+   },
+   {
+    "fecha": "2026-05-04",
+    "pct_pr": 6.13,
+    "pct_push": 75.3
+   },
+   {
+    "fecha": "2026-05-05",
+    "pct_pr": 4.0,
+    "pct_push": 78.1
+   },
+   {
+    "fecha": "2026-05-06",
+    "pct_pr": 3.49,
+    "pct_push": 78.8
+   },
+   {
+    "fecha": "2026-05-07",
+    "pct_pr": 3.6,
+    "pct_push": 79.8
+   },
+   {
+    "fecha": "2026-05-08",
+    "pct_pr": 4.0,
+    "pct_push": 78.9
+   },
+   {
+    "fecha": "2026-05-09",
+    "pct_pr": 6.05,
+    "pct_push": 77.1
+   },
+   {
+    "fecha": "2026-05-10",
+    "pct_pr": 8.06,
+    "pct_push": 73.7
+   },
+   {
+    "fecha": "2026-05-11",
+    "pct_pr": 6.33,
+    "pct_push": 75.3
+   },
+   {
+    "fecha": "2026-05-12",
+    "pct_pr": 2.95,
+    "pct_push": 80.9
+   },
+   {
+    "fecha": "2026-05-13",
+    "pct_pr": 3.29,
+    "pct_push": 80.3
+   },
+   {
+    "fecha": "2026-05-14",
+    "pct_pr": 3.23,
+    "pct_push": 80.5
+   },
+   {
+    "fecha": "2026-05-15",
+    "pct_pr": 4.08,
+    "pct_push": 79.7
+   },
+   {
+    "fecha": "2026-05-16",
+    "pct_pr": 5.77,
+    "pct_push": 77.4
+   },
+   {
+    "fecha": "2026-05-17",
+    "pct_pr": 5.04,
+    "pct_push": 78.4
+   },
+   {
+    "fecha": "2026-05-18",
+    "pct_pr": 3.46,
+    "pct_push": 79.9
+   },
+   {
+    "fecha": "2026-05-19",
+    "pct_pr": 2.55,
+    "pct_push": 81.0
+   },
+   {
+    "fecha": "2026-05-20",
+    "pct_pr": 2.66,
+    "pct_push": 81.4
+   },
+   {
+    "fecha": "2026-05-21",
+    "pct_pr": 3.02,
+    "pct_push": 81.3
+   },
+   {
+    "fecha": "2026-05-22",
+    "pct_pr": 3.28,
+    "pct_push": 81.1
+   },
+   {
+    "fecha": "2026-05-23",
+    "pct_pr": 5.47,
+    "pct_push": 77.5
+   },
+   {
+    "fecha": "2026-05-24",
+    "pct_pr": 5.08,
+    "pct_push": 79.0
+   },
+   {
+    "fecha": "2026-05-25",
+    "pct_pr": 3.23,
+    "pct_push": 80.9
+   },
+   {
+    "fecha": "2026-05-26",
+    "pct_pr": 2.66,
+    "pct_push": 81.9
+   },
+   {
+    "fecha": "2026-05-27",
+    "pct_pr": 2.64,
+    "pct_push": 81.8
+   },
+   {
+    "fecha": "2026-05-28",
+    "pct_pr": 2.47,
+    "pct_push": 82.3
+   },
+   {
+    "fecha": "2026-05-29",
+    "pct_pr": 2.43,
+    "pct_push": 82.2
+   },
+   {
+    "fecha": "2026-05-30",
+    "pct_pr": 3.95,
+    "pct_push": 81.0
+   },
+   {
+    "fecha": "2026-05-31",
+    "pct_pr": 3.32,
+    "pct_push": 82.6
+   },
+   {
+    "fecha": "2026-06-01",
+    "pct_pr": 1.55,
+    "pct_push": 84.1
+   },
+   {
+    "fecha": "2026-06-02",
+    "pct_pr": 1.5,
+    "pct_push": 83.8
+   },
+   {
+    "fecha": "2026-06-03",
+    "pct_pr": 1.78,
+    "pct_push": 83.5
+   },
+   {
+    "fecha": "2026-06-04",
+    "pct_pr": 1.39,
+    "pct_push": 84.1
+   },
+   {
+    "fecha": "2026-06-05",
+    "pct_pr": 1.68,
+    "pct_push": 84.7
+   },
+   {
+    "fecha": "2026-06-06",
+    "pct_pr": 2.89,
+    "pct_push": 83.1
+   },
+   {
+    "fecha": "2026-06-07",
+    "pct_pr": 3.24,
+    "pct_push": 83.0
+   },
+   {
+    "fecha": "2026-06-08",
+    "pct_pr": 1.71,
+    "pct_push": 83.7
+   },
+   {
+    "fecha": "2026-06-09",
+    "pct_pr": 1.23,
+    "pct_push": 85.1
+   },
+   {
+    "fecha": "2026-06-10",
+    "pct_pr": 1.25,
+    "pct_push": 84.8
+   },
+   {
+    "fecha": "2026-06-11",
+    "pct_pr": 1.2,
+    "pct_push": 85.1
+   },
+   {
+    "fecha": "2026-06-12",
+    "pct_pr": 1.36,
+    "pct_push": 83.7
+   },
+   {
+    "fecha": "2026-06-13",
+    "pct_pr": 2.0,
+    "pct_push": 82.2
+   },
+   {
+    "fecha": "2026-06-14",
+    "pct_pr": 2.16,
+    "pct_push": 84.8
+   },
+   {
+    "fecha": "2026-06-15",
+    "pct_pr": 1.26,
+    "pct_push": 84.1
+   },
+   {
+    "fecha": "2026-06-16",
+    "pct_pr": 1.06,
+    "pct_push": 85.2
+   },
+   {
+    "fecha": "2026-06-17",
+    "pct_pr": 0.81,
+    "pct_push": 86.5
+   },
+   {
+    "fecha": "2026-06-18",
+    "pct_pr": 0.72,
+    "pct_push": 86.7
+   },
+   {
+    "fecha": "2026-06-19",
+    "pct_pr": 0.78,
+    "pct_push": 86.1
+   },
+   {
+    "fecha": "2026-06-20",
+    "pct_pr": 1.78,
+    "pct_push": 85.2
+   },
+   {
+    "fecha": "2026-06-21",
+    "pct_pr": 1.5,
+    "pct_push": 86.2
+   },
+   {
+    "fecha": "2026-06-22",
+    "pct_pr": 0.91,
+    "pct_push": 83.9
+   },
+   {
+    "fecha": "2026-06-23",
+    "pct_pr": 0.44,
+    "pct_push": 86.1
+   },
+   {
+    "fecha": "2026-06-24",
+    "pct_pr": 0.8,
+    "pct_push": 85.5
+   },
+   {
+    "fecha": "2026-06-25",
+    "pct_pr": 0.79,
+    "pct_push": 86.0
+   },
+   {
+    "fecha": "2026-06-26",
+    "pct_pr": 0.92,
+    "pct_push": 85.9
+   },
+   {
+    "fecha": "2026-06-27",
+    "pct_pr": 1.62,
+    "pct_push": 87.1
+   },
+   {
+    "fecha": "2026-06-28",
+    "pct_pr": 0.93,
+    "pct_push": 87.9
+   },
+   {
+    "fecha": "2026-06-29",
+    "pct_pr": 0.74,
+    "pct_push": 85.4
+   },
+   {
+    "fecha": "2026-06-30",
+    "pct_pr": 1.02,
+    "pct_push": 85.4
+   },
+   {
+    "fecha": "2026-07-01",
+    "pct_pr": 1.32,
+    "pct_push": 84.6
+   },
+   {
+    "fecha": "2026-07-02",
+    "pct_pr": 1.41,
+    "pct_push": 85.1
+   },
+   {
+    "fecha": "2026-07-03",
+    "pct_pr": 0.72,
+    "pct_push": 86.5
+   },
+   {
+    "fecha": "2026-07-04",
+    "pct_pr": 1.17,
+    "pct_push": 87.8
+   },
+   {
+    "fecha": "2026-07-05",
+    "pct_pr": 0.94,
+    "pct_push": 88.0
+   },
+   {
+    "fecha": "2026-07-06",
+    "pct_pr": 0.3,
+    "pct_push": 88.6
+   },
+   {
+    "fecha": "2026-07-07",
+    "pct_pr": 0.3,
+    "pct_push": 88.2
+   },
+   {
+    "fecha": "2026-07-08",
+    "pct_pr": 0.25,
+    "pct_push": 88.2
+   },
+   {
+    "fecha": "2026-07-09",
+    "pct_pr": 0.17,
+    "pct_push": 91.5
+   },
+   {
+    "fecha": "2026-07-10",
+    "pct_pr": 0.19,
+    "pct_push": 93.7
+   },
+   {
+    "fecha": "2026-07-11",
+    "pct_pr": 0.12,
+    "pct_push": 95.5
+   },
+   {
+    "fecha": "2026-07-12",
+    "pct_pr": 0.12,
+    "pct_push": 95.4
+   },
+   {
+    "fecha": "2026-07-13",
+    "pct_pr": 0.21,
+    "pct_push": 92.8
+   },
+   {
+    "fecha": "2026-07-14",
+    "pct_pr": 0.36,
+    "pct_push": 88.1
+   },
+   {
+    "fecha": "2026-07-15",
+    "pct_pr": 0.4,
+    "pct_push": 89.7
+   },
+   {
+    "fecha": "2026-07-16",
+    "pct_pr": 0.35,
+    "pct_push": 91.3
+   },
+   {
+    "fecha": "2026-07-17",
+    "pct_pr": 0.37,
+    "pct_push": 91.5
+   },
+   {
+    "fecha": "2026-07-18",
+    "pct_pr": 0.23,
+    "pct_push": 93.4
+   },
+   {
+    "fecha": "2026-07-19",
+    "pct_pr": 0.27,
+    "pct_push": 94.2
+   },
+   {
+    "fecha": "2026-07-20",
+    "pct_pr": 0.16,
+    "pct_push": 93.6
+   },
+   {
+    "fecha": "2026-07-21",
+    "pct_pr": 0.15,
+    "pct_push": 94.3
+   },
+   {
+    "fecha": "2026-07-22",
+    "pct_pr": 0.24,
+    "pct_push": 93.7
+   },
+   {
+    "fecha": "2026-07-23",
+    "pct_pr": 0.27,
+    "pct_push": 93.4
+   },
+   {
+    "fecha": "2026-07-24",
+    "pct_pr": 0.26,
+    "pct_push": 94.0
+   },
+   {
+    "fecha": "2026-07-25",
+    "pct_pr": 0.2,
+    "pct_push": 95.4
+   },
+   {
+    "fecha": "2026-07-26",
+    "pct_pr": 0.17,
+    "pct_push": 95.6
+   },
+   {
+    "fecha": "2026-07-27",
+    "pct_pr": 0.24,
+    "pct_push": 94.1
+   },
+   {
+    "fecha": "2026-07-28",
+    "pct_pr": 0.27,
+    "pct_push": 94.8
+   },
+   {
+    "fecha": "2026-07-29",
+    "pct_pr": 0.2,
+    "pct_push": 95.1
+   },
+   {
+    "fecha": "2026-07-30",
+    "pct_pr": 0.2,
+    "pct_push": 94.6
+   },
+   {
+    "fecha": "2026-07-31",
+    "pct_pr": 0.14,
+    "pct_push": 95.5
+   },
+   {
+    "fecha": "2026-08-01",
+    "pct_pr": 0.13,
+    "pct_push": 95.6
+   },
+   {
+    "fecha": "2026-08-02",
+    "pct_pr": 0.13,
+    "pct_push": 95.6
+   },
+   {
+    "fecha": "2026-08-03",
+    "pct_pr": 0.16,
+    "pct_push": 95.7
+   },
+   {
+    "fecha": "2026-08-04",
+    "pct_pr": 0.23,
+    "pct_push": 96.3
+   },
+   {
+    "fecha": "2026-08-05",
+    "pct_pr": 0.19,
+    "pct_push": 96.4
+   },
+   {
+    "fecha": "2026-08-06",
+    "pct_pr": 0.2,
+    "pct_push": 96.5
+   },
+   {
+    "fecha": "2026-08-07",
+    "pct_pr": 5.87,
+    "pct_push": 86.1
+   },
+   {
+    "fecha": "2026-08-08",
+    "pct_pr": 0.49,
+    "pct_push": 93.5
+   },
+   {
+    "fecha": "2026-08-09",
+    "pct_pr": 0.16,
+    "pct_push": 95.9
+   },
+   {
+    "fecha": "2026-08-10",
+    "pct_pr": 0.21,
+    "pct_push": 96.2
+   },
+   {
+    "fecha": "2026-08-11",
+    "pct_pr": 0.33,
+    "pct_push": 92.6
+   },
+   {
+    "fecha": "2026-08-12",
+    "pct_pr": 0.49,
+    "pct_push": 91.9
+   },
+   {
+    "fecha": "2026-08-13",
+    "pct_pr": 0.29,
+    "pct_push": 92.3
+   },
+   {
+    "fecha": "2026-08-14",
+    "pct_pr": 0.31,
+    "pct_push": 93.9
+   },
+   {
+    "fecha": "2026-08-15",
+    "pct_pr": 0.09,
+    "pct_push": 97.0
+   }
+  ]
+ },
+ "ventana": {
+  "fuente": "dim_fecha.parquet",
+  "desde": "2025-08-13",
+  "hasta": "2026-03-14",
+  "dias": 214,
+  "dias_completos": 57,
+  "dias_hueco": 6
+ },
+ "p1": {
+  "fuente": "p1_actividad_mensual.parquet, p1_top_agentes.parquet",
+  "total": {
+   "eventos": 80622603,
+   "pct_no_humano": 42.0
+  },
+  "cuota_mensual": [
+   {
+    "mes": "2025-08-01",
+    "eventos": 7166623,
+    "pct_no_humano": 32.9,
+    "pct_agente_ia": 5.81
+   },
+   {
+    "mes": "2025-09-01",
+    "eventos": 12271112,
+    "pct_no_humano": 33.9,
+    "pct_agente_ia": 5.54
+   },
+   {
+    "mes": "2025-10-01",
+    "eventos": 9159667,
+    "pct_no_humano": 41.1,
+    "pct_agente_ia": 5.19
+   },
+   {
+    "mes": "2025-11-01",
+    "eventos": 9880549,
+    "pct_no_humano": 45.8,
+    "pct_agente_ia": 5.3
+   },
+   {
+    "mes": "2025-12-01",
+    "eventos": 12585823,
+    "pct_no_humano": 45.6,
+    "pct_agente_ia": 4.63
+   },
+   {
+    "mes": "2026-01-01",
+    "eventos": 12871161,
+    "pct_no_humano": 46.0,
+    "pct_agente_ia": 5.67
+   },
+   {
+    "mes": "2026-02-01",
+    "eventos": 11753686,
+    "pct_no_humano": 44.1,
+    "pct_agente_ia": 6.8
+   },
+   {
+    "mes": "2026-03-01",
+    "eventos": 4933982,
+    "pct_no_humano": 44.2,
+    "pct_agente_ia": 7.57
+   }
+  ],
+  "mensual_por_clase": [
+   {
+    "mes": "2025-08-01",
+    "actor_clase": "agente_ia",
+    "eventos": 416580
+   },
+   {
+    "mes": "2025-08-01",
+    "actor_clase": "bot_ci",
+    "eventos": 856478
+   },
+   {
+    "mes": "2025-08-01",
+    "actor_clase": "bot_dependencias",
+    "eventos": 714154
+   },
+   {
+    "mes": "2025-08-01",
+    "actor_clase": "bot_otro",
+    "eventos": 374134
+   },
+   {
+    "mes": "2025-08-01",
+    "actor_clase": "humano",
+    "eventos": 4805277
+   },
+   {
+    "mes": "2025-09-01",
+    "actor_clase": "agente_ia",
+    "eventos": 680077
+   },
+   {
+    "mes": "2025-09-01",
+    "actor_clase": "bot_ci",
+    "eventos": 1432449
+   },
+   {
+    "mes": "2025-09-01",
+    "actor_clase": "bot_dependencias",
+    "eventos": 1438829
+   },
+   {
+    "mes": "2025-09-01",
+    "actor_clase": "bot_otro",
+    "eventos": 612157
+   },
+   {
+    "mes": "2025-09-01",
+    "actor_clase": "humano",
+    "eventos": 8107600
+   },
+   {
+    "mes": "2025-10-01",
+    "actor_clase": "agente_ia",
+    "eventos": 475614
+   },
+   {
+    "mes": "2025-10-01",
+    "actor_clase": "bot_ci",
+    "eventos": 1093034
+   },
+   {
+    "mes": "2025-10-01",
+    "actor_clase": "bot_dependencias",
+    "eventos": 1681694
+   },
+   {
+    "mes": "2025-10-01",
+    "actor_clase": "bot_otro",
+    "eventos": 515867
+   },
+   {
+    "mes": "2025-10-01",
+    "actor_clase": "humano",
+    "eventos": 5393458
+   },
+   {
+    "mes": "2025-11-01",
+    "actor_clase": "agente_ia",
+    "eventos": 523898
+   },
+   {
+    "mes": "2025-11-01",
+    "actor_clase": "bot_ci",
+    "eventos": 1170350
+   },
+   {
+    "mes": "2025-11-01",
+    "actor_clase": "bot_dependencias",
+    "eventos": 2208183
+   },
+   {
+    "mes": "2025-11-01",
+    "actor_clase": "bot_otro",
+    "eventos": 617955
+   },
+   {
+    "mes": "2025-11-01",
+    "actor_clase": "humano",
+    "eventos": 5360163
+   },
+   {
+    "mes": "2025-12-01",
+    "actor_clase": "agente_ia",
+    "eventos": 582596
+   },
+   {
+    "mes": "2025-12-01",
+    "actor_clase": "bot_ci",
+    "eventos": 1649255
+   },
+   {
+    "mes": "2025-12-01",
+    "actor_clase": "bot_dependencias",
+    "eventos": 2713713
+   },
+   {
+    "mes": "2025-12-01",
+    "actor_clase": "bot_otro",
+    "eventos": 791239
+   },
+   {
+    "mes": "2025-12-01",
+    "actor_clase": "humano",
+    "eventos": 6849020
+   },
+   {
+    "mes": "2026-01-01",
+    "actor_clase": "agente_ia",
+    "eventos": 729784
+   },
+   {
+    "mes": "2026-01-01",
+    "actor_clase": "bot_ci",
+    "eventos": 1593104
+   },
+   {
+    "mes": "2026-01-01",
+    "actor_clase": "bot_dependencias",
+    "eventos": 2727170
+   },
+   {
+    "mes": "2026-01-01",
+    "actor_clase": "bot_otro",
+    "eventos": 868735
+   },
+   {
+    "mes": "2026-01-01",
+    "actor_clase": "humano",
+    "eventos": 6952368
+   },
+   {
+    "mes": "2026-02-01",
+    "actor_clase": "agente_ia",
+    "eventos": 799674
+   },
+   {
+    "mes": "2026-02-01",
+    "actor_clase": "bot_ci",
+    "eventos": 1325917
+   },
+   {
+    "mes": "2026-02-01",
+    "actor_clase": "bot_dependencias",
+    "eventos": 2432363
+   },
+   {
+    "mes": "2026-02-01",
+    "actor_clase": "bot_otro",
+    "eventos": 631084
+   },
+   {
+    "mes": "2026-02-01",
+    "actor_clase": "humano",
+    "eventos": 6564648
+   },
+   {
+    "mes": "2026-03-01",
+    "actor_clase": "agente_ia",
+    "eventos": 373706
+   },
+   {
+    "mes": "2026-03-01",
+    "actor_clase": "bot_ci",
+    "eventos": 552630
+   },
+   {
+    "mes": "2026-03-01",
+    "actor_clase": "bot_dependencias",
+    "eventos": 964447
+   },
+   {
+    "mes": "2026-03-01",
+    "actor_clase": "bot_otro",
+    "eventos": 289518
+   },
+   {
+    "mes": "2026-03-01",
+    "actor_clase": "humano",
+    "eventos": 2753681
+   }
+  ],
+  "top_agentes": [
+   {
+    "actor": "coderabbitai[bot]",
+    "eventos": 2596797,
+    "repos": 19792
+   },
+   {
+    "actor": "gemini-code-assist[bot]",
+    "eventos": 825852,
+    "repos": 10038
+   },
+   {
+    "actor": "chatgpt-codex-connector[bot]",
+    "eventos": 494806,
+    "repos": 24153
+   },
+   {
+    "actor": "cursor[bot]",
+    "eventos": 286156,
+    "repos": 6178
+   },
+   {
+    "actor": "cubic-dev-ai[bot]",
+    "eventos": 117706,
+    "repos": 1617
+   },
+   {
+    "actor": "devin-ai-integration[bot]",
+    "eventos": 79478,
+    "repos": 1630
+   },
+   {
+    "actor": "claude[bot]",
+    "eventos": 64130,
+    "repos": 557
+   },
+   {
+    "actor": "amazon-q-developer[bot]",
+    "eventos": 51383,
+    "repos": 305
+   },
+   {
+    "actor": "graphite-app[bot]",
+    "eventos": 33248,
+    "repos": 207
+   },
+   {
+    "actor": "ellipsis-dev[bot]",
+    "eventos": 22354,
+    "repos": 343
+   }
+  ]
+ },
+ "p2": {
+  "fuente": "p2_latencias_globales.parquet, p2_latencias_mensuales.parquet",
+  "nota": "Cohortes maduras. Merge solo sobre PRs con merge observable (D38).",
+  "por_clase": [
+   {
+    "autor_clase": "humano",
+    "prs": 12912276,
+    "con_review": 1908098,
+    "con_merge_observable": 3154504,
+    "mediana_min_review": 18.7,
+    "mediana_min_merge": 1.8,
+    "p90_h_merge": 24.63
+   },
+   {
+    "autor_clase": "bot_dependencias",
+    "prs": 4205740,
+    "con_review": 278975,
+    "con_merge_observable": 554729,
+    "mediana_min_review": 2.7,
+    "mediana_min_merge": 184.4,
+    "p90_h_merge": 127.63
+   },
+   {
+    "autor_clase": "bot_ci",
+    "prs": 2886772,
+    "con_review": 26868,
+    "con_merge_observable": 916598,
+    "mediana_min_review": 5.0,
+    "mediana_min_merge": 0.1,
+    "p90_h_merge": 0.0
+   },
+   {
+    "autor_clase": "bot_otro",
+    "prs": 692266,
+    "con_review": 47219,
+    "con_merge_observable": 127673,
+    "mediana_min_review": 17.8,
+    "mediana_min_merge": 10.0,
+    "p90_h_merge": 39.51
+   },
+   {
+    "autor_clase": "agente_ia",
+    "prs": 19986,
+    "con_review": 2257,
+    "con_merge_observable": 3738,
+    "mediana_min_review": 15.2,
+    "mediana_min_merge": 10.4,
+    "p90_h_merge": 15.57
+   }
+  ],
+  "mensual": [
+   {
+    "mes_apertura": "2025-08-01",
+    "autor_clase": "agente_ia",
+    "mediana_min_review": 15.7,
+    "mediana_min_merge": 10.6
+   },
+   {
+    "mes_apertura": "2025-08-01",
+    "autor_clase": "bot_ci",
+    "mediana_min_review": 5.5,
+    "mediana_min_merge": 0.1
+   },
+   {
+    "mes_apertura": "2025-08-01",
+    "autor_clase": "bot_dependencias",
+    "mediana_min_review": 8.2,
+    "mediana_min_merge": 214.9
+   },
+   {
+    "mes_apertura": "2025-08-01",
+    "autor_clase": "bot_otro",
+    "mediana_min_review": 13.7,
+    "mediana_min_merge": 9.2
+   },
+   {
+    "mes_apertura": "2025-08-01",
+    "autor_clase": "humano",
+    "mediana_min_review": 23.8,
+    "mediana_min_merge": 1.7
+   },
+   {
+    "mes_apertura": "2025-09-01",
+    "autor_clase": "agente_ia",
+    "mediana_min_review": 24.9,
+    "mediana_min_merge": 11.8
+   },
+   {
+    "mes_apertura": "2025-09-01",
+    "autor_clase": "bot_ci",
+    "mediana_min_review": 7.5,
+    "mediana_min_merge": 0.1
+   },
+   {
+    "mes_apertura": "2025-09-01",
+    "autor_clase": "bot_dependencias",
+    "mediana_min_review": 5.3,
+    "mediana_min_merge": 191.9
+   },
+   {
+    "mes_apertura": "2025-09-01",
+    "autor_clase": "bot_otro",
+    "mediana_min_review": 23.2,
+    "mediana_min_merge": 9.5
+   },
+   {
+    "mes_apertura": "2025-09-01",
+    "autor_clase": "humano",
+    "mediana_min_review": 20.5,
+    "mediana_min_merge": 1.9
+   },
+   {
+    "mes_apertura": "2025-10-01",
+    "autor_clase": "agente_ia",
+    "mediana_min_review": 22.3,
+    "mediana_min_merge": 5.5
+   },
+   {
+    "mes_apertura": "2025-10-01",
+    "autor_clase": "bot_ci",
+    "mediana_min_review": 8.7,
+    "mediana_min_merge": 0.1
+   },
+   {
+    "mes_apertura": "2025-10-01",
+    "autor_clase": "bot_dependencias",
+    "mediana_min_review": 3.5,
+    "mediana_min_merge": 127.4
+   },
+   {
+    "mes_apertura": "2025-10-01",
+    "autor_clase": "bot_otro",
+    "mediana_min_review": 24.5,
+    "mediana_min_merge": 7.2
+   },
+   {
+    "mes_apertura": "2025-10-01",
+    "autor_clase": "humano",
+    "mediana_min_review": 20.5,
+    "mediana_min_merge": 1.5
+   },
+   {
+    "mes_apertura": "2025-11-01",
+    "autor_clase": "agente_ia",
+    "mediana_min_review": 22.4,
+    "mediana_min_merge": null
+   },
+   {
+    "mes_apertura": "2025-11-01",
+    "autor_clase": "bot_ci",
+    "mediana_min_review": 9.2,
+    "mediana_min_merge": null
+   },
+   {
+    "mes_apertura": "2025-11-01",
+    "autor_clase": "bot_dependencias",
+    "mediana_min_review": 1.8,
+    "mediana_min_merge": null
+   },
+   {
+    "mes_apertura": "2025-11-01",
+    "autor_clase": "bot_otro",
+    "mediana_min_review": 18.4,
+    "mediana_min_merge": null
+   },
+   {
+    "mes_apertura": "2025-11-01",
+    "autor_clase": "humano",
+    "mediana_min_review": 21.4,
+    "mediana_min_merge": null
+   },
+   {
+    "mes_apertura": "2025-12-01",
+    "autor_clase": "agente_ia",
+    "mediana_min_review": 9.6,
+    "mediana_min_merge": 10.6
+   },
+   {
+    "mes_apertura": "2025-12-01",
+    "autor_clase": "bot_ci",
+    "mediana_min_review": 3.6,
+    "mediana_min_merge": 0.1
+   },
+   {
+    "mes_apertura": "2025-12-01",
+    "autor_clase": "bot_dependencias",
+    "mediana_min_review": 2.7,
+    "mediana_min_merge": 182.7
+   },
+   {
+    "mes_apertura": "2025-12-01",
+    "autor_clase": "bot_otro",
+    "mediana_min_review": 17.2,
+    "mediana_min_merge": 11.4
+   },
+   {
+    "mes_apertura": "2025-12-01",
+    "autor_clase": "humano",
+    "mediana_min_review": 15.7,
+    "mediana_min_merge": 1.7
+   },
+   {
+    "mes_apertura": "2026-01-01",
+    "autor_clase": "agente_ia",
+    "mediana_min_review": 10.4,
+    "mediana_min_merge": 9.9
+   },
+   {
+    "mes_apertura": "2026-01-01",
+    "autor_clase": "bot_ci",
+    "mediana_min_review": 2.5,
+    "mediana_min_merge": 0.1
+   },
+   {
+    "mes_apertura": "2026-01-01",
+    "autor_clase": "bot_dependencias",
+    "mediana_min_review": 0.7,
+    "mediana_min_merge": 151.5
+   },
+   {
+    "mes_apertura": "2026-01-01",
+    "autor_clase": "bot_otro",
+    "mediana_min_review": 15.2,
+    "mediana_min_merge": 11.9
+   },
+   {
+    "mes_apertura": "2026-01-01",
+    "autor_clase": "humano",
+    "mediana_min_review": 14.6,
+    "mediana_min_merge": 2.1
+   },
+   {
+    "mes_apertura": "2026-02-01",
+    "autor_clase": "agente_ia",
+    "mediana_min_review": 5.4,
+    "mediana_min_merge": 11.5
+   },
+   {
+    "mes_apertura": "2026-02-01",
+    "autor_clase": "bot_ci",
+    "mediana_min_review": 4.1,
+    "mediana_min_merge": 0.1
+   },
+   {
+    "mes_apertura": "2026-02-01",
+    "autor_clase": "bot_dependencias",
+    "mediana_min_review": 2.5,
+    "mediana_min_merge": 207.9
+   },
+   {
+    "mes_apertura": "2026-02-01",
+    "autor_clase": "bot_otro",
+    "mediana_min_review": 10.3,
+    "mediana_min_merge": 5.2
+   },
+   {
+    "mes_apertura": "2026-02-01",
+    "autor_clase": "humano",
+    "mediana_min_review": 12.1,
+    "mediana_min_merge": 2.2
+   }
+  ]
+ },
+ "p3": {
+  "fuente": "p3_retencion_cohortes.parquet, p3_repos_saldo.parquet",
+  "nota": "Sin bots. La cohorte inicial (2025-08) esta inflada por la ventana.",
+  "cohortes": [
+   {
+    "cohorte": "2025-08",
+    "mes_de_vida": 0,
+    "actores": 4311717
+   },
+   {
+    "cohorte": "2025-08",
+    "mes_de_vida": 1,
+    "actores": 1173218
+   },
+   {
+    "cohorte": "2025-08",
+    "mes_de_vida": 2,
+    "actores": 662627
+   },
+   {
+    "cohorte": "2025-08",
+    "mes_de_vida": 3,
+    "actores": 568413
+   },
+   {
+    "cohorte": "2025-08",
+    "mes_de_vida": 4,
+    "actores": 479981
+   },
+   {
+    "cohorte": "2025-08",
+    "mes_de_vida": 5,
+    "actores": 434536
+   },
+   {
+    "cohorte": "2025-08",
+    "mes_de_vida": 6,
+    "actores": 385317
+   },
+   {
+    "cohorte": "2025-08",
+    "mes_de_vida": 7,
+    "actores": 359762
+   },
+   {
+    "cohorte": "2025-09",
+    "mes_de_vida": 0,
+    "actores": 5666552
+   },
+   {
+    "cohorte": "2025-09",
+    "mes_de_vida": 1,
+    "actores": 935290
+   },
+   {
+    "cohorte": "2025-09",
+    "mes_de_vida": 2,
+    "actores": 587174
+   },
+   {
+    "cohorte": "2025-09",
+    "mes_de_vida": 3,
+    "actores": 425710
+   },
+   {
+    "cohorte": "2025-09",
+    "mes_de_vida": 4,
+    "actores": 337617
+   },
+   {
+    "cohorte": "2025-09",
+    "mes_de_vida": 5,
+    "actores": 283124
+   },
+   {
+    "cohorte": "2025-09",
+    "mes_de_vida": 6,
+    "actores": 259883
+   },
+   {
+    "cohorte": "2025-10",
+    "mes_de_vida": 0,
+    "actores": 4516180
+   },
+   {
+    "cohorte": "2025-10",
+    "mes_de_vida": 1,
+    "actores": 852449
+   },
+   {
+    "cohorte": "2025-10",
+    "mes_de_vida": 2,
+    "actores": 434887
+   },
+   {
+    "cohorte": "2025-10",
+    "mes_de_vida": 3,
+    "actores": 293529
+   },
+   {
+    "cohorte": "2025-10",
+    "mes_de_vida": 4,
+    "actores": 223639
+   },
+   {
+    "cohorte": "2025-10",
+    "mes_de_vida": 5,
+    "actores": 200337
+   },
+   {
+    "cohorte": "2025-11",
+    "mes_de_vida": 0,
+    "actores": 4955082
+   },
+   {
+    "cohorte": "2025-11",
+    "mes_de_vida": 1,
+    "actores": 845085
+   },
+   {
+    "cohorte": "2025-11",
+    "mes_de_vida": 2,
+    "actores": 386480
+   },
+   {
+    "cohorte": "2025-11",
+    "mes_de_vida": 3,
+    "actores": 259061
+   },
+   {
+    "cohorte": "2025-11",
+    "mes_de_vida": 4,
+    "actores": 220048
+   },
+   {
+    "cohorte": "2025-12",
+    "mes_de_vida": 0,
+    "actores": 4717441
+   },
+   {
+    "cohorte": "2025-12",
+    "mes_de_vida": 1,
+    "actores": 721219
+   },
+   {
+    "cohorte": "2025-12",
+    "mes_de_vida": 2,
+    "actores": 327681
+   },
+   {
+    "cohorte": "2025-12",
+    "mes_de_vida": 3,
+    "actores": 249784
+   },
+   {
+    "cohorte": "2026-01",
+    "mes_de_vida": 0,
+    "actores": 4802560
+   },
+   {
+    "cohorte": "2026-01",
+    "mes_de_vida": 1,
+    "actores": 787737
+   },
+   {
+    "cohorte": "2026-01",
+    "mes_de_vida": 2,
+    "actores": 412568
+   },
+   {
+    "cohorte": "2026-02",
+    "mes_de_vida": 0,
+    "actores": 4832477
+   },
+   {
+    "cohorte": "2026-02",
+    "mes_de_vida": 1,
+    "actores": 880282
+   },
+   {
+    "cohorte": "2026-03",
+    "mes_de_vida": 0,
+    "actores": 5511655
+   }
+  ],
+  "retencion": [
+   {
+    "cohorte": "2025-08",
+    "nuevos": 4311717,
+    "pct_mes_1": 27.2,
+    "pct_mes_3": 13.2
+   },
+   {
+    "cohorte": "2025-09",
+    "nuevos": 5666552,
+    "pct_mes_1": 16.5,
+    "pct_mes_3": 7.5
+   },
+   {
+    "cohorte": "2025-10",
+    "nuevos": 4516180,
+    "pct_mes_1": 18.9,
+    "pct_mes_3": 6.5
+   },
+   {
+    "cohorte": "2025-11",
+    "nuevos": 4955082,
+    "pct_mes_1": 17.1,
+    "pct_mes_3": 5.2
+   },
+   {
+    "cohorte": "2025-12",
+    "nuevos": 4717441,
+    "pct_mes_1": 15.3,
+    "pct_mes_3": 5.3
+   },
+   {
+    "cohorte": "2026-01",
+    "nuevos": 4802560,
+    "pct_mes_1": 16.4,
+    "pct_mes_3": null
+   },
+   {
+    "cohorte": "2026-02",
+    "nuevos": 4832477,
+    "pct_mes_1": 18.2,
+    "pct_mes_3": null
+   },
+   {
+    "cohorte": "2026-03",
+    "nuevos": 5511655,
+    "pct_mes_1": null,
+    "pct_mes_3": null
+   }
+  ],
+  "top_repos": [
+   {
+    "repo": "openclaw/openclaw",
+    "activos_acumulados": 91248,
+    "nuevos_acumulados": 89459
+   },
+   {
+    "repo": "anthropics/claude-code",
+    "activos_acumulados": 43174,
+    "nuevos_acumulados": 39705
+   },
+   {
+    "repo": "anthropics/skills",
+    "activos_acumulados": 37426,
+    "nuevos_acumulados": 37278
+   },
+   {
+    "repo": "github/spec-kit",
+    "activos_acumulados": 35878,
+    "nuevos_acumulados": 35591
+   },
+   {
+    "repo": "DigitalPlatDev/FreeDomain",
+    "activos_acumulados": 35809,
+    "nuevos_acumulados": 35606
+   },
+   {
+    "repo": "anomalyco/opencode",
+    "activos_acumulados": 35531,
+    "nuevos_acumulados": 34674
+   },
+   {
+    "repo": "obra/superpowers",
+    "activos_acumulados": 34807,
+    "nuevos_acumulados": 34625
+   },
+   {
+    "repo": "affaan-m/everything-claude-code",
+    "activos_acumulados": 33598,
+    "nuevos_acumulados": 33488
+   },
+   {
+    "repo": "codecrafters-io/build-your-own-x",
+    "activos_acumulados": 31836,
+    "nuevos_acumulados": 31731
+   },
+   {
+    "repo": "n8n-io/n8n",
+    "activos_acumulados": 31510,
+    "nuevos_acumulados": 30583
+   }
+  ]
+ }
+}
