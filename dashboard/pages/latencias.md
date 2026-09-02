@@ -55,11 +55,11 @@ order by prs desc
 ```
 
 <DataTable data={mediana_global}>
-    <Column id=autor_clase title="Clase de autor"/>
-    <Column id=prs title="PRs abiertos" fmt=num0/>
-    <Column id=con_merge_observable title="Con merge medible" fmt=num0/>
-    <Column id=min_review title="Mediana min. hasta 1er review" fmt=num1/>
-    <Column id=min_merge title="Mediana min. hasta merge" fmt=num1/>
+    <Column id=autor_clase title="Clase"/>
+    <Column id=prs title="PRs" fmt=num0/>
+    <Column id=con_merge_observable title="Merge medible" fmt=num0/>
+    <Column id=min_review title="1er review (min)" fmt=num1/>
+    <Column id=min_merge title="Merge (min)" fmt=num1/>
 </DataTable>
 
 Son medianas del periodo entero, no medias de medianas mensuales. La columna de
