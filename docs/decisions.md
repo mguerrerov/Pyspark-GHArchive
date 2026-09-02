@@ -642,3 +642,64 @@ Sustituye a D11.
 - **Coste**: los numeros cambian mucho — el merge de un humano pasa de 4.926 a
   1,9 min — asi que cualquier captura o texto anterior queda desfasado. Y son
   dos agregados de P2 que hay que mantener en paralelo.
+
+## D40 — La pagina de latencias no colapsa nunca las clases automaticas
+
+- **Que**: ni la tabla resumen ni los graficos de `latencias.md` agrupan por un
+  booleano `es_bot`. El grano es siempre `autor_clase`, y la pagina lleva un
+  aviso que dice por que.
+- **Alternativas**: ensenar humano contra bot y ofrecer el desglose en un
+  segundo grafico; o dejar el desglose sin explicarlo, confiando en que se lea
+  la leyenda.
+- **Por que**: agregado, el bot medio mergea "al instante" y la conclusion
+  publicable seria que la automatizacion acelera el ciclo. Medido por clase:
+  `bot_ci` mergea en **0,1 min** y `bot_dependencias` en **184,4 min**, cien
+  veces mas que los **1,8 min** de un humano. El promedio salia rapido solo
+  porque CI pesa mucho en el recuento. La conclusion agregada no es imprecisa,
+  es la contraria.
+- **Coste**: cinco series en cada grafico en vez de dos, con `bot_dependencias`
+  dos ordenes de magnitud por encima del resto, que aplasta la escala. Se
+  acepta: el grafico incomodo es el que dice la verdad.
+
+## D41 — `p3_repos_saldo` se recorta a los 2.000 repositorios mas activos
+
+- **Que**: el agregado conserva el grano mensual, pero solo para los 2.000
+  repos con mas contribuyentes activos acumulados en la ventana. Pasa de
+  **1.063.030 filas y 15,09 MB** a **14.361 filas y 78,6 KB**. De paso se quita
+  el filtro `activos >= 5` por fila: cortaba meses sueltos dentro de un repo y
+  dejaba huecos en la serie; ahora el umbral se aplica al total del repo.
+- **Alternativas**: dejarlo fuera del repo y servirlo desde un release o desde
+  Git LFS; o agregarlo a nivel de repo sin meses, que es lo unico que la pagina
+  usa hoy.
+- **Por que**: se regenera entero en cada export, asi que con el cron diario de
+  la Fase 5 el repo crecia 15 MB por dia en objetos que nadie vuelve a mirar.
+  La pagina solo ensena un top 20. Se deja margen hasta 2.000 y con los meses
+  dentro para poder anadir una serie temporal por repo sin volver a tocar el
+  exportador. LFS se descarta porque el criterio del proyecto es que un
+  desconocido abra el artefacto sin clonar nada.
+- **Coste**: la cola larga desaparece. Cualquier pregunta sobre repos pequenos
+  —que son donde perder dos contribuyentes se nota— deja de poder responderse
+  desde el dashboard; hay que volver a gold. Y el criterio de entrada es el
+  tamano de la comunidad, no su tendencia, asi que un repo que se hunde hasta
+  desaparecer puede quedar fuera justo por haberse hundido.
+
+## D42 — La Fase 5 automatiza la ingesta, no el dashboard de las preguntas 1 y 2
+
+- **Que**: el cron diario descarga, escribe bronze y silver y publica la
+  cobertura, pero **no** regenera los agregados de las preguntas 1 y 2 ni
+  reconstruye el dashboard con los dias nuevos. La ventana publicada sigue
+  fijada en el **2026-03-14** (D36) hasta que la fuente vuelva a publicar algo
+  que no sea `PushEvent`.
+- **Alternativas**: dejar el cron regenerando todo, con el dashboard entrando
+  cada dia mas en el tramo degradado; o cancelar la Fase 5 entera.
+- **Por que**: desde el 2026-03-15 la cuota de eventos de PR cae del 12-14 % al
+  0,13 % (D36), asi que cada dia nuevo aporta ruido a las dos primeras
+  preguntas. La tercera vive de `PushEvent` y esos siguen llegando, pero D37 ya
+  midio que la ventana degradada pierde el 25 % de actores distintos, que una
+  cohorte de retencion leeria como fuga. Con eso, ningun dia posterior al corte
+  puede publicarse hoy. Lo que si sigue teniendo valor es demostrar que la
+  automatizacion existe y funciona, y que el detector de degradacion corre solo
+  y avisa: es el mecanismo el que se automatiza, no la publicacion.
+- **Coste**: el dashboard queda congelado en una ventana historica y hay que
+  explicarlo en la portada y en el README, o parece abandonado. Y se acumula
+  bronze de dias que no se publican, que hay que decidir si se conservan.

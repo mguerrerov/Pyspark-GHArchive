@@ -20,8 +20,9 @@ import duckdb
 DESTINO = Path(__file__).resolve().parent / "dashboard" / "sources" / "gharchive"
 
 # Tope de seguridad: si un agregado se dispara, es que su grano esta mal
-# elegido y no debe acabar en el repo por accidente.
-MAX_MB_POR_FICHERO = 40
+# elegido y no debe acabar en el repo por accidente. Tras D41 el fichero mas
+# grande son 78 KB, asi que un tope de decenas de MB no vigilaba nada.
+MAX_MB_POR_FICHERO = 5
 
 # Fin de la ventana publicable. A partir del 2026-03-15 el feed de GH Archive
 # deja de traer eventos que no sean PushEvent (D36). Para las preguntas 1 y 2
@@ -159,6 +160,12 @@ CONSULTAS = {
         group by 1, 2
         order by 1, 2
     """,
+    # Solo los TOP_REPOS repositorios con mas contribuyentes activos en toda la
+    # ventana, con el grano mensual intacto dentro de ellos. Al grano completo
+    # son 477.049 repos, 1.063.030 filas y 15,09 MB que se regeneran enteros en
+    # cada export; con el cron diario de la Fase 5 eso engorda el repo sin
+    # parar. La pagina solo ensena un top 20, asi que el resto era peso muerto.
+    # Ver D41.
     "p3_repos_saldo": """
         with por_mes as (
             select repo, mes,
@@ -168,11 +175,19 @@ CONSULTAS = {
             where not es_bot
               and mes <= date '2026-03-01'
             group by 1, 2
+        ),
+        top as (
+            select repo
+            from por_mes
+            group by 1
+            having sum(activos) >= 5
+            order by sum(activos) desc
+            limit 2000
         )
-        select repo, mes, nuevos, activos
-        from por_mes
-        where activos >= 5
-        order by mes, activos desc
+        select p.repo, p.mes, p.nuevos, p.activos
+        from por_mes p
+        join top using (repo)
+        order by p.mes, p.activos desc
     """,
 
     # ---------------------------------------------------- contexto / avisos

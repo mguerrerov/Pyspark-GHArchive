@@ -353,8 +353,17 @@ exportar y hacer push. Y los gráficos habrá que afinarlos con datos reales.
 
 ### Fase 5 — Automatización
 
-Workflow con cron diario que procesa el día anterior de forma incremental y
-regenera el dashboard.
+Workflow con cron diario que procesa el día anterior de forma incremental.
+
+**Replanteada tras D36 y D42.** La versión original regeneraba también el
+dashboard. Ya no: desde el 2026-03-15 la fuente no publica eventos que no sean
+`PushEvent`, así que cada día nuevo cae en el tramo degradado y no aporta nada
+a las preguntas 1 y 2 —y, medido en D37, tampoco a la 3—. El cron descarga,
+escribe bronze y silver, y ejecuta `degradacion.py` para publicar la cobertura
+y avisar si la fuente se recupera. La ventana publicada sigue congelada en el
+2026-03-14 y el dashboard solo se regenera a mano. Lo que la fase demuestra es
+que la orquestación existe y corre sola, que es lo que tiene que demostrar; la
+publicación automática no se puede justificar con estos datos.
 
 Incógnita a medir, no a suponer: si PySpark cabe en un runner gratuito de
 Actions (2 vCPU, ~7 GB RAM, ~14 GB disco) para 24 ficheros horarios. Si no

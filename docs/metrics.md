@@ -958,6 +958,11 @@ con otra consulta y otro recorte.
 **Los bots mergean unas 19 veces mas rapido y reciben el primer review 4 veces
 antes.**
 
+**Superado. No usar este par de filas.** Agrupar todo lo automatico en una sola
+clase invierte la conclusion, y ademas esta medicion es anterior a D38, asi que
+mete dentro el tramo sin senal de merge. Las cifras vigentes son las de "Mediana
+real del periodo", al final del documento.
+
 Dos limitaciones que el dashboard debe declarar:
 
 1. La mediana de primer review sale de **el 12,8 % de los PRs humanos y el
@@ -1025,7 +1030,8 @@ La ventana publicable para las preguntas 1 y 2 es **2025-08-13 -> 2026-03-14**,
 
 `exportar_gold.py` sobre la ventana recortada (D36, D37): **15,11 MB en 8
 ficheros**, el mayor `p3_repos_saldo` con 1.063.030 filas y 15,09 MB. Tope de
-seguridad del script: 40 MB por fichero.
+seguridad del script: 40 MB por fichero. (Ambas cifras quedan superadas por el
+export del 2026-09-02, mas abajo.)
 
 `dim_fecha` exporta **214 filas**, los dias de 2025-08-13 a 2026-03-14.
 
@@ -1048,10 +1054,13 @@ Mediana hasta merge, sobre `cohorte_madura`, **por clase**:
 | Clase | PRs | Mediana hasta merge |
 |---|---:|---:|
 | `bot_ci` | 2.886.772 | **0,1 min** |
-| `humano` | 12.912.276 | 1,9 min |
-| `bot_otro` | 692.266 | 9,5 min |
-| `agente_ia` | 19.986 | 10,6 min |
-| `bot_dependencias` | 4.205.740 | **191,9 min** (3,2 h) |
+| `humano` | 12.912.276 | 1,8 min |
+| `bot_otro` | 692.266 | 10,0 min |
+| `agente_ia` | 19.986 | 10,4 min |
+| `bot_dependencias` | 4.205.740 | **184,4 min** (3,1 h) |
+
+(Cifras cuadradas el 2026-09-02 contra el Parquet publicado; ver la nota de
+correccion al final del documento.)
 
 Agrupar todo lo no humano en "bot/agente" daba 0,1 min y la conclusion "los
 bots mergean 19 veces mas rapido que los humanos". **Es falso como
@@ -1131,16 +1140,58 @@ humanos.
 
 ### Mediana real del periodo, ya con D38 y D39
 
-Sobre cohortes maduras, excluyendo el tramo ciego en la columna de merge:
+Sobre cohortes maduras, excluyendo el tramo ciego en la columna de merge.
+Leido del Parquet que se publica, `p2_latencias_globales.parquet`, no de una
+consulta suelta:
 
-| Clase | PRs | Mediana min. review | Mediana min. merge | p90 h. merge |
-|---|---:|---:|---:|---:|
-| humano | 12.912.276 | 18,7 | 1,9 | 26,7 |
-| bot_dependencias | 4.205.740 | 2,7 | 194,6 | 154,9 |
-| bot_ci | 2.886.772 | 5,0 | 0,1 | 0,0 |
-| bot_otro | 692.266 | 17,8 | 10,2 | 44,0 |
-| agente_ia | 19.986 | 15,2 | 10,5 | 16,0 |
+| Clase | PRs | Con review | Con merge medible | Mediana min. review | Mediana min. merge | p90 h. merge |
+|---|---:|---:|---:|---:|---:|---:|
+| humano | 12.912.276 | 1.908.098 | 3.154.504 | 18,7 | 1,8 | 24,63 |
+| bot_dependencias | 4.205.740 | 278.975 | 554.729 | 2,7 | 184,4 | 127,63 |
+| bot_ci | 2.886.772 | 26.868 | 916.598 | 5,0 | 0,1 | 0,00 |
+| bot_otro | 692.266 | 47.219 | 127.673 | 17,8 | 10,0 | 39,51 |
+| agente_ia | 19.986 | 2.257 | 3.738 | 15,2 | 10,4 | 15,57 |
+
+**Corregida el 2026-09-02.** La primera version de esta tabla daba 1,9 min y
+26,7 h de p90 para humanos, y 194,6 min para `bot_dependencias`. El recuento de
+PRs coincidia exactamente con el agregado publicado, asi que la poblacion era la
+misma: lo que no coincidia era el filtro de merge, medido antes de que
+`merge_observable` quedara aplicado en las dos columnas. Los numeros de arriba
+salen ahora del propio fichero que sube al repo, que es el unico que alguien
+puede comprobar. La conclusion no cambia; las cifras si.
 
 Confirma con la metrica correcta lo que la sesion 4 ya habia visto: partir por
 clase invierte la conclusion. `bot_dependencias` tarda **100 veces mas** que un
 humano en mergear; solo `bot_ci` es instantaneo.
+
+## Export con el grano de P3 recortado — 2026-09-02
+
+`exportar_gold.py` tras D41, misma ventana y mismos modelos, solo cambia el
+grano de `p3_repos_saldo`:
+
+| Agregado | Filas | MB |
+|---|---:|---:|
+| p1_actividad_mensual | 40 | 0,00 |
+| p1_por_lenguaje | 1.616 | 0,01 |
+| p1_top_agentes | 85 | 0,00 |
+| p2_latencias_mensuales | 45 | 0,00 |
+| p2_latencias_globales | 10 | 0,00 |
+| p2_censura | 32 | 0,00 |
+| p3_retencion_cohortes | 36 | 0,00 |
+| **p3_repos_saldo** | **14.361** | **0,08** |
+| dim_fecha | 214 | 0,00 |
+| **Total** | | **0,09 MB en 9 ficheros** |
+
+`p3_repos_saldo` pasa de **1.063.030 filas y 15,09 MB** a **14.361 filas y
+78,6 KB**: 2.000 repositorios de los 477.049 originales, con el grano mensual
+intacto dentro de cada uno. El total del export baja de 15,11 MB a **0,09 MB**,
+un factor de **168**. Las 14.361 filas y no 14.269 porque de paso se quito el
+filtro `activos >= 5` por fila, que recortaba meses flojos dentro de un repo que
+si entra.
+
+Son 9 ficheros y no 8 porque `p2_latencias_globales` es nuevo (D39) y en el
+export anterior le faltaba el `.sql` de la fuente, asi que Evidence no lo habria
+encontrado.
+
+Tope de seguridad del script bajado de 40 MB a **5 MB** por fichero: con el
+mayor en 78 KB, el tope anterior no vigilaba nada.

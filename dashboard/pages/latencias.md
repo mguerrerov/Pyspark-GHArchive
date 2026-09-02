@@ -65,6 +65,18 @@ order by prs desc
 Son medianas del periodo entero, no medias de medianas mensuales. La columna de
 merge se calcula solo sobre los PRs con merge medible, que es la que va al lado.
 
+<Alert status=warning>
+
+**"Los bots" no existen como grupo aquí.** Juntar todas las cuentas automáticas
+en una sola línea invierte la conclusión de esta página. Un `bot_ci` mergea en
+**0,1 min**, y un `bot_dependencias` tarda **184,4 min**: cien veces más que un
+humano, porque su PR espera a que alguien lo apruebe. Agregados juntos, el peso
+de CI arrastra la media y sale que "los bots mergean casi al instante", que es
+falso para tres de las cuatro clases. Por eso ningún gráfico ni tabla de esta
+página colapsa las clases automáticas.
+
+</Alert>
+
 ## Evolución de la latencia hasta el primer review
 
 ```sql evolucion

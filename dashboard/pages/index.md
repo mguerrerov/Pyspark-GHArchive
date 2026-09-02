@@ -41,6 +41,17 @@ habituales—. Esos seis días están **excluidos**, no son días de baja activi
 
 </Alert>
 
+<Alert status=warning>
+
+**La ventana termina el 14 de marzo de 2026, y no porque falten datos.** A
+partir del día siguiente el feed deja de traer eventos que no sean `PushEvent`:
+la cuota de eventos de pull request cae del 12-14 % estable al 0,13 %. La
+descarga sigue corriendo a diario y los días nuevos se procesan, pero no se
+publican, porque con ese reparto las tres preguntas no se pueden responder. La
+ventana se ampliará cuando la fuente vuelva a publicar el resto de eventos.
+
+</Alert>
+
 ```sql formato
 select formato_fuente, count(*) as dias
 from gharchive.dim_fecha where tiene_datos group by 1
