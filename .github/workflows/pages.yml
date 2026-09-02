@@ -42,9 +42,10 @@ jobs:
 
       - name: Construir el sitio
         env:
-          # Project page: el sitio cuelga de /<repo>/, no de la raiz del
-          # dominio. Sin esto los enlaces y los assets apuntan a /.
-          EVIDENCE_BASE_PATH: /${{ github.event.repository.name }}
+          # El base path NO va aqui. Evidence lo lee de `deployment.basePath`
+          # en evidence.config.yaml y de ningun otro sitio; un
+          # EVIDENCE_BASE_PATH en el entorno se ignora en silencio y el sitio
+          # sale sin estilos con el workflow en verde.
           NODE_OPTIONS: --max-old-space-size=4096
         run: |
           npm run sources

@@ -1,3 +1,11 @@
+# Project page de GitHub Pages: el sitio cuelga de /<repo>/, no de la raiz del
+# dominio. Evidence lo lee de aqui y solo de aqui, y lo pasa a `paths.base` de
+# SvelteKit; no lo lee de ninguna variable de entorno. Sin esto el HTML pide
+# /_app/... en vez de /Pyspark-GHArchive/_app/..., los ficheros dan 404 y la
+# pagina se sirve sin CSS ni JS, con el build en verde.
+deployment:
+  basePath: /Pyspark-GHArchive
+
 appearance:
   default: system
   switcher: true
