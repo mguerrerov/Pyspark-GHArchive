@@ -104,21 +104,17 @@ agosto); 42,0 % de los 80,6 M de eventos de PR de la ventana no son humanos.
 
 ## Qué queda pendiente y por dónde se retoma
 
-**Punto exacto de retome: conectar el repo en Netlify.** Hoy el sitio se
-despliega con `netlify deploy --prod --dir dist` desde local; no se actualiza
-solo con el push. Falta, en el panel de Netlify: *Configuration → Build &
-deploy → Continuous deployment → Link repository* → `mguerrerov/Pyspark-GHArchive`.
-`netlify.toml` ya lleva el comando y la carpeta. La CLI (`netlify init`) pide
-OAuth de GitHub interactivo, por eso no se hizo desde aquí.
+**Repo conectado en Netlify el 2026-09-03** por Marcos desde el panel (la
+CLI pedía OAuth de GitHub interactivo). El primer build desde Git terminó en
+verde en 69 s; desde ahora cada push a `main` despliega solo.
 
-1. **Primer build en Netlify**: comprobar que `construir_sitio.sh` termina en
-   el runner (Evidence pide memoria; `NODE_OPTIONS` va en `netlify.toml`) y
-   anotar su duración en `metrics.md`.
-2. **Power BI** (`.pbix` + capturas) y el **README**, que escribe Marcos. La
+**Punto exacto de retome: Power BI y README.**
+
+1. **Power BI** (`.pbix` + capturas) y el **README**, que escribe Marcos. La
    portada del sitio le sirve de borrador.
-3. **Fase 5** con el alcance de D42: cron de ingesta + degradación, sin
+2. **Fase 5** con el alcance de D42: cron de ingesta + degradación, sin
    regenerar el dashboard.
-4. Cosmético: los KPI del hero envuelven en pantallas estrechas; el título
+3. Cosmético: los KPI del hero envuelven en pantallas estrechas; el título
    "Sobre Los Datos" del menú de Evidence sale en Title Case por el propio
    Evidence.
 

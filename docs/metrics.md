@@ -1243,3 +1243,12 @@ Otras cifras del mismo export, leidas de los Parquet publicados:
 - Tailwind v4.3.3 compila `assets/app.css` en **55 ms**.
 - `comprobar_sitio.py`: **89 entradas con fuente, 59 valores comprobados,
   0 fallos** contra `docs/metrics.md`.
+
+### Primer build en Netlify desde Git — 2026-09-03
+
+Repo conectado en Netlify (`main`, `bash construir_sitio.sh` → `dist`). Primer
+build desde Git sobre `30b46fb`: **estado ready, sin errores, 69 s** de
+`created_at` a `published_at` (22:05:26 → 22:06:35 UTC; `deploy_time` 67 s).
+Tras el build: `/` 200, `/metricas.html` 200, `/dashboard/` 301,
+`/dashboard/retencion/` 200, `/data/negocio.json` 200, y el HTML de Evidence
+pide `/dashboard/_app/...`.
