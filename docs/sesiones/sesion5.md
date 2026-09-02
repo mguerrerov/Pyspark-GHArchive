@@ -100,7 +100,7 @@ agosto); 42,0 % de los 80,6 M de eventos de PR de la ventana no son humanos.
 | agregados | 9 Parquet, 0,09 MB, ventana 2025-08-13 → 2026-03-14 |
 | dashboard Evidence | en **https://pyspark-gharchive.netlify.app/dashboard/bots/** (la raíz de `/dashboard/` redirige a la portada) |
 | sitio estático | **https://pyspark-gharchive.netlify.app**, público, revisado en Chrome |
-| GitHub Pages | workflow eliminado; **falta desactivarlo en Settings → Pages** |
+| GitHub Pages | desactivado por Marcos el 2026-09-03; github.io devuelve 404 |
 
 ## Qué queda pendiente y por dónde se retoma
 
@@ -111,15 +111,14 @@ deploy → Continuous deployment → Link repository* → `mguerrerov/Pyspark-GH
 `netlify.toml` ya lleva el comando y la carpeta. La CLI (`netlify init`) pide
 OAuth de GitHub interactivo, por eso no se hizo desde aquí.
 
-1. **Desactivar GitHub Pages** en el repo.
-2. **Primer build en Netlify**: comprobar que `construir_sitio.sh` termina en
+1. **Primer build en Netlify**: comprobar que `construir_sitio.sh` termina en
    el runner (Evidence pide memoria; `NODE_OPTIONS` va en `netlify.toml`) y
    anotar su duración en `metrics.md`.
-3. **Power BI** (`.pbix` + capturas) y el **README**, que escribe Marcos. La
+2. **Power BI** (`.pbix` + capturas) y el **README**, que escribe Marcos. La
    portada del sitio le sirve de borrador.
-4. **Fase 5** con el alcance de D42: cron de ingesta + degradación, sin
+3. **Fase 5** con el alcance de D42: cron de ingesta + degradación, sin
    regenerar el dashboard.
-5. Cosmético: los KPI del hero envuelven en pantallas estrechas; el título
+4. Cosmético: los KPI del hero envuelven en pantallas estrechas; el título
    "Sobre Los Datos" del menú de Evidence sale en Title Case por el propio
    Evidence.
 
