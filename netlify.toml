@@ -9,9 +9,22 @@
   # Evidence pide memoria al construir; el runner de Netlify da 8 GB.
   NODE_OPTIONS = "--max-old-space-size=4096"
 
+# El "Home" de Evidence (menu y migas) enlaza a /dashboard/. La home del
+# proyecto es la raiz, asi que se redirige. `force` porque en dist/dashboard/
+# hay un index.html y sin el, Netlify serviria el fichero antes que la regla.
+[[redirects]]
+  from = "/dashboard"
+  to = "/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/dashboard/"
+  to = "/"
+  status = 301
+  force = true
+
 # Evidence es una SPA estatica con una pagina por ruta: /dashboard/bots/
-# existe como fichero, asi que no hace falta reescritura. Se deja el 404
-# propio de Evidence para su subarbol.
+# existe como fichero, asi que no hace falta reescritura.
 [[headers]]
   for = "/data/*"
   [headers.values]

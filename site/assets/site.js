@@ -15,13 +15,17 @@ const ORDEN_CLASES = Object.keys(CLASES);
 const css = (nombre) => getComputedStyle(document.documentElement).getPropertyValue(nombre).trim();
 const colorClase = (clase) => css(`--color-${CLASES[clase].color}`);
 
+// Locale de-DE y no es-ES a proposito: los separadores son los mismos
+// (punto de miles, coma decimal) pero es-ES no agrupa los numeros de cuatro
+// cifras y escribe "1319" donde queremos "1.319".
+const LOCALE = 'de-DE';
 const fmt = {
-  entero: (n) => n == null ? '—' : new Intl.NumberFormat('es-ES').format(Math.round(n)),
-  dec: (n, d = 1) => n == null ? '—' : new Intl.NumberFormat('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d }).format(n),
+  entero: (n) => n == null ? '—' : new Intl.NumberFormat(LOCALE).format(Math.round(n)),
+  dec: (n, d = 1) => n == null ? '—' : new Intl.NumberFormat(LOCALE, { minimumFractionDigits: d, maximumFractionDigits: d }).format(n),
   pct: (n, d = 1) => n == null ? '—' : fmt.dec(n, d) + ' %',
   compacto: (n) => {
     if (n == null) return '—';
-    if (Math.abs(n) >= 1e9) return fmt.dec(n / 1e9, 2) + ' mil M';
+    if (Math.abs(n) >= 1e9) return fmt.dec(n / 1e6, 0) + ' M';
     if (Math.abs(n) >= 1e6) return fmt.dec(n / 1e6, 1) + ' M';
     if (Math.abs(n) >= 1e3) return fmt.dec(n / 1e3, 0) + ' k';
     return fmt.entero(n);
@@ -159,7 +163,7 @@ const GRAFICOS = {
     return fusion(base({ grid: { left: 8, right: 90, top: 8, bottom: 8, containLabel: true } }), {
       legend: { show: false },
       tooltip: { trigger: 'item', formatter: q => `${q.name}<br><b>${fmt.entero(q.value)}</b> filas` },
-      xAxis: { type: 'log', logBase: 10, axisLabel: { formatter: fmt.compacto }, splitLine: { lineStyle: { color: css('--rejilla') } }, axisLine: { show: false } },
+      xAxis: { type: 'log', logBase: 10, axisLabel: { show: false }, splitLine: { lineStyle: { color: css('--rejilla') } }, axisLine: { show: false } },
       yAxis: ejeCategorias(filas.map(r => `${r.capa} · ${r.tabla}`), { axisLabel: { color: css('--tinta-2'), fontSize: 11 }, splitLine: { show: false } }),
       series: [barraH('filas', filas.map(r => ({ value: r.filas, itemStyle: { color: { bronze: colorClase('bot_dependencias'), silver: colorClase('bot_otro'), gold: colorClase('humano') }[r.capa], borderRadius: [0, 4, 4, 0] } })), null,
         { label: { show: true, position: 'right', color: css('--tinta-2'), fontSize: 11, formatter: q => fmt.compacto(q.value) } })],
@@ -176,7 +180,7 @@ const GRAFICOS = {
     return fusion(base({ grid: { left: 8, right: 80, top: 8, bottom: 8, containLabel: true } }), {
       legend: { show: false },
       tooltip: { trigger: 'item', formatter: q => `${q.name}<br><b>${q.value < 0.01 ? fmt.dec(q.value * 1024, 2) + ' MB' : fmt.dec(q.value, 1) + ' GiB'}</b>` },
-      xAxis: { type: 'log', logBase: 10, min: 0.00005, axisLabel: { formatter: v => v >= 1 ? fmt.entero(v) + ' GiB' : fmt.dec(v * 1024, 0) + ' MB' }, splitLine: { lineStyle: { color: css('--rejilla') } }, axisLine: { show: false } },
+      xAxis: { type: 'log', logBase: 10, min: 0.00005, axisLabel: { show: false }, splitLine: { lineStyle: { color: css('--rejilla') } }, axisLine: { show: false } },
       yAxis: ejeCategorias(filas.map(r => r.n), { axisLabel: { color: css('--tinta-2'), fontSize: 11 }, splitLine: { show: false } }),
       series: [barraH('GiB', filas.map(r => r.v), colorClase('humano'), { label: { show: true, position: 'right', color: css('--tinta-2'), fontSize: 11, formatter: q => q.value < 0.01 ? fmt.dec(q.value * 1024, 2) + ' MB' : fmt.dec(q.value, 1) + ' GiB' } })],
     });
@@ -186,7 +190,7 @@ const GRAFICOS = {
     return fusion(base({ grid: { left: 8, right: 16, top: 32, bottom: 8, containLabel: true } }), {
       legend: { show: false },
       tooltip: { trigger: 'item', formatter: q => `${q.name}<br><b>${fmt.dec(q.value, 3)} GiB</b> · ratio ${fmt.dec(v[q.dataIndex].ratio_vs_gz, 3)}× · ${fmt.dec(v[q.dataIndex].segundos, 1)} s` },
-      xAxis: ejeCategorias(v.map(r => r.variante), { axisLabel: { interval: 0, fontSize: 11 } }),
+      xAxis: ejeCategorias(v.map(r => r.variante), { axisLabel: { interval: 0, fontSize: 11, color: css('--tinta-2') } }),
       yAxis: { type: 'value', axisLabel: { formatter: '{value} GiB' } },
       series: [barra('GiB de un día', v.map(r => r.gib), colorClase('humano'), { label: { show: true, position: 'top', color: css('--tinta-2'), fontSize: 11, formatter: q => fmt.dec(v[q.dataIndex].ratio_vs_gz, 2) + '× el .gz' } })],
     });
@@ -196,7 +200,7 @@ const GRAFICOS = {
     return fusion(base({ grid: { left: 8, right: 80, top: 8, bottom: 8, containLabel: true } }), {
       legend: { show: false },
       tooltip: { trigger: 'item', formatter: q => `${q.name}<br><b>${filas[q.dataIndex].etiqueta}</b>${filas[q.dataIndex].pico_temporal_gib != null ? '<br>pico de temporal: ' + fmt.dec(filas[q.dataIndex].pico_temporal_gib, 1) + ' GiB' : ''}` },
-      xAxis: { type: 'value', axisLabel: { formatter: v => fmt.dec(v / 3600, 0) + ' h' }, splitLine: { lineStyle: { color: css('--rejilla') } }, axisLine: { show: false } },
+      xAxis: { type: 'value', interval: 7200, axisLabel: { formatter: v => fmt.dec(v / 3600, 0) + ' h' }, splitLine: { lineStyle: { color: css('--rejilla') } }, axisLine: { show: false } },
       yAxis: ejeCategorias(filas.map(r => r.modelo), { axisLabel: { color: css('--tinta-2'), fontSize: 11, fontFamily: css('--font-mono') }, splitLine: { show: false } }),
       series: [barraH('duración', filas.map(r => r.segundos), colorClase('humano'), { label: { show: true, position: 'right', color: css('--tinta-2'), fontSize: 11, formatter: q => filas[q.dataIndex].etiqueta } })],
     });
@@ -206,8 +210,8 @@ const GRAFICOS = {
     return fusion(base(), {
       tooltip: { trigger: 'item', formatter: q => `${q.name}<br><b>${fmt.horas(q.value)}</b> · ${fmt.entero(v[q.dataIndex].filas)} filas leídas` },
       legend: { show: false },
-      xAxis: ejeCategorias(v.map(r => r.lote.replace(' a ', ' → ')), { axisLabel: { interval: 0, fontSize: 10 } }),
-      yAxis: { type: 'value', axisLabel: { formatter: v => fmt.dec(v / 60, 0) + ' min' } },
+      xAxis: ejeCategorias(v.map(r => { const [a, b] = r.lote.split(' a '); return fmt.mes(a.slice(0, 7)) + ' → ' + fmt.mes(b.slice(0, 7)); }), { axisLabel: { interval: 0, fontSize: 11 } }),
+      yAxis: { type: 'value', splitNumber: 4, axisLabel: { formatter: v => fmt.dec(v / 60, 0) + ' min' } },
       series: [barra('segundos', v.map(r => r.segundos), colorClase('bot_otro'), { label: { show: true, position: 'top', color: css('--tinta-2'), fontSize: 11, formatter: q => fmt.horas(q.value) } })],
     });
   },
@@ -254,7 +258,7 @@ const GRAFICOS = {
 /* ------------------------------------------------------------ KPIs y tablas */
 function pintarKpi(el, k) {
   const valor = typeof k.valor === 'number'
-    ? (k.unidad === '%' ? fmt.dec(k.valor, 1) : Number.isInteger(k.valor) ? (k.valor >= 1e6 ? fmt.compacto(k.valor) : fmt.entero(k.valor)) : fmt.dec(k.valor, k.valor < 10 ? 2 : 1))
+    ? (k.unidad === '%' ? fmt.dec(k.valor, 1) : Number.isInteger(k.valor) ? (k.valor >= 1e6 ? fmt.compacto(k.valor) : fmt.entero(k.valor)) : fmt.dec(k.valor, k.valor < 1 ? 2 : 1))
     : k.valor;
   const unidad = k.de != null ? `/ ${k.de}` : (k.unidad && k.unidad !== '%' ? k.unidad : (k.unidad === '%' ? '%' : ''));
   el.innerHTML = `<div class="valor">${valor}<span class="unidad">${unidad}</span></div>

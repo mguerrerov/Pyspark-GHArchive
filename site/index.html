@@ -18,7 +18,7 @@
     <div class="flex items-center gap-1">
       <a href="/" class="nav-enlace" aria-current="page">Overview</a>
       <a href="/metricas.html" class="nav-enlace">BI del pipeline</a>
-      <a href="/dashboard/" class="nav-enlace">Dashboard</a>
+      <a href="/dashboard/bots/" class="nav-enlace">Dashboard</a>
       <a href="https://github.com/mguerrerov/Pyspark-GHArchive" class="nav-enlace" rel="noopener">GitHub</a>
     </div>
   </nav>
@@ -34,7 +34,7 @@
     <p class="subtitulo mt-5">Un pipeline en PySpark, dbt y DuckDB sobre <strong id="hero-eventos">1.319 millones</strong> de eventos públicos de GitHub, para responder a tres preguntas con números medidos, no estimados. Todo corre en un ordenador de sobremesa y se publica sin gastar un euro.</p>
     <div class="flex flex-wrap gap-3 mt-7">
       <a href="#preguntas" class="boton boton-primario">Ver las respuestas</a>
-      <a href="/dashboard/" class="boton">Abrir el dashboard interactivo</a>
+      <a href="/dashboard/bots/" class="boton">Abrir el dashboard interactivo</a>
       <a href="/metricas.html" class="boton">Métricas del pipeline</a>
     </div>
     <div class="kpi-rejilla mt-12" id="hero-kpis"></div>
@@ -204,7 +204,7 @@ window.pintarPagina = (n, p, u) => {
   document.getElementById('ventana-desde').textContent = '13 de agosto de 2025';
   document.getElementById('ventana-hasta').textContent = '14 de marzo de 2026';
   pintarKpis(document.getElementById('hero-kpis'), [
-    { valor: p.volumen.kpis[0].valor, unidad: 'eventos', etiqueta: 'Eventos públicos procesados', detalle: '361 días, 24 horas cada uno', fuente: p.volumen.kpis[0].fuente },
+    { valor: p.volumen.kpis[0].valor, etiqueta: 'Eventos públicos procesados', detalle: '361 días, 24 horas cada uno', fuente: p.volumen.kpis[0].fuente },
     { valor: n.p1.total.eventos, unidad: 'eventos de PR', etiqueta: 'Eventos de pull request analizados', detalle: `${v.desde} → ${v.hasta}`, fuente: n.p1.fuente },
     { valor: v.dias, unidad: 'días', etiqueta: 'Días publicables', detalle: `de ${p.volumen.kpis[2].valor} procesados`, fuente: v.fuente },
     { valor: p.calidad.kpis[0].valor, de: p.calidad.kpis[0].de, etiqueta: 'Tests de dbt en verde', detalle: 'y 0 días descuadrados entre capas', fuente: p.calidad.kpis[0].fuente },

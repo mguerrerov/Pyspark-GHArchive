@@ -55,3 +55,6 @@ Thumbs.db
 # se guarda en el .json de al lado y en docs/metrics.md.
 docs/*_salida.txt
 docs/*_error.txt
+
+# Local Netlify folder
+.netlify
