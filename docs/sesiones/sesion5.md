@@ -108,13 +108,14 @@ agosto); 42,0 % de los 80,6 M de eventos de PR de la ventana no son humanos.
 CLI pedía OAuth de GitHub interactivo). El primer build desde Git terminó en
 verde en 69 s; desde ahora cada push a `main` despliega solo.
 
-**Punto exacto de retome: Power BI y README.**
+**Power BI descartado y README escrito** (D45, 2026-09-03): la BI vive en el
+sitio, y Marcos pidio que el README lo redactara Claude.
 
-1. **Power BI** (`.pbix` + capturas) y el **README**, que escribe Marcos. La
-   portada del sitio le sirve de borrador.
-2. **Fase 5** con el alcance de D42: cron de ingesta + degradación, sin
+**Punto exacto de retome: la Fase 5** con el alcance de D42.
+
+1. **Fase 5** con el alcance de D42: cron de ingesta + degradación, sin
    regenerar el dashboard.
-3. Cosmético: los KPI del hero envuelven en pantallas estrechas; el título
+2. Cosmético: los KPI del hero envuelven en pantallas estrechas; el título
    "Sobre Los Datos" del menú de Evidence sale en Title Case por el propio
    Evidence.
 

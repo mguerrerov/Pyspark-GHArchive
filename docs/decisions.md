@@ -743,3 +743,19 @@ Sustituye a D11.
   toca; es la misma trampa que D37. Y las cifras de retencion por cohorte
   quedan calculadas fuera de gold (en el exportador), lo que es un calculo mas
   que mantener.
+
+## D45 — Power BI queda fuera; el README lo redacta Claude
+
+- **Que**: se descarta el entregable de Power BI (`.pbix` + capturas) que el
+  CLAUDE.md fijaba como BI secundario. Y el README principal lo redacta Claude,
+  no Marcos, en contra de lo que decia el mismo CLAUDE.md.
+- **Alternativas**: hacer el `.pbix` sobre los nueve Parquet, que es trabajo de
+  una tarde; o dejar el README como borrador para que Marcos lo reescriba.
+- **Por que**: la pagina de BI del sitio (`site/metricas.html`) cubre lo que
+  Power BI iba a demostrar, con la ventaja de que se abre sin instalar nada y
+  cada cifra lleva su fuente. Un `.pbix` en el repo es un fichero binario que
+  nadie abre. Marcos lo decidio el 2026-09-03, y decidio tambien que el README
+  y las conclusiones los escribiera Claude.
+- **Coste**: el CLAUDE.md y `docs/plan.md` siguen nombrando Power BI en el stack
+  y quedan desfasados en ese punto. Y la voz del README no es la de Marcos,
+  que era el criterio original del proyecto.
