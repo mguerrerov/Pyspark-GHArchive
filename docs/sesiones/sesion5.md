@@ -129,3 +129,21 @@ entregado: sitio público, dashboard, README, decisiones y métricas al día.
 - Pestañas de Chrome de la sesión: cerradas.
 - `dist/` y `site/assets/app.css` quedan en disco, ignorados por git.
 - Sin descargas ni procesos en segundo plano.
+
+## Addendum 2026-09-03 — Netlify deja de construir
+
+Netlify avisó del 75 % de los créditos gastados. Causa: dos builds de **753 s
+y 758 s** (los tres primeros habían tardado ~70 s con la caché de
+`node_modules` caliente; al perderla, cada build reinstala Evidence entero), y
+los dos los dispararon commits de documentación que no tocaban el sitio.
+Suma el ancho de banda: el dashboard carga DuckDB-WASM, 34-39 MB por visita,
+y la verificación en Chrome lo cargó una decena de veces.
+
+Decisión de Marcos: el sitio queda **congelado** tal como está; no habrá más
+cambios. Se activa `stop_builds` en Netlify por API. La web sigue servida; un
+push a `main` ya no dispara nada. Si algún día hay que cambiarla: quitar
+`stop_builds` (o `netlify deploy --prod --dir dist` desde local, que no gasta
+minutos de build) y volver a pararlo.
+
+Los dos arreglos cosméticos (`9ea08ad`) quedaron desplegados antes de parar:
+cifras sin salto de línea en los KPI y menú de Evidence sin Title Case.
