@@ -111,11 +111,14 @@ verde en 69 s; desde ahora cada push a `main` despliega solo.
 **Power BI descartado y README escrito** (D45, 2026-09-03): la BI vive en el
 sitio, y Marcos pidio que el README lo redactara Claude.
 
-**Punto exacto de retome: la Fase 5** con el alcance de D42.
+**La Fase 5 no se hace**, decidido por Marcos el 2026-09-03: el README la
+explica como decisión (D42), no como pendiente. Si la fuente se recupera, lo
+primero sería un cron que corra `degradacion.py` sobre el día nuevo.
 
-1. **Fase 5** con el alcance de D42: cron de ingesta + degradación, sin
-   regenerar el dashboard.
-2. Cosmético: los KPI del hero envuelven en pantallas estrechas; el título
+**Punto exacto de retome: no queda nada estructural.** El proyecto está
+entregado: sitio público, dashboard, README, decisiones y métricas al día.
+
+1. Cosmético: los KPI del hero envuelven en pantallas estrechas; el título
    "Sobre Los Datos" del menú de Evidence sale en Title Case por el propio
    Evidence.
 

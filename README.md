@@ -71,6 +71,14 @@ Están todas, con alternativas y coste, en [`docs/decisions.md`](docs/decisions.
 - **El artefacto público es un sitio estático aparte** (D43), con Evidence en
   un subdirectorio, porque Evidence es bueno para páginas de datos y malo para
   una portada. Power BI se descartó: la BI vive en el sitio.
+- **No hay ingesta diaria automatizada, a propósito** (D42). El plan original
+  tenía un cron que procesara cada día nuevo y regenerase el dashboard. Se
+  descartó al medir que, desde el 2026-03-15, el 99,87 % de lo que publica la
+  fuente son `PushEvent`: cada día nuevo cae en el tramo degradado y sólo
+  metería ruido en las tres preguntas. Automatizar la ingesta de datos que se
+  decide no publicar es un cron por tener un cron. Si la fuente vuelve a emitir
+  el resto de eventos, el detector de degradación (`degradacion.py`) es lo que
+  reabriría la ventana, y sería lo primero que se pondría a correr solo.
 
 ## Lo que salió mal, medido
 
