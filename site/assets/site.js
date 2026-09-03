@@ -23,11 +23,12 @@ const fmt = {
   entero: (n) => n == null ? '—' : new Intl.NumberFormat(LOCALE).format(Math.round(n)),
   dec: (n, d = 1) => n == null ? '—' : new Intl.NumberFormat(LOCALE, { minimumFractionDigits: d, maximumFractionDigits: d }).format(n),
   pct: (n, d = 1) => n == null ? '—' : fmt.dec(n, d) + ' %',
+  // Espacio duro antes del sufijo: "1.319 M" no debe partirse en dos lineas.
   compacto: (n) => {
     if (n == null) return '—';
-    if (Math.abs(n) >= 1e9) return fmt.dec(n / 1e6, 0) + ' M';
-    if (Math.abs(n) >= 1e6) return fmt.dec(n / 1e6, 1) + ' M';
-    if (Math.abs(n) >= 1e3) return fmt.dec(n / 1e3, 0) + ' k';
+    if (Math.abs(n) >= 1e9) return fmt.dec(n / 1e6, 0) + ' M';
+    if (Math.abs(n) >= 1e6) return fmt.dec(n / 1e6, 1) + ' M';
+    if (Math.abs(n) >= 1e3) return fmt.dec(n / 1e3, 0) + ' k';
     return fmt.entero(n);
   },
   horas: (s) => {

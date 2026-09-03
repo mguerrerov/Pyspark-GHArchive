@@ -71,9 +71,9 @@
   .prosa strong { color: var(--tinta); }
   .prosa code, .tabla code { @apply font-mono text-[0.85em] px-1 rounded; background: var(--rejilla); }
   .panel { @apply rounded-xl border p-5; background: var(--panel); border-color: var(--borde); }
-  .kpi-rejilla { @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3; }
+  .kpi-rejilla { @apply grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3; }
   .kpi { @apply rounded-lg border p-4; background: var(--panel); border-color: var(--borde); }
-  .kpi .valor { @apply text-2xl sm:text-3xl font-semibold tabular-nums leading-none; }
+  .kpi .valor { @apply text-2xl lg:text-3xl font-semibold tabular-nums leading-none whitespace-nowrap; }
   .kpi .unidad { @apply text-sm ml-1; color: var(--tinta-3); }
   .kpi .etiqueta { @apply text-xs mt-2 leading-snug; color: var(--tinta-2); }
   .kpi .detalle { @apply text-xs mt-1; color: var(--tinta-3); }
